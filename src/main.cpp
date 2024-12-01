@@ -9,7 +9,7 @@ int main(int argc, char* argv[]) {
     // Initialize the game.
     if (game->init("CSC10012 - Poker 🃏", 800, 600, false)) {
         // Set the game loop frame delay.
-        const int frameDelay = 1000 / 30; // 30 FPS
+        const int frameDelay = 1000 / 60; // 60 FPS
         Uint32 frameStart;
         int frameTime;
 

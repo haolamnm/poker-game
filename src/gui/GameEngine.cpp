@@ -43,6 +43,8 @@ constexpr const char* BACK_CARD_PATH = "assets/imgs/cards/BACK.png";
 // Constants for background music volume
 constexpr int BACKGROUND_MUSIC_VOLUME = 32; // 0 to 128
 
+Lobby lobby;
+
 // Constructor: Initializes the game objects.
 GameEngine::GameEngine() {
     isRunning = false;

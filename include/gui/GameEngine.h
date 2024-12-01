@@ -11,7 +11,9 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "pch.h"
+#include "../core/Lobby.h"
 
+extern Lobby lobby;
 // Game class: Encapsulates the core functions of the game engine
 class GameEngine {
 public:
