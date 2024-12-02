@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 class Lobby {
 private:
@@ -15,7 +16,8 @@ private:
 
 public:
     // Getter for usernames
-    void assignUsername(std::string username);
+    void assignUsername(const std::string& username);
+    void removeUsername(const std::string& username);
     std::vector<std::string> getUsernames();
     void handleGame();
     std::vector<std::vector<std::string>> handleLeaderboard();

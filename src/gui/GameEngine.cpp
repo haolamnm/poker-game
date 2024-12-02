@@ -208,7 +208,6 @@ bool isButtonClicked(int x, int y, int buttonX, int buttonY, int buttonWidth = S
     return x >= buttonX && x <= buttonX + buttonWidth && y >= buttonY && y <= buttonY + buttonHeight;
 }
 
-// Function to handle game events
 void GameEngine::handleEvents() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -272,6 +271,29 @@ void GameEngine::handleEvents() {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                         currentState = LEADERBOARD_SCREEN;
                         std::cout << BLUE_TEXT << "Current state: Leaderboard screen" << RESET_TEXT << std::endl;
+                    }
+
+                    const std::vector<std::string>& usernames = lobby.getUsernames();
+                    int windowWidth, windowHeight;
+                    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+                    int startY = windowHeight - 30 * usernames.size() - 10; // 10 pixels padding from the bottom
+
+                    for (size_t i = 0; i < usernames.size(); ++i) {
+                        int textWidth, textHeight;
+                        TTF_SizeText(font, usernames[i].c_str(), &textWidth, &textHeight);
+                        int deleteButtonWidth, deleteButtonHeight;
+                        TTF_SizeText(font, "x", &deleteButtonWidth, &deleteButtonHeight);
+                        int startX = windowWidth - textWidth - deleteButtonWidth - 30; // 10 pixels padding from the right and between username and 'x'
+
+                        SDL_Rect deleteButtonRect = {startX + textWidth + 10, startY, deleteButtonWidth, deleteButtonHeight};
+
+                        if (x >= deleteButtonRect.x && x <= deleteButtonRect.x + deleteButtonRect.w &&
+                            y >= deleteButtonRect.y && y <= deleteButtonRect.y + deleteButtonRect.h) {
+                            lobby.removeUsername(usernames[i]);
+                            break;
+                        }
+
+                        startY += 30; // Move down for the next username
                     }
                 
                 } else if (currentState == PVP_SCREEN || 

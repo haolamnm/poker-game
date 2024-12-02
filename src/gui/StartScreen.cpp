@@ -61,6 +61,7 @@ void renderUsernames(GameEngine* game) {
     TTF_Font* font = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Color textColor = {255, 255, 255, 255}; // White color
+    SDL_Color deleteColor = {255, 0, 0, 255}; // Red color
 
     const std::vector<std::string>& usernames = lobby.getUsernames();
     
@@ -74,8 +75,17 @@ void renderUsernames(GameEngine* game) {
     for (const std::string& username : usernames) {
         int textWidth, textHeight;
         TTF_SizeText(font, username.c_str(), &textWidth, &textHeight);
-        int startX = windowWidth - textWidth - 10; // 10 pixels padding from the right
+        int deleteButtonWidth, deleteButtonHeight;
+        TTF_SizeText(font, "x", &deleteButtonWidth, &deleteButtonHeight);
+        int startX = windowWidth - textWidth - deleteButtonWidth - 30; // 10 pixels padding from the right and between username and 'x'
+        
+        // Render the username
         game->renderText(renderer, font, username.c_str(), startX, startY, textColor, false);
+
+        // Render the 'x' button as text
+        SDL_Rect deleteButtonRect = {startX + textWidth + 10, startY, deleteButtonWidth, deleteButtonHeight};
+        game->renderText(renderer, font, "x", deleteButtonRect.x, deleteButtonRect.y, deleteColor, false);
+
         startY += 30; // Move down for the next username
     }
 
