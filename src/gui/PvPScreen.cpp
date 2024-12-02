@@ -2,6 +2,9 @@
 
 #include "gui/PvPScreen.h"
 
+// Define the isDealt variable
+bool isDealt = false;
+
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
@@ -42,10 +45,9 @@ void renderPvPScreen(GameEngine* game) {
         SDL_Color textColor = {255, 255, 255, 255}; // White color
         game->renderText(renderer, font, usernames[game->currentPlayer].c_str(), windowWidth / 2, 50, textColor, true);
 
-        static bool isDealt = false;
         static Gameplay gameplay;
         int numberOfCards = 5;
-        // Gameplay gameplay;
+
         if (!isDealt) {
             isDealt = true;
             gameplay.init(usernames, 0);
@@ -56,9 +58,17 @@ void renderPvPScreen(GameEngine* game) {
         for (int i = 0; i < gameplay.numberOfPlayers; i++) {
             for (int j = 0; j < numberOfCards; j++) {
                 Card& currentCard = gameplay.players[i].hand.cards[j];
-                cardSets[i][j] = CARD_FILES[currentCard.suit * 13 + currentCard.rank].c_str();
+                cardSets[i][j] = CARD_FILES[currentCard.rank * 4 + currentCard.suit].c_str();
             }
         }
+        // gameplay.whoWins();
+        // for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+        //     std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
+        //     gameplay.players[i].hand.show();
+        //     std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")" << '\n';
+        //     std::cout << '\n';
+        // }
+        // std::cout << "Winner: " << gameplay.winner << '\n';
 
         // Render the 5 cards
         game->renderCards(cardSets[game->currentPlayer], true, 0, true);

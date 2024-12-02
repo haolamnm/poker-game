@@ -228,7 +228,9 @@ void GameEngine::handleEvents() {
                     if (isButtonClicked(x, y, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                         currentState = PVP_SCREEN;
+                        currentPlayer = 0;
                         std::cout << BLUE_TEXT << "Current state: PvP screen" << RESET_TEXT << std::endl;
+                        resetPvPGame();
                     }
                     
                     // Check if the PvE button is clicked.
@@ -634,3 +636,7 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
 //         Mix_Volume(-1, 0);
 //     }
 // }
+
+void GameEngine::resetPvPGame() {
+    isDealt = false;
+}

@@ -14,6 +14,7 @@
 #include "../core/Lobby.h"
 
 extern Lobby lobby;
+extern bool isDealt;
 // Game class: Encapsulates the core functions of the game engine
 class GameEngine {
 public:
@@ -131,6 +132,8 @@ public:
     // Current card set
     int currentCardSet = 0;
     int currentPlayer = 0;
+
+    void resetPvPGame();
 
 private:
     // Indicates if the game is running.
