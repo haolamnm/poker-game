@@ -42,19 +42,24 @@ void renderPvPScreen(GameEngine* game) {
         SDL_Color textColor = {255, 255, 255, 255}; // White color
         game->renderText(renderer, font, usernames[game->currentPlayer].c_str(), windowWidth / 2, 50, textColor, true);
 
-        Gameplay gameplay;
-        gameplay.init(usernames, 0);
+        static bool isDealt = false;
+        static Gameplay gameplay;
         int numberOfCards = 5;
-        gameplay.dealCards(numberOfCards);
-
-        // Array of card file paths
-        const char* cardSets[usernames.size()][5];
-        for (int i = 0; i < gameplay.numberOfPlayers; i++) {
-            for (int j = 0; j < numberOfCards; j++) {
-                Card& currentCard = gameplay.players[i].hand.cards[j];
-                cardSets[i][j] = CARD_FILES[currentCard.suit * 13 + currentCard.rank].c_str();
-            }
+        // Gameplay gameplay;
+        if (!isDealt) {
+            isDealt = true;
+            gameplay.init(usernames, 0);
+            gameplay.dealCards(numberOfCards);
+            std::cout << "So beautiful" << '\n';
         }
+        const char* cardSets[usernames.size()][5];
+        // Array of card file paths
+            for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+                for (int j = 0; j < numberOfCards; j++) {
+                    Card& currentCard = gameplay.players[i].hand.cards[j];
+                    cardSets[i][j] = CARD_FILES[currentCard.suit * 13 + currentCard.rank].c_str();
+                }
+            }
 
         // Render the 5 cards
         game->renderCards(cardSets[game->currentPlayer], true, 0);

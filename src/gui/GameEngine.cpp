@@ -286,7 +286,6 @@ void GameEngine::handleEvents() {
                         int startX = windowWidth - textWidth - deleteButtonWidth - 30; // 10 pixels padding from the right and between username and 'x'
 
                         SDL_Rect deleteButtonRect = {startX + textWidth + 10, startY, deleteButtonWidth, deleteButtonHeight};
-
                         if (x >= deleteButtonRect.x && x <= deleteButtonRect.x + deleteButtonRect.w &&
                             y >= deleteButtonRect.y && y <= deleteButtonRect.y + deleteButtonRect.h) {
                             lobby.removeUsername(usernames[i]);
