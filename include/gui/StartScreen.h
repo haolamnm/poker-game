@@ -9,4 +9,7 @@
 // Function to render the start screen
 void renderStartScreen(GameEngine* game);
 
+// Function to render the usernames
+void renderUsernames(GameEngine* game);
+
 #endif // START_SCREEN_H

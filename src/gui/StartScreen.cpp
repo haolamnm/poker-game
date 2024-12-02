@@ -26,6 +26,8 @@ void renderStartScreen(GameEngine* game) {
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     // TODO: SDL_RenderCopy(renderer, game->getPvpButtonTexture(), NULL, &pvpButtonRect);
     SDL_RenderFillRect(renderer, &pvpButtonRect);
+    game->renderText(renderer, font, "PvP", PVP_BUTTON_X + BIG_BUTTON_WIDTH / 2, PVP_BUTTON_Y + BIG_BUTTON_HEIGHT / 2 - 45, textColor, true);
+
 
     // Render the PvE Mode button
     SDL_Rect pveButtonRect = {PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT};
@@ -33,6 +35,7 @@ void renderStartScreen(GameEngine* game) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
     // TODO: SDL_RenderCopy(renderer, game->getPveButtonTexture(), NULL, &pveButtonRect);
     SDL_RenderFillRect(renderer, &pveButtonRect);
+    game->renderText(renderer, font, "PvE", PVE_BUTTON_X + BIG_BUTTON_WIDTH / 2, PVE_BUTTON_Y + BIG_BUTTON_HEIGHT / 2 - 45, textColor, true);
 
     // Render the User Account Info button
     SDL_Rect userInfoButtonRect = {START_X, START_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
@@ -53,4 +56,33 @@ void renderStartScreen(GameEngine* game) {
     // Render the Leaderboard button
     SDL_Rect leaderboardButtonRect = {START_X, START_Y + 4 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, game->getLeaderboardButtonTexture(), NULL, &leaderboardButtonRect);
+
+    // Render the current users in the lobby
+    renderUsernames(game);
+}
+
+// Function to render the usernames
+void renderUsernames(GameEngine* game) {
+    // TTF_Font* font = game->getFont();
+    TTF_Font* font = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
+    SDL_Renderer* renderer = game->getRenderer();
+    SDL_Color textColor = {255, 255, 255, 255}; // White color
+
+    const std::vector<std::string>& usernames = lobby.getUsernames();
+    
+    // Get the window dimensions
+    int windowWidth, windowHeight;
+    SDL_GetWindowSize(game->getWindow(), &windowWidth, &windowHeight);
+
+    // Calculate the starting Y position for the usernames
+    int startY = windowHeight - 30 * usernames.size() - 10; // 10 pixels padding from the bottom
+
+    for (const std::string& username : usernames) {
+        int textWidth, textHeight;
+        TTF_SizeText(font, username.c_str(), &textWidth, &textHeight);
+        int startX = windowWidth - textWidth - 10; // 10 pixels padding from the right
+        game->renderText(renderer, font, username.c_str(), startX, startY, textColor, false);
+        startY += 30; // Move down for the next username
+    }
+    TTF_CloseFont(font);
 }

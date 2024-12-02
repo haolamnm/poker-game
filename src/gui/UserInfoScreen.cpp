@@ -36,7 +36,6 @@ void handleTextInput(SDL_Event& event) {
             if (login.login(usernameInput, passwordInput)) {
                 std::cout << GREEN_TEXT << login.show() << RESET_TEXT << std::endl;
                 lobby.assignUsername(usernameInput); // Push the username into the Lobby
-                lobby.showUsernames(); // Show the usernames in the Lobby
             } else if (login.statusCode == NEW_ACCOUNT) {
                 showNewAccountPrompt = true;
             } else {

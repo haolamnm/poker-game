@@ -16,7 +16,7 @@ private:
 public:
     // Getter for usernames
     void assignUsername(std::string username);
-    void showUsernames();
+    std::vector<std::string> getUsernames();
     void start();
     void showMenu();
     void handleLogin(std::string username, std::string password);

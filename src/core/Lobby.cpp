@@ -44,9 +44,8 @@ void Lobby::showMenu() {
     std::cout << "Enter your choice: ";
 }
 
-void Lobby::showUsernames() {
-    for (int i = 0; i < (int) usernames.size(); i++)
-        std::cout << usernames[i] << '\n';
+std::vector<std::string> Lobby::getUsernames() {
+    return usernames;
 }
 
 void Lobby::handleLogin(std::string username, std::string password) {
