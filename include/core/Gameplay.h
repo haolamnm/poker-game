@@ -17,7 +17,7 @@ public:
     int winner;
 
     std::vector<Player> players;
-    void init(int numberOfPlayers, const std::vector<std::string>& usernames);
+    void init(const std::vector<std::string>& usernames, int numberOfBots = 0);
     void dealCards(int numberOfCards);
     void whoWins();
     void savePlayerData(Player& player);

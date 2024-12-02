@@ -1,8 +1,8 @@
 #include "core/Gameplay.h"
 
 /* ------------------Gameplay------------------ */
-void Gameplay::init(int numberOfPlayers, const std::vector<std::string>& usernames) {
-    this->numberOfPlayers = numberOfPlayers;
+void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots) {
+    this->numberOfPlayers = usernames.size() + numberOfBots;
     players.assign(numberOfPlayers, Player());
     for (int i = 0; i < numberOfPlayers; i++) {
         players[i].id = i;

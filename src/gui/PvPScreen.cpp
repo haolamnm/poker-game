@@ -38,21 +38,26 @@ void renderPvPScreen(GameEngine* game) {
         game->renderText(renderer, msgFont, "Need at least 2 players to play PvP", windowWidth / 2, windowHeight / 2, textColor, true);
         TTF_CloseFont(msgFont);
     } else {
-        // Render the "Player 1" text
+        // Render the "username" text
         SDL_Color textColor = {255, 255, 255, 255}; // White color
         game->renderText(renderer, font, usernames[game->currentPlayer].c_str(), windowWidth / 2, 50, textColor, true);
 
+        Gameplay gameplay;
+        gameplay.init(usernames, 0);
+        int numberOfCards = 5;
+        gameplay.dealCards(numberOfCards);
+
         // Array of card file paths
-        const char* cardFiles[5] = {
-            CARD_2_C,
-            CARD_3_D,
-            CARD_4_H,
-            CARD_5_S,
-            CARD_6_C
-        };
+        const char* cardSets[usernames.size()][5];
+        for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+            for (int j = 0; j < numberOfCards; j++) {
+                Card& currentCard = gameplay.players[i].hand.cards[j];
+                cardSets[i][j] = CARD_FILES[currentCard.suit * 13 + currentCard.rank].c_str();
+            }
+        }
 
         // Render the 5 cards
-        game->renderCards(cardFiles, true, 0);
+        game->renderCards(cardSets[game->currentPlayer], true, 0);
         
         // Handle next button hover
         SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
