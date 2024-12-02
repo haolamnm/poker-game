@@ -54,12 +54,12 @@ void renderPvPScreen(GameEngine* game) {
         }
         const char* cardSets[usernames.size()][5];
         // Array of card file paths
-            for (int i = 0; i < gameplay.numberOfPlayers; i++) {
-                for (int j = 0; j < numberOfCards; j++) {
-                    Card& currentCard = gameplay.players[i].hand.cards[j];
-                    cardSets[i][j] = CARD_FILES[currentCard.suit * 13 + currentCard.rank].c_str();
-                }
+        for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+            for (int j = 0; j < numberOfCards; j++) {
+                Card& currentCard = gameplay.players[i].hand.cards[j];
+                cardSets[i][j] = CARD_FILES[currentCard.suit * 13 + currentCard.rank].c_str();
             }
+        }
 
         // Render the 5 cards
         game->renderCards(cardSets[game->currentPlayer], true, 0);
