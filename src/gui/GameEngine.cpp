@@ -559,7 +559,10 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
         }
         if (allFaceDown == true) {
             Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-            if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) {
+            if (((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) ||
+                ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) ||
+                ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) ||
+                ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT))) {
                 for (int i = 0; i < 5; ++i) {
                     getCardRevealed()[i] = false;
                 }
