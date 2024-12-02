@@ -46,6 +46,7 @@ public:
     std::vector<std::string> getPlayerData(const std::string& username);
     std::vector<std::string> getAllUsernames();
     std::string hashPassword(const std::string& password);
+    void updatePlayerStorage();
 };
 
 class Leaderboard {
@@ -67,7 +68,7 @@ public:
 
     void updateLeaderboard();
     void saveLeaderboard(const std::string& fileName = LEADER_BOARD_FILE_NAME);
-    void showLeaderboard();
+    std::vector<std::vector<std::string>> showLeaderboard();
     void loadPlayerData();
 };
 

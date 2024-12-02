@@ -132,6 +132,34 @@ std::string Storage::hashPassword(const std::string& password) {
     size_t hashedPassword = stringHash(password);
     return std::to_string(hashedPassword);
 }
+
+void Storage::updatePlayerStorage() {
+    std::fstream file(fileName, std::ios::in);
+    if (file.is_open()) {
+        storage.clear(); // Clear the existing storage data
+        std::string data;
+        while (getline(file, data)) {
+            std::vector<std::string> str = split(data);
+            if (str.size() == 16) {
+                Player player;
+                player.username = str[0];
+                player.hashedPassword = str[1];
+                player.gamesPlayed = std::stoi(str[2]);
+                player.chips = std::stoi(str[3]);
+                player.winrate = std::stof(str[4]);
+                player.rank = std::stoi(str[5]);
+                player.favoriteStrategy = str[6];
+                for (int i = 0; i < 9; i++) {
+                    player.winningStrategy[i] = std::stoi(str[7 + i]);
+                }
+                storage[player.username] = player;
+            }
+        }
+        file.close();
+    } else {
+        std::cerr << "Failed to open storage file: " << fileName << std::endl;
+    }
+}
 /* ------------------End of Storage------------------ */
 
 /* ------------------Leaderboard------------------ */
@@ -157,6 +185,7 @@ void Leaderboard::loadPlayerData() {
 }
 
 void Leaderboard::updateLeaderboard() {
+    playerStorage.updatePlayerStorage();
     loadPlayerData();
     std::sort(players.begin(), players.end(), [&](Player& a, Player& b) {
         return a.winrate > b.winrate;
@@ -178,12 +207,22 @@ void Leaderboard::saveLeaderboard(const std::string& fileName) {
     }
 }
 
-void Leaderboard::showLeaderboard() {
+std::vector<std::vector<std::string>> Leaderboard::showLeaderboard() {
     // Rank - Username - Chips - Winrate - Favorite Strategy set width to 15
-    std::cout << std::left << std::setw(5) << "Rank" << std::setw(15) << "Username" << std::setw(10) << "Chips" << std::setw(10) << "Winrate" << std::setw(15) << "Favorite Strategy" << '\n';
-    std::cout << std::fixed << std::setprecision(2);
-    for (const auto& player : players) {
-        std::cout << std::left << std::setw(5) << player.rank << std::setw(15) << player.username << std::setw(10) << player.chips << std::setw(10) << player.winrate * 100 << std::setw(15) << player.favoriteStrategy << '\n';
+    updateLeaderboard();
+    int nRow = players.size();
+    int nCol = 5;
+    std::vector<std::vector<std::string>> res(nRow, std::vector<std::string>(nCol));
+    for (int i = 0; i < nRow; i++) {
+        res[i][0] = std::to_string(players[i].rank);
+        res[i][1] = players[i].username;
+        res[i][2] = std::to_string(players[i].chips);
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(1) << players[i].winrate;
+        res[i][3] = ss.str();
+        res[i][4] = players[i].favoriteStrategy;
     }
+    saveLeaderboard();
+    return res;
 }
 /* ------------------End of Leaderboard------------------ */

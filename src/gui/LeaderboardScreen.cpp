@@ -17,11 +17,52 @@ void renderLeaderboardScreen(GameEngine* game) {
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
     SDL_RenderClear(renderer);
 
-    // Render the About Leaderboard screen title
+    // Render the Leaderboard screen title
     SDL_Color textColor = {255, 255, 255, 255};
     game->renderText(renderer, font, "Leaderboard", windowWidth / 2, 50, textColor, true);
+
+    // Load the font for the leaderboard entries
+    TTF_Font* leaderboardFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
+    if (!leaderboardFont) {
+        std::cerr << "Failed to load leaderboard font: " << TTF_GetError() << std::endl;
+        return;
+    }
+
+    // Get the leaderboard data    
+    std::vector<std::vector<std::string>> leaderboard = lobby.handleLeaderboard();
+    int nRow = leaderboard.size();
+    int nCol = leaderboard[0].size();
+
+    // Define column headers
+    const char* headers[] = {"Rank", "Username", "Chips", "Winrate", "Favorite Strategy"};
+    int headerCount = sizeof(headers) / sizeof(headers[0]);
+
+    // Define column widths
+    int columnWidths[] = {75, 150, 100, 100, 200};
+
+    // Render column headers
+    int startX = 50;
+    int startY = 150;
+    for (int j = 0; j < headerCount; j++) {
+        game->renderText(renderer, leaderboardFont, headers[j], startX, startY, textColor, false);
+        startX += columnWidths[j];
+    }
+
+    // Render leaderboard entries
+    startY += 40; // Move down for the first row of data
+    for (int i = 0; i < nRow; i++) {
+        startX = 50; // Reset to the start of the row
+        for (int j = 0; j < nCol; j++) {
+            game->renderText(renderer, leaderboardFont, leaderboard[i][j].c_str(), startX, startY, textColor, false);
+            startX += columnWidths[j];
+        }
+        startY += 30; // Move down for the next row
+    }
 
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
+
+    // Close the leaderboard font
+    TTF_CloseFont(leaderboardFont);
 }

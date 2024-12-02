@@ -480,22 +480,6 @@ void GameEngine::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* 
     // std::cout << GREEN_TEXT << "Text rendered successfully." << RESET_TEXT << std::endl; 
 }
 
-// void GameEngine::toggleBackgroundMusic() {
-//     if (Mix_PausedMusic()) {
-//         Mix_ResumeMusic();
-//     } else {
-//         Mix_PauseMusic();
-//     }
-// }
-
-// void GameEngine::toggleSoundEffects() {
-//     if (Mix_Volume(-1, -1) == 0) {
-//         Mix_Volume(-1, MIX_MAX_VOLUME);
-//     } else {
-//         Mix_Volume(-1, 0);
-//     }
-// }
-
 // Function to check if the mouse is hovering over a button
 bool GameEngine::isMouseHovering(int mouseX, int mouseY, int buttonX, int buttonY, int buttonWidth, int buttonHeight) {
     return mouseX >= buttonX && mouseX <= buttonX + buttonWidth && mouseY >= buttonY && mouseY <= buttonY + buttonHeight;
@@ -591,3 +575,19 @@ void GameEngine::handleNextButtonClick(int mouseX, int mouseY) {
         currentCardSet = (currentCardSet + 1) % 9;
     }
 }
+
+// void GameEngine::toggleBackgroundMusic() {
+//     if (Mix_PausedMusic()) {
+//         Mix_ResumeMusic();
+//     } else {
+//         Mix_PauseMusic();
+//     }
+// }
+
+// void GameEngine::toggleSoundEffects() {
+//     if (Mix_Volume(-1, -1) == 0) {
+//         Mix_Volume(-1, MIX_MAX_VOLUME);
+//     } else {
+//         Mix_Volume(-1, 0);
+//     }
+// }

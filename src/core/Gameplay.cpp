@@ -95,7 +95,7 @@ void Gameplay::saveAllPlayerData() {
     leaderboard.updateLeaderboard();
 }
 
-void Gameplay::showLeaderboard() {
-    leaderboard.showLeaderboard();
+std::vector<std::vector<std::string>> Gameplay::showLeaderboard() {
+    return leaderboard.showLeaderboard();
 }
 /* ------------------End of Gameplay------------------ */

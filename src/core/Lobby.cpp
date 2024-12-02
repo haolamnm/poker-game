@@ -1,6 +1,12 @@
 #include "core/Lobby.h"
 
 void Lobby::assignUsername(std::string username) {
+    for (const std::string& exist : usernames) {
+        if (exist == username) {
+            std::cout << exist << " already exists.\n";
+            return;
+        }
+    }
     usernames.push_back(username);
 }
 
@@ -44,13 +50,6 @@ void Lobby::showUsernames() {
 }
 
 void Lobby::handleLogin(std::string username, std::string password) {
-    // std::string username;
-    // std::string password;
-    // std::cout << "Enter username: ";
-    // std::cin >> username;
-    // std::cout << "Enter password: ";
-    // std::cin >> password;
-
     if (login.login(username, password)) {
         std::cout << login.show() << '\n';
         usernames.push_back(username);
@@ -98,6 +97,6 @@ void Lobby::handleGame() {
     game.saveAllPlayerData();
 }
 
-void Lobby::handleLeaderboard() {
-    game.showLeaderboard();
+std::vector<std::vector<std::string>> Lobby::handleLeaderboard() {
+    return game.showLeaderboard();
 }

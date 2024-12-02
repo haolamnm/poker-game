@@ -21,7 +21,7 @@ public:
     void showMenu();
     void handleLogin(std::string username, std::string password);
     void handleGame();
-    void handleLeaderboard();
+    std::vector<std::vector<std::string>> handleLeaderboard();
 };
 
 #endif

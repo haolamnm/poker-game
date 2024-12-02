@@ -22,7 +22,7 @@ public:
     void whoWins();
     void savePlayerData(Player& player);
     void saveAllPlayerData();
-    void showLeaderboard();
+    std::vector<std::vector<std::string>> showLeaderboard();
 };
 
 #endif // GAMEPLAY_H
