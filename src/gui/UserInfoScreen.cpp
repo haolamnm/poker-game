@@ -84,6 +84,8 @@ void renderUserInfoScreen(GameEngine* game) {
         return;
     }
 
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
     // Get the window size
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -97,8 +99,9 @@ void renderUserInfoScreen(GameEngine* game) {
     game->renderText(renderer, font, "Login", windowWidth / 2, 50, textColor, true);
 
     // Render the back button
-    SDL_Rect backButtonRect = {20, 20, 50, 50};
+    SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
+    game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Define fixed-size input field dimensions
     const int inputFieldWidth = 300;

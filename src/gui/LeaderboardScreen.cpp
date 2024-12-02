@@ -9,6 +9,8 @@ void renderLeaderboardScreen(GameEngine* game) {
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
 
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
     // Get the window dimensions
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -62,6 +64,7 @@ void renderLeaderboardScreen(GameEngine* game) {
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
+    game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Close the leaderboard font
     TTF_CloseFont(leaderboardFont);

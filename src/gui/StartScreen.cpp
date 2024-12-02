@@ -7,11 +7,18 @@ void renderStartScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
     SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
+    SDL_Texture* userInfoButtonTexture = game->getUserInfoButtonTexture();
+    SDL_Texture* tutorialButtonTexture = game->getTutorialButtonTexture();
+    SDL_Texture* aboutButtonTexture = game->getAboutButtonTexture();
+    SDL_Texture* settingsButtonTexture = game->getSettingsButtonTexture();
+    SDL_Texture* leaderboardButtonTexture = game->getLeaderboardButtonTexture();
     
     // Render the start screen background
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
     SDL_RenderClear(renderer);
 
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
     // Get the window dimensions
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -34,23 +41,28 @@ void renderStartScreen(GameEngine* game) {
 
     // Render the User Account Info button
     SDL_Rect userInfoButtonRect = {START_X, START_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, game->getUserInfoButtonTexture(), NULL, &userInfoButtonRect);
+    SDL_RenderCopy(renderer, userInfoButtonTexture, NULL, &userInfoButtonRect);
+    game->handleButtonHover(userInfoButtonTexture, mouseX, mouseY, START_X, START_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render the Instruction/Tutorial button
     SDL_Rect tutorialButtonRect = {START_X, START_Y + SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, game->getTutorialButtonTexture(), NULL, &tutorialButtonRect);
+    SDL_RenderCopy(renderer,tutorialButtonTexture, NULL, &tutorialButtonRect);
+    game->handleButtonHover(tutorialButtonTexture, mouseX, mouseY, START_X, START_Y + SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render the About the Author button
     SDL_Rect aboutButtonRect = {START_X, START_Y + 2 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, game->getAboutButtonTexture(), NULL, &aboutButtonRect);
+    SDL_RenderCopy(renderer, aboutButtonTexture, NULL, &aboutButtonRect);
+    game->handleButtonHover(aboutButtonTexture, mouseX, mouseY, START_X, START_Y + 2 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render the Settings button
     SDL_Rect settingsButtonRect = {START_X, START_Y + 3 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, game->getSettingsButtonTexture(), NULL, &settingsButtonRect);
+    SDL_RenderCopy(renderer, settingsButtonTexture, NULL, &settingsButtonRect);
+    game->handleButtonHover(settingsButtonTexture, mouseX, mouseY, START_X, START_Y + 3 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render the Leaderboard button
     SDL_Rect leaderboardButtonRect = {START_X, START_Y + 4 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, game->getLeaderboardButtonTexture(), NULL, &leaderboardButtonRect);
+    SDL_RenderCopy(renderer, leaderboardButtonTexture, NULL, &leaderboardButtonRect);
+    game->handleButtonHover(leaderboardButtonTexture, mouseX, mouseY, START_X, START_Y + 4 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING), SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render the current users in the lobby
     renderUsernames(game);

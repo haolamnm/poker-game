@@ -39,7 +39,7 @@ void renderPvPScreen(GameEngine* game) {
     } else {
         // Render the "Player 1" text
         SDL_Color textColor = {255, 255, 255, 255}; // White color
-        game->renderText(renderer, font, "Player 1", windowWidth / 2, 50, textColor, true);
+        game->renderText(renderer, font, usernames[0].c_str(), windowWidth / 2, 50, textColor, true);
 
         // Array of card file paths
         const char* cardFiles[5] = {

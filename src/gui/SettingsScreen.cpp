@@ -11,6 +11,8 @@ void renderSettingsScreen(GameEngine* game) {
     // SDL_Texture* musicToggleButtonTexture = game->getMusicToggleButtonTexture();
     // SDL_Texture* soundToggleButtonTexture = game->getSoundToggleButtonTexture();
 
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
     // Get the window dimensions
     int windowWidth, windowHeight;
     SDL_GetWindowSize(window, &windowWidth, &windowHeight);
@@ -26,7 +28,7 @@ void renderSettingsScreen(GameEngine* game) {
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
-
+    game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
     // Render the background music toggle button
     // SDL_Rect musicToggleButtonRect = {START_X, START_X + SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     // SDL_RenderCopy(renderer, musicToggleButtonTexture, NULL, &musicToggleButtonRect);
