@@ -17,8 +17,14 @@ void renderPvEScreen(GameEngine* game) {
     SDL_SetRenderDrawColor(renderer, 9, 70, 27, 255);
     SDL_RenderClear(renderer);
 
+    int mouseX, mouseY;
+    SDL_GetMouseState(&mouseX, &mouseY);
+
+    // Handle back button hover
+    game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
     // Render the back button
-    SDL_Rect backButtonRect = {20, 20, 50, 50};
+    SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
 
     // Check if there is at least 1 player in the lobby
