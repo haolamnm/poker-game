@@ -61,14 +61,22 @@ void renderPvPScreen(GameEngine* game) {
                 cardSets[i][j] = CARD_FILES[currentCard.rank * 4 + currentCard.suit].c_str();
             }
         }
-        // gameplay.whoWins();
+        gameplay.whoWins();
         // for (int i = 0; i < gameplay.numberOfPlayers; i++) {
         //     std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
         //     gameplay.players[i].hand.show();
         //     std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")" << '\n';
         //     std::cout << '\n';
         // }
-        // std::cout << "Winner: " << gameplay.winner << '\n';
+        std::cout << "Winner: " << gameplay.winner << '\n';
+
+        // Screen Winner, PvE, Save Data must be called once
+
+        // for (Player& player : gameplay.players) {
+        //     gameplay.savePlayerData(player);
+        // }
+        // gameplay.saveAllPlayerData();
+
 
         // Render the 5 cards
         game->renderCards(cardSets[game->currentPlayer], true, 0, true);

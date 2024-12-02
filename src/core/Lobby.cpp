@@ -34,15 +34,15 @@ std::vector<std::string> Lobby::getUsernames() {
 
 //     std::cout << "Winner: " << game.winner << '\n';
 
-//     // Update the current logged-in player's data if they won
-//     for (auto& player : game.players) {
-//         if (std::find(usernames.begin(), usernames.end(), player.username) != usernames.end()) {
-//             game.savePlayerData(player);
-//         }
-//     }
+    // Update the current logged-in player's data if they won
+    // for (auto& player : game.players) {
+    //     if (std::find(usernames.begin(), usernames.end(), player.username) != usernames.end()) {
+    //         game.savePlayerData(player);
+    //     }
+    // }
 
-//     // Save player data before exiting
-//     game.saveAllPlayerData();
+    // // Save player data before exiting
+    // game.saveAllPlayerData();
 // }
 
 std::vector<std::vector<std::string>> Lobby::handleLeaderboard() {
