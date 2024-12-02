@@ -22,18 +22,13 @@ void renderStartScreen(GameEngine* game) {
 
     // Render the PvP Mode button
     SDL_Rect pvpButtonRect = {PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT};
-    // Temporary color for the PvP button
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-    // TODO: SDL_RenderCopy(renderer, game->getPvpButtonTexture(), NULL, &pvpButtonRect);
     SDL_RenderFillRect(renderer, &pvpButtonRect);
     game->renderText(renderer, font, "PvP", PVP_BUTTON_X + BIG_BUTTON_WIDTH / 2, PVP_BUTTON_Y + BIG_BUTTON_HEIGHT / 2 - 45, textColor, true);
 
-
     // Render the PvE Mode button
     SDL_Rect pveButtonRect = {PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT};
-    // Temporary color for the PvE button
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-    // TODO: SDL_RenderCopy(renderer, game->getPveButtonTexture(), NULL, &pveButtonRect);
     SDL_RenderFillRect(renderer, &pveButtonRect);
     game->renderText(renderer, font, "PvE", PVE_BUTTON_X + BIG_BUTTON_WIDTH / 2, PVE_BUTTON_Y + BIG_BUTTON_HEIGHT / 2 - 45, textColor, true);
 
@@ -63,7 +58,6 @@ void renderStartScreen(GameEngine* game) {
 
 // Function to render the usernames
 void renderUsernames(GameEngine* game) {
-    // TTF_Font* font = game->getFont();
     TTF_Font* font = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Color textColor = {255, 255, 255, 255}; // White color
@@ -84,5 +78,6 @@ void renderUsernames(GameEngine* game) {
         game->renderText(renderer, font, username.c_str(), startX, startY, textColor, false);
         startY += 30; // Move down for the next username
     }
+
     TTF_CloseFont(font);
 }

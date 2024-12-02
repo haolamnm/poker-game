@@ -10,60 +10,8 @@ void Lobby::assignUsername(std::string username) {
     usernames.push_back(username);
 }
 
-
-
-void Lobby::start() {
-    while (true) {
-        showMenu();
-        int choice;
-        std::cin >> choice;
-        switch (choice) {
-            case 1:
-                // handleLogin();
-                break;
-            case 2:
-                handleGame();
-                break;
-            case 3:
-                handleLeaderboard();
-                break;
-            case 4:
-                std::cout << "Exiting...\n";
-                return;
-            default:
-                std::cout << "Invalid choice. Please try again.\n";
-        }
-    }
-}
-
-void Lobby::showMenu() {
-    std::cout << "1. Login\n";
-    std::cout << "2. Start Game\n";
-    std::cout << "3. Show Leaderboard\n";
-    std::cout << "4. Exit\n";
-    std::cout << "Enter your choice: ";
-}
-
 std::vector<std::string> Lobby::getUsernames() {
     return usernames;
-}
-
-void Lobby::handleLogin(std::string username, std::string password) {
-    if (login.login(username, password)) {
-        std::cout << login.show() << '\n';
-        usernames.push_back(username);
-    } else if (login.statusCode == NEW_ACCOUNT) {
-        std::cout << login.show() << '\n';
-        char choice;
-        std::cout << "Do you want to create a new account? (y/n): ";
-        std::cin >> choice;
-        if (choice == 'y') {
-            login.createNewPlayer(username, password);
-            std::cout << login.show() << '\n';
-        }
-    } else {
-        std::cout << login.show() << '\n';
-    }
 }
 
 void Lobby::handleGame() {

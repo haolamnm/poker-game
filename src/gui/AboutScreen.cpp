@@ -2,6 +2,7 @@
 
 #include "gui/AboutScreen.h"
 
+// Function to render the About screen
 void renderAboutScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
     SDL_Window* window = game->getWindow();

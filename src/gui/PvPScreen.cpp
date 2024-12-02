@@ -24,7 +24,6 @@ void renderPvPScreen(GameEngine* game) {
     // Render the "Player 1" text
     SDL_Color textColor = {255, 255, 255, 255}; // White color
     game->renderText(renderer, font, "Player 1", windowWidth / 2, 50, textColor, true);
-    // game->renderText(renderer, font,)
 
     // Handle back button hover
     game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
