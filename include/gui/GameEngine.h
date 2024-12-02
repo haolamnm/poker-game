@@ -60,7 +60,7 @@ public:
     void handleButtonHover(SDL_Texture* buttonTexture, int mouseX, int mouseY, int buttonX, int buttonY, int buttonWidth, int buttonHeight);
     
     // Function to render 5 cards
-    void renderCards(const char* cardFiles[5], bool allowClick, int fadeCards);
+    void renderCards(const char* cardFiles[5], bool allowClick, int fadeCards, bool allFaceDown = true);
 
     // Function to handle next button click
     void handleNextButtonClickTutorial(int mouseX, int mouseY);

@@ -57,5 +57,5 @@ void renderTutorialScreen(GameEngine* game) {
     int fadeCards[9] = {0, 1, 0, 0, 0, 2, 1, 3, 4};
 
     // Render the current set of cards
-    game->renderCards(cardSets[game->currentCardSet], false, fadeCards[game->currentCardSet]);
+    game->renderCards(cardSets[game->currentCardSet], false, fadeCards[game->currentCardSet], false);
 }

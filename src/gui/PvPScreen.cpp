@@ -50,7 +50,6 @@ void renderPvPScreen(GameEngine* game) {
             isDealt = true;
             gameplay.init(usernames, 0);
             gameplay.dealCards(numberOfCards);
-            std::cout << "So beautiful" << '\n';
         }
         const char* cardSets[usernames.size()][5];
         // Array of card file paths
@@ -62,7 +61,7 @@ void renderPvPScreen(GameEngine* game) {
         }
 
         // Render the 5 cards
-        game->renderCards(cardSets[game->currentPlayer], true, 0);
+        game->renderCards(cardSets[game->currentPlayer], true, 0, true);
         
         // Handle next button hover
         SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};

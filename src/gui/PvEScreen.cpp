@@ -50,6 +50,6 @@ void renderPvEScreen(GameEngine* game) {
         };
 
         // Render the 5 cards
-        game->renderCards(cardFiles, true, 0);
+        game->renderCards(cardFiles, true, 0, false);
     }
 }

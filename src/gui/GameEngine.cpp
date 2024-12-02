@@ -520,7 +520,7 @@ void GameEngine::handleButtonHover(SDL_Texture* buttonTexture, int mouseX, int m
 }
 
 // Function to render 5 cards
-void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fadeCards) {
+void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fadeCards, bool allFaceDown) {
     SDL_Renderer* renderer = getRenderer();
 
     // Get the window dimensions
@@ -556,6 +556,14 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
         if (!cardTexture) {
             std::cerr << RED_TEXT << "Failed to load card image: " << IMG_GetError() << RESET_TEXT << std::endl;
             continue;
+        }
+        if (allFaceDown == true) {
+            Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
+            if ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) {
+                for (int i = 0; i < 5; ++i) {
+                    getCardRevealed()[i] = false;
+                }
+            }
         }
 
         // Determine if the card should be faded
