@@ -9,6 +9,8 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <string>
+
 // Text colors for console output
 // Purpose: Indicates different types of debug messages in the console
 #define RED_TEXT    "\033[1;31m"
@@ -40,6 +42,11 @@ constexpr int NEXT_BUTTON_Y = 530;
 // Constants for card dimensions
 constexpr int CARD_WIDTH = 100;
 constexpr int CARD_HEIGHT = 150;
+
+constexpr const char* CARD_A_C = "assets/imgs/cards/A-C.png";
+constexpr const char* CARD_A_D = "assets/imgs/cards/A-D.png";
+constexpr const char* CARD_A_H = "assets/imgs/cards/A-H.png";
+constexpr const char* CARD_A_S = "assets/imgs/cards/A-S.png";
 
 constexpr const char* CARD_2_C = "assets/imgs/cards/2-C.png";
 constexpr const char* CARD_2_D = "assets/imgs/cards/2-D.png";
@@ -101,12 +108,51 @@ constexpr const char* CARD_K_D = "assets/imgs/cards/K-D.png";
 constexpr const char* CARD_K_H = "assets/imgs/cards/K-H.png";
 constexpr const char* CARD_K_S = "assets/imgs/cards/K-S.png";
 
-constexpr const char* CARD_A_C = "assets/imgs/cards/A-C.png";
-constexpr const char* CARD_A_D = "assets/imgs/cards/A-D.png";
-constexpr const char* CARD_A_H = "assets/imgs/cards/A-H.png";
-constexpr const char* CARD_A_S = "assets/imgs/cards/A-S.png";
-
 constexpr const char* CARD_JOKER = "assets/imgs/cards/JOKER.png";
 constexpr const char* CARD_BACK = "assets/imgs/cards/BACK.png";
+
+/*
+enum Suits {
+    SUIT_EMPTY = -1,
+    CLUBS,
+    DIAMONDS,
+    HEARTS,
+    SPADES
+};
+
+// Enumerations for ranks
+enum Ranks {
+    RANK_EMPTY = -1,
+    ACE,
+    TWO,
+    THREE,
+    FOUR,
+    FIVE,
+    SIX,
+    SEVEN,
+    EIGHT,
+    NINE,
+    TEN,
+    JACK,
+    QUEEN,
+    KING
+};
+*/
+
+const std::string CARD_FILES[52] = {
+    CARD_A_C, CARD_A_D, CARD_A_H, CARD_A_S,
+    CARD_2_C, CARD_2_D, CARD_2_H, CARD_2_S,
+    CARD_3_C, CARD_3_D, CARD_3_H, CARD_3_S,
+    CARD_4_C, CARD_4_D, CARD_4_H, CARD_4_S,
+    CARD_5_C, CARD_5_D, CARD_5_H, CARD_5_S,
+    CARD_6_C, CARD_6_D, CARD_6_H, CARD_6_S,
+    CARD_7_C, CARD_7_D, CARD_7_H, CARD_7_S,
+    CARD_8_C, CARD_8_D, CARD_8_H, CARD_8_S,
+    CARD_9_C, CARD_9_D, CARD_9_H, CARD_9_S,
+    CARD_10_C, CARD_10_D, CARD_10_H, CARD_10_S,
+    CARD_J_C, CARD_J_D, CARD_J_H, CARD_J_S,
+    CARD_Q_C, CARD_Q_D, CARD_Q_H, CARD_Q_S,
+    CARD_K_C, CARD_K_D, CARD_K_H, CARD_K_S
+};
 
 #endif // PCH_H

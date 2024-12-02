@@ -8,6 +8,7 @@ void renderPvPScreen(GameEngine* game) {
     SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
+    SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
 
     // Get the window dimensions
     int windowWidth, windowHeight;
@@ -39,7 +40,7 @@ void renderPvPScreen(GameEngine* game) {
     } else {
         // Render the "Player 1" text
         SDL_Color textColor = {255, 255, 255, 255}; // White color
-        game->renderText(renderer, font, usernames[0].c_str(), windowWidth / 2, 50, textColor, true);
+        game->renderText(renderer, font, usernames[game->currentPlayer].c_str(), windowWidth / 2, 50, textColor, true);
 
         // Array of card file paths
         const char* cardFiles[5] = {
@@ -52,5 +53,10 @@ void renderPvPScreen(GameEngine* game) {
 
         // Render the 5 cards
         game->renderCards(cardFiles, true, 0);
+        
+        // Handle next button hover
+        SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+        SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
+        game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
     }
 }

@@ -312,9 +312,13 @@ void GameEngine::handleEvents() {
                 }
 
                 if (currentState == TUTORIAL_SCREEN) {
-                    handleNextButtonClick(x, y);
+                    handleNextButtonClickTutorial(x, y);
+                    playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                 }
-
+                if (currentState == PVP_SCREEN) {
+                    handleNextButtonClickPvP(x, y);
+                    playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+                }
                 // Check if the card is clicked in the PvP screen
                 // if (currentState == PVP_SCREEN) {
                 //     for (int i = 0; i < 5; ++i) {
@@ -591,10 +595,17 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
     }
 }
 
-void GameEngine::handleNextButtonClick(int mouseX, int mouseY) {
+void GameEngine::handleNextButtonClickTutorial(int mouseX, int mouseY) {
     SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentCardSet = (currentCardSet + 1) % 9;
+    }
+}
+
+void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
+    std::vector<std::string> usernames = lobby.getUsernames();
+    if (currentPlayer < usernames.size() - 1 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+        currentPlayer += 1;
     }
 }
 

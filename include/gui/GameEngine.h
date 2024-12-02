@@ -63,7 +63,8 @@ public:
     void renderCards(const char* cardFiles[5], bool allowClick, int fadeCards);
 
     // Function to handle next button click
-    void handleNextButtonClick(int mouseX, int mouseY);
+    void handleNextButtonClickTutorial(int mouseX, int mouseY);
+    void handleNextButtonClickPvP(int mouseX, int mouseY);
 
     // Getters for game state
     bool running() { 
@@ -129,6 +130,7 @@ public:
     }
     // Current card set
     int currentCardSet = 0;
+    int currentPlayer = 0;
 
 private:
     // Indicates if the game is running.
