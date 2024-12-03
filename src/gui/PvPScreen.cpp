@@ -3,7 +3,7 @@
 #include "gui/PvPScreen.h"
 
 // Define the isDealt variable
-bool isDealt = false;
+bool isDealtPvP = false;
 
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
@@ -44,8 +44,8 @@ void renderPvPScreen(GameEngine* game) {
         static Gameplay gameplay;
         int numberOfCards = 5;
 
-        if (!isDealt) {
-            isDealt = true;
+        if (!isDealtPvP) {
+            isDealtPvP = true;
             gameplay.init(usernames, 0);
             gameplay.resetDeck(); // Reset the deck for a new game
             gameplay.dealCards(numberOfCards);

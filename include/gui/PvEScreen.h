@@ -5,6 +5,7 @@
 
 #include <SDL2/SDL.h>
 #include "gui/GameEngine.h"
+#include "core/Gameplay.h"
 
 // Function to render the PvE screen
 void renderPvEScreen(GameEngine* game);

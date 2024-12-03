@@ -237,7 +237,9 @@ void GameEngine::handleEvents() {
                     else if (isButtonClicked(x, y, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                         currentState = PVE_SCREEN;
+                        currentPlayer = 0;
                         std::cout << BLUE_TEXT << "Current state: PvE screen" << RESET_TEXT << std::endl;
+                        resetPvEGame();
                     }
                     
                     // Check if the User Info button is clicked.
@@ -317,6 +319,8 @@ void GameEngine::handleEvents() {
                 }
                 if (currentState == PVP_SCREEN) {
                     handleNextButtonClickPvP(x, y);
+                } else if (currentState == PVE_SCREEN) {
+                    handleNextButtonClickPvE(x, y);
                 }
                 // Check if the card is clicked in the PvP screen
                 // if (currentState == PVP_SCREEN) {
@@ -568,7 +572,7 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
                             getCardRevealed()[i] = false;
                         }
                     }
-                } else if (currentState == PVP_SCREEN) {
+                } else if (currentState == PVP_SCREEN || currentState == PVE_SCREEN) {
                     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) {
                         for (int i = 0; i < 5; ++i) {
                             getCardRevealed()[i] = false;
@@ -626,29 +630,24 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
     if (currentPlayer < usernames.size() && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
     } 
-    // else if (currentPlayer == usernames.size() - 1 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
-    //     currentState = RESULT_SCREEN;
-    // }
 }
 
-// void GameEngine::toggleBackgroundMusic() {
-//     if (Mix_PausedMusic()) {
-//         Mix_ResumeMusic();
-//     } else {
-//         Mix_PauseMusic();
-//     }
-// }
-
-// void GameEngine::toggleSoundEffects() {
-//     if (Mix_Volume(-1, -1) == 0) {
-//         Mix_Volume(-1, MIX_MAX_VOLUME);
-//     } else {
-//         Mix_Volume(-1, 0);
-//     }
-// }
+void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
+    std::vector<std::string> usernames = lobby.getUsernames();
+    if (currentPlayer < usernames.size() + 5 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+        currentPlayer += 1;
+    }
+}
 
 void GameEngine::resetPvPGame() {
-    isDealt = false;
+    isDealtPvP = false;
+    for (int i = 0; i < 5; i++) {
+        getCardRevealed()[i] = false;
+    }
+}
+
+void GameEngine::resetPvEGame() {
+    isDealtPvE = false;
     for (int i = 0; i < 5; i++) {
         getCardRevealed()[i] = false;
     }

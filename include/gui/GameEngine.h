@@ -14,7 +14,8 @@
 #include "../core/Lobby.h"
 
 extern Lobby lobby;
-extern bool isDealt;
+extern bool isDealtPvP;
+extern bool isDealtPvE;
 // Game class: Encapsulates the core functions of the game engine
 class GameEngine {
 public:
@@ -66,6 +67,7 @@ public:
     // Function to handle next button click
     void handleNextButtonClickTutorial(int mouseX, int mouseY);
     void handleNextButtonClickPvP(int mouseX, int mouseY);
+    void handleNextButtonClickPvE(int mouseX, int mouseY);
 
     // Getters for game state
     bool running() { 
@@ -134,6 +136,7 @@ public:
     int currentPlayer = 0;
 
     void resetPvPGame();
+    void resetPvEGame();
 
 private:
     // Indicates if the game is running.
