@@ -81,13 +81,25 @@ void renderPvPScreen(GameEngine* game) {
             game->renderText(renderer, font, usernames[game->currentPlayer].c_str(), windowWidth / 2, 50, textColor, true);
             game->renderCards(cardSets[game->currentPlayer], true, 0, true);
             SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+            bool allCardsFaceUp = true;
+            for (int i = 0; i < 5; i++) {
+                if (!game->getCardRevealed()[i]) {
+                    allCardsFaceUp = false;
+                    break;
+                }
+            }
+            if (allCardsFaceUp) {
+                game->renderText(renderer, font, gameplay.players[game->currentPlayer].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+            }
             SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
             game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
         } else if (game->currentPlayer == usernames.size()) {
             const std::string& winner = usernames[gameplay.winner];
             game->renderText(renderer, font, "Winner:", windowWidth / 2, 50, textColor, true);
-            game->renderText(renderer, font, winner.c_str(), windowWidth / 2, 100, textColor, true);
+            game->renderText(renderer, font, winner.c_str(), windowWidth / 2, 125, textColor, true);
             game->renderCards(cardSets[gameplay.winner], false, 0, false);
+            // Winner hand stregth
+            game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
         }
     }
 }
