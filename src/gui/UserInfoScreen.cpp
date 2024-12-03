@@ -41,6 +41,10 @@ void handleTextInput(SDL_Event& event) {
             } else {
                 std::cout << login.show() << std::endl;
             }
+            if (login.statusCode != NEW_ACCOUNT) {
+                usernameInput.clear();
+                passwordInput.clear();
+            }
         }
     } else if (event.type == SDL_MOUSEBUTTONDOWN && showNewAccountPrompt) {
         int x, y;
