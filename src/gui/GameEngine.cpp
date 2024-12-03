@@ -641,6 +641,7 @@ void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
 
 void GameEngine::resetPvPGame() {
     isDealtPvP = false;
+    isSavedPvP = false;
     for (int i = 0; i < 5; i++) {
         getCardRevealed()[i] = false;
     }

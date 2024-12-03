@@ -3,7 +3,7 @@
 /* ------------------Deck------------------ */
 void Deck::setup() {
     for (int row = Suits::CLUBS; row <= Suits::SPADES; row++) {
-        for (int col = Ranks::ACE; col <= Ranks::KING; col++) {
+        for (int col = Ranks::TWO; col <= Ranks::ACE; col++) {
             Card &card = cards[row * Deck::RANKS_SIZE + col];
             card.suit = static_cast<Suits>(row);
             card.rank = static_cast<Ranks>(col);

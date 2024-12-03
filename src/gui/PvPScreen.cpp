@@ -4,6 +4,7 @@
 
 // Define the isDealt variable
 bool isDealtPvP = false;
+bool isSavedPvP = false;
 
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
@@ -59,27 +60,35 @@ void renderPvPScreen(GameEngine* game) {
             }
         }
         gameplay.whoWins();
-        // for (int i = 0; i < gameplay.numberOfPlayers; i++) {
-        //     std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
-        //     gameplay.players[i].hand.show();
-        //     std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")"//  << '\n';
-        //     std::cout << '\n';
-        // }
-        // std::cout << "Winner: " << gameplay.winner << ' ' << usernames[gameplay.winner] << '\n';
-
+         for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+            std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
+            gameplay.players[i].hand.show();
+            std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")" << '\n';
+            std::cout << '\n';
+        }
+        if (gameplay.winner != -1) {
+            std::cout << "Winner: " << gameplay.players[gameplay.winner].username << '\n';
+        } else {
+            std::cout << "It's a tie!" << '\n';
+        }
         // Screen Winner, PvE, Save Data must be called once
 
-        // for (Player& player : gameplay.players) {
-        //     gameplay.savePlayerData(player);
-        // }
-        // gameplay.saveAllPlayerData();
+        // Save player data after dealing cards and determining the winner
+        if (!isSavedPvP) {
+            isSavedPvP = true;
+            for (Player& player : gameplay.players) {
+                gameplay.savePlayerData(player);
+            }
+            gameplay.saveAllPlayerData();
+        }
 
         // Render the 5 cards
         SDL_Color textColor = {255, 255, 255, 255}; // White color
         if (game->currentPlayer < usernames.size()) {
             // Render the "username" text
-            game->renderText(renderer, font, usernames[game->currentPlayer].c_str(), windowWidth / 2, 50, textColor, true);
-            game->renderCards(cardSets[game->currentPlayer], true, 0, true);
+            // gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str()
+            game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), windowWidth / 2, 50, textColor, true);
+            game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
             SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
             bool allCardsFaceUp = true;
             for (int i = 0; i < 5; i++) {
@@ -89,17 +98,25 @@ void renderPvPScreen(GameEngine* game) {
                 }
             }
             if (allCardsFaceUp) {
-                game->renderText(renderer, font, gameplay.players[game->currentPlayer].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+                // 0, 1, 2
+                // 2, 0, 1
+                // game->currentplayer = 2 -> gameplay.players[game->currentPlayer].id = 1
+                // winner = 1
+                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
             }
             SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
             game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
         } else if (game->currentPlayer == usernames.size()) {
-            const std::string& winner = usernames[gameplay.winner];
-            game->renderText(renderer, font, "Winner:", windowWidth / 2, 50, textColor, true);
-            game->renderText(renderer, font, winner.c_str(), windowWidth / 2, 125, textColor, true);
-            game->renderCards(cardSets[gameplay.winner], false, 0, false);
-            // Winner hand stregth
-            game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+            if (gameplay.winner != -1) {
+                std::string winner = gameplay.players[gameplay.winner].username;
+                game->renderText(renderer, font, "Winner:", windowWidth / 2, 50, textColor, true);
+                game->renderText(renderer, font, winner.c_str(), windowWidth / 2, 125, textColor, true);
+                game->renderCards(cardSets[gameplay.winner], false, 0, false);
+                // Winner hand stregth
+                game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+            } else {
+                game->renderText(renderer, font, "It's a tie!", windowWidth / 2, 50, textColor, true);
+            }
         }
     }
 }

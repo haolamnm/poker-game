@@ -15,6 +15,7 @@ public:
     std::string handName;
 
     Card cards[5];
+    std::vector<Card> strengthCards;
     void show();
     void sortCards();
 };
@@ -34,6 +35,13 @@ public:
 
     int evaluateHand(Hand& hand);
     int compareHands(Hand& hand1, Hand& hand2);
+    int compareFourOfAKind(Hand& hand1, Hand& hand2);
+    int compareFullHouse(Hand& hand1, Hand& hand2);
+    int compareThreeOfAKind(Hand& hand1, Hand& hand2);
+    int compareTwoPair(Hand& hand1, Hand& hand2);
+    int compareOnePair(Hand& hand1, Hand& hand2);
+    int compareHighCard(Hand& hand1, Hand& hand2);
+
 };
 
 #endif

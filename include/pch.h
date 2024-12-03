@@ -140,7 +140,6 @@ enum Ranks {
 */
 
 const std::string CARD_FILES[52] = {
-    CARD_A_C, CARD_A_D, CARD_A_H, CARD_A_S,
     CARD_2_C, CARD_2_D, CARD_2_H, CARD_2_S,
     CARD_3_C, CARD_3_D, CARD_3_H, CARD_3_S,
     CARD_4_C, CARD_4_D, CARD_4_H, CARD_4_S,
@@ -152,7 +151,8 @@ const std::string CARD_FILES[52] = {
     CARD_10_C, CARD_10_D, CARD_10_H, CARD_10_S,
     CARD_J_C, CARD_J_D, CARD_J_H, CARD_J_S,
     CARD_Q_C, CARD_Q_D, CARD_Q_H, CARD_Q_S,
-    CARD_K_C, CARD_K_D, CARD_K_H, CARD_K_S
+    CARD_K_C, CARD_K_D, CARD_K_H, CARD_K_S,
+    CARD_A_C, CARD_A_D, CARD_A_H, CARD_A_S
 };
 
 #endif // PCH_H

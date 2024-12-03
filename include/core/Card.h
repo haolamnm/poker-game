@@ -15,7 +15,6 @@ enum Suits {
 // Enumerations for ranks
 enum Ranks {
     RANK_EMPTY = -1,
-    ACE,
     TWO,
     THREE,
     FOUR,
@@ -27,7 +26,8 @@ enum Ranks {
     TEN,
     JACK,
     QUEEN,
-    KING
+    KING,
+    ACE
 };
 
 // Card class: Represents a card in a deck of cards

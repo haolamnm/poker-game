@@ -9,8 +9,10 @@ bool isUsernameActive = true;
 bool showNewAccountPrompt = false;
 SDL_Rect yesButtonRect;
 SDL_Rect noButtonRect;
+constexpr const unsigned short MAX_LOBBY_SIZE = 10;
 
 void handleTextInput(SDL_Event& event) {
+    if (lobby.getUsernames().size() >= MAX_LOBBY_SIZE) return;
     if (event.type == SDL_TEXTINPUT) {
         if (isUsernameActive) {
             usernameInput += event.text.text;
@@ -35,7 +37,7 @@ void handleTextInput(SDL_Event& event) {
             Login login;
             if (login.login(usernameInput, passwordInput)) {
                 std::cout << GREEN_TEXT << login.show() << RESET_TEXT << std::endl;
-                lobby.assignUsername(usernameInput); // Push the username into the Lobby
+                if (lobby.getUsernames().size() < MAX_LOBBY_SIZE) lobby.assignUsername(usernameInput); // Push the username into the Lobby
             } else if (login.statusCode == NEW_ACCOUNT) {
                 showNewAccountPrompt = true;
             } else {
@@ -198,6 +200,9 @@ void renderUserInfoScreen(GameEngine* game) {
         game->renderText(renderer, inputFont, "No", noButtonRect.x + buttonWidth / 2, noButtonRect.y + buttonHeight / 2 - 25, textColor, true);
     }
 
+    if (lobby.getUsernames().size() >= MAX_LOBBY_SIZE) {
+        game->renderText(renderer, promptFont, "The lobby is full!", windowWidth / 2, 500, textColor, true);
+    }
     // Close the input font
     TTF_CloseFont(inputFont);
 }

@@ -8,7 +8,7 @@ void Hand::show() {
 }
 
 void Hand::sortCards() {
-    std::sort(cards, cards + numberOfOnHandCards, [&](Card &a, Card &b) {
+    std::sort(cards, cards + numberOfOnHandCards, [&](Card& a, Card& b) {
         return a.rank < b.rank;
     });
 }
@@ -18,55 +18,202 @@ bool Strength::isStraightFlush(Hand& hand) {
         if (hand.cards[i].suit != hand.cards[i + 1].suit) return false;
         else if (hand.cards[i + 1].rank - hand.cards[i].rank != 1) return false;
     }
+    hand.strengthCards.clear();
+    hand.strengthCards = {
+        hand.cards[0],
+        hand.cards[1],
+        hand.cards[2],
+        hand.cards[3],
+        hand.cards[4]
+    };
     return true;
 }
 
 bool Strength::isFourOfAKind(Hand& hand) {
-    return (hand.cards[0].rank == hand.cards[1].rank &&
-            hand.cards[1].rank == hand.cards[2].rank &&
-            hand.cards[2].rank == hand.cards[3].rank) ||
-           (hand.cards[1].rank == hand.cards[2].rank &&
-            hand.cards[2].rank == hand.cards[3].rank &&
-            hand.cards[3].rank == hand.cards[4].rank);
+    hand.strengthCards.clear();
+    if (hand.cards[0].rank == hand.cards[1].rank &&
+        hand.cards[1].rank == hand.cards[2].rank &&
+        hand.cards[2].rank == hand.cards[3].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3]
+        };
+        return true;
+    } else if (hand.cards[1].rank == hand.cards[2].rank &&
+        hand.cards[2].rank == hand.cards[3].rank &&
+        hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
+    return false;
 }
 
 bool Strength::isFullHouse(Hand& hand) {
-    for (int i = 0; i < 2; i++)
-        if (hand.cards[i].rank != hand.cards[i + 1].rank) return false;
-    return hand.cards[3].rank == hand.cards[4].rank;
+    hand.strengthCards.clear();
+    if (hand.cards[0].rank == hand.cards[1].rank &&
+        hand.cards[1].rank == hand.cards[2].rank &&
+        hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    } else if (hand.cards[0].rank == hand.cards[1].rank &&
+        hand.cards[2].rank == hand.cards[3].rank &&
+        hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
+    return false;
 }
 
 bool Strength::isFlush(Hand& hand) {
-    for (int i = 0; i < 4; i++) {
-        if (hand.cards[i].suit != hand.cards[i + 1].suit) return false;
+    hand.strengthCards.clear();
+    if (hand.cards[0].suit == hand.cards[1].suit &&
+        hand.cards[1].suit == hand.cards[2].suit &&
+        hand.cards[2].suit == hand.cards[3].suit &&
+        hand.cards[3].suit == hand.cards[4].suit) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
     }
-    return true;
+    return false;
 }
 
 bool Strength::isStraight(Hand& hand) {
-    for (int i = 0; i < 4; i++)
-        if (hand.cards[i + 1].rank - hand.cards[i].rank != 1) return false;
-    return true;
+    hand.strengthCards.clear();
+    if (hand.cards[0].rank == hand.cards[1].rank - 1 &&
+        hand.cards[1].rank == hand.cards[2].rank - 1 &&
+        hand.cards[2].rank == hand.cards[3].rank - 1 &&
+        hand.cards[3].rank == hand.cards[4].rank - 1) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
+    return false;
 }
 
 bool Strength::isThreeOfAKind(Hand& hand) {
-    for (int i = 0; i < 3; i++)
-        if (hand.cards[i].rank == hand.cards[i + 1].rank && 
-            hand.cards[i + 1].rank == hand.cards[i + 2].rank) return true;
+    hand.strengthCards.clear();
+    if (hand.cards[0].rank == hand.cards[1].rank &&
+        hand.cards[1].rank == hand.cards[2].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2]
+        };
+        return true;
+    } else if (hand.cards[1].rank == hand.cards[2].rank &&
+        hand.cards[2].rank == hand.cards[3].rank) {
+        hand.strengthCards = {
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3]
+        };
+        return true;
+    } else if (hand.cards[2].rank == hand.cards[3].rank &&
+        hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
     return false;
 }
 
 bool Strength::isTwoPair(Hand& hand) {
-    for (int i = 0; i < 3; i++)
-        if (hand.cards[i].rank == hand.cards[i + 1].rank)
-            for (int j = i + 2; j < 4; j++)
-                if (hand.cards[j].rank == hand.cards[j + 1].rank) return true;
+    hand.strengthCards.clear();
+    if (hand.cards[0].rank == hand.cards[1].rank &&
+        hand.cards[2].rank == hand.cards[3].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3]
+        };
+        return true;
+    }
+    if (hand.cards[0].rank == hand.cards[1].rank &&
+        hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
+    if (hand.cards[1].rank == hand.cards[2].rank &&
+        hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[1],
+            hand.cards[2],
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
     return false;
 }
 
 bool Strength::isOnePair(Hand& hand) {
-    for (int i = 0; i < 4; i++)
-        if (hand.cards[i].rank == hand.cards[i + 1].rank) return true;
+    hand.strengthCards.clear();
+    if (hand.cards[0].rank == hand.cards[1].rank) {
+        hand.strengthCards = {
+            hand.cards[0],
+            hand.cards[1]
+        };
+        return true;
+    }
+    if (hand.cards[1].rank == hand.cards[2].rank) {
+        hand.strengthCards = {
+            hand.cards[1],
+            hand.cards[2]
+        };
+        return true;
+    }
+    if (hand.cards[2].rank == hand.cards[3].rank) {
+        hand.strengthCards = {
+            hand.cards[2],
+            hand.cards[3]
+        };
+        return true;
+    }
+    if (hand.cards[3].rank == hand.cards[4].rank) {
+        hand.strengthCards = {
+            hand.cards[3],
+            hand.cards[4]
+        };
+        return true;
+    }
     return false;
 }
 
@@ -95,9 +242,18 @@ int Strength::evaluateHand(Hand& hand) {
 }
 
 int Strength::compareHands(Hand& hand1, Hand& hand2) {
-    for (int i = 4; i >= 0; i--) {
-        if (hand1.cards[i].rank > hand2.cards[i].rank) return 1;
-        if (hand1.cards[i].rank < hand2.cards[i].rank) return -1;
+    if (hand1.handStrength > hand2.handStrength) return 1;
+    else if (hand1.handStrength < hand2.handStrength) return -1;
+    else {
+        // Compare hands with the same strength using strengCards
+        for (int i = hand1.strengthCards.size() - 1; i >= 0; i--) {
+            if (hand1.strengthCards[i].rank > hand2.strengthCards[i].rank) return 1;
+            else if (hand1.strengthCards[i].rank < hand2.strengthCards[i].rank) return -1;
+        }
+        for (int i = 4; i >= 0; i--) {
+            if (hand1.cards[i].rank > hand2.cards[i].rank) return 1;
+            else if (hand1.cards[i].rank < hand2.cards[i].rank) return -1;
+        }
     }
     return 0;
 }

@@ -19,7 +19,14 @@ void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots)
                     players[i].winningStrategy[j] = std::stoi(playerData[6 + j]);
                 }
             }
+        } else {
+                players[i].username = "BOT " + std::to_string(i - usernames.size() + 1);
         }
+    }
+    std::mt19937 seed(static_cast<unsigned long>(std::time(0)));
+    shuffle(players.begin(), players.end(), seed);
+    for (int i = 0; i < numberOfPlayers; i++) {
+        std::cout << "Player " << i << ": " << players[i].username << '\n';
     }
     deck.setup();
     deck.shuffle();
@@ -49,22 +56,24 @@ void Gameplay::whoWins() {
         players[i].hand.sortCards();
         players[i].hand.handStrength = strength.evaluateHand(players[i].hand);
     }
+    // 0, 1, 2
 
-    std::sort(players.begin(), players.end(), [&](Player& a, Player& b) {
-        if (a.hand.handStrength == b.hand.handStrength) {
-            return strength.compareHands(a.hand, b.hand) >= 0;
+    // 0, 1, 2
+    // 1, 2, 0
+    // Determine the winner
+    winner = 0;
+    bool isTie = false;
+    int tiePlayer = 0;
+    for (int i = 1; i < numberOfPlayers; i++) {
+        if (strength.compareHands(players[i].hand, players[winner].hand) == 1) {
+            winner = i;
+        } else if (strength.compareHands(players[i].hand, players[winner].hand) == 0) {
+            isTie = true;
+            winner = tiePlayer = i;
         }
-        return a.hand.handStrength > b.hand.handStrength;
-    });
-    
-    if (players[0].hand.handStrength == players[1].hand.handStrength) {
-        if (strength.compareHands(players[0].hand, players[1].hand) > 0) {
-            winner = players[0].id;
-        } else if (strength.compareHands(players[0].hand, players[1].hand) < 0) {
-            winner = players[1].id;
-        } else {
-            winner = -1;
-        }
+    }
+    if (isTie && winner == tiePlayer) {
+        winner = -1;
     }
 }
 
