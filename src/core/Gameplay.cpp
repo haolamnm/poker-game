@@ -40,6 +40,7 @@ void Gameplay::dealCards(int numberOfCards) {
             }
         }
     }
+    std::cout << "Remaining cards in the deck: " << deck.remainCards << '\n';
 }
 
 void Gameplay::whoWins() {
@@ -97,5 +98,9 @@ void Gameplay::saveAllPlayerData() {
 
 std::vector<std::vector<std::string>> Gameplay::showLeaderboard() {
     return leaderboard.showLeaderboard();
+}
+
+void Gameplay::resetDeck() {
+    deck.reset();
 }
 /* ------------------End of Gameplay------------------ */

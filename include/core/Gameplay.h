@@ -23,6 +23,7 @@ public:
     void savePlayerData(Player& player);
     void saveAllPlayerData();
     std::vector<std::vector<std::string>> showLeaderboard();
+    void resetDeck();
 };
 
 #endif // GAMEPLAY_H

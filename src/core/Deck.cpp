@@ -15,4 +15,10 @@ void Deck::shuffle() {
     std::mt19937 seed(static_cast<unsigned long>(std::time(0)));
     std::shuffle(cards, cards + DECK_SIZE, seed);
 }
+
+void Deck::reset() {
+    setup();
+    shuffle();
+    remainCards = DECK_SIZE;
+}
 /* ------------------End of Deck------------------ */

@@ -299,7 +299,7 @@ void GameEngine::handleEvents() {
                 
                 } else if (currentState == PVP_SCREEN || 
                            currentState == PVE_SCREEN || 
-                           currentState == ABOUT_SCREEN || 
+                           currentState == ABOUT_SCREEN ||
                            currentState == SETTINGS_SCREEN  || 
                            currentState == TUTORIAL_SCREEN  || 
                            currentState == USER_INFO_SCREEN ||
@@ -314,11 +314,9 @@ void GameEngine::handleEvents() {
 
                 if (currentState == TUTORIAL_SCREEN) {
                     handleNextButtonClickTutorial(x, y);
-                    playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                 }
                 if (currentState == PVP_SCREEN) {
                     handleNextButtonClickPvP(x, y);
-                    playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                 }
                 // Check if the card is clicked in the PvP screen
                 // if (currentState == PVP_SCREEN) {
@@ -561,12 +559,21 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
         }
         if (allFaceDown == true) {
             Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
-            if (((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) ||
-                ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) ||
-                ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) ||
-                ((mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) && isButtonClicked(mouseX, mouseY, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT))) {
-                for (int i = 0; i < 5; ++i) {
-                    getCardRevealed()[i] = false;
+            if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+                if (currentState == START_SCREEN) {
+                    if (isButtonClicked(mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT) ||
+                        isButtonClicked(mouseX, mouseY, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT) ||
+                        isButtonClicked(mouseX, mouseY, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
+                        for (int i = 0; i < 5; ++i) {
+                            getCardRevealed()[i] = false;
+                        }
+                    }
+                } else if (currentState == PVP_SCREEN) {
+                    if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) {
+                        for (int i = 0; i < 5; ++i) {
+                            getCardRevealed()[i] = false;
+                        }
+                    }
                 }
             }
         }
@@ -616,9 +623,12 @@ void GameEngine::handleNextButtonClickTutorial(int mouseX, int mouseY) {
 
 void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
     std::vector<std::string> usernames = lobby.getUsernames();
-    if (currentPlayer < usernames.size() - 1 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    if (currentPlayer < usernames.size() && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
-    }
+    } 
+    // else if (currentPlayer == usernames.size() - 1 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    //     currentState = RESULT_SCREEN;
+    // }
 }
 
 // void GameEngine::toggleBackgroundMusic() {
@@ -639,4 +649,7 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
 
 void GameEngine::resetPvPGame() {
     isDealt = false;
+    for (int i = 0; i < 5; i++) {
+        getCardRevealed()[i] = false;
+    }
 }

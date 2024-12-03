@@ -17,6 +17,7 @@ public:
 
     void setup();
     void shuffle();
+    void reset();
 };
 
 #endif
