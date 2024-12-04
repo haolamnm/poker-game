@@ -42,7 +42,7 @@ constexpr const char* BACKGROUND_MUSIC_PATH = "assets/audios/background_music.mp
 constexpr const char* BACK_CARD_PATH = "assets/imgs/cards/BACK.png";
 
 // Constants for background music volume
-constexpr int BACKGROUND_MUSIC_VOLUME = 32; // 0 to 128
+constexpr int BACKGROUND_MUSIC_VOLUME = 0; // 0 to 128
 
 Lobby lobby;
 
@@ -53,7 +53,8 @@ GameEngine::GameEngine() {
     window = nullptr;
     renderer = nullptr;
     backgroundMusic = nullptr;
-    currentState = START_SCREEN;
+    currentGameState = START_SCREEN;
+    currentGameMode = BASIC_POKER;
     
     
     // Initialize the card states and rectangles
@@ -227,11 +228,11 @@ void GameEngine::handleEvents() {
                 int x, y;
                 SDL_GetMouseState(&x, &y);
 
-                if (currentState == START_SCREEN) {
+                if (currentGameState == START_SCREEN) {
                     // Check if the PvP button is clicked.
                     if (isButtonClicked(x, y, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = PVP_SCREEN;
+                        currentGameState = PVP_SCREEN;
                         currentPlayer = 0;
                         std::cout << BLUE_TEXT << "Current state: PvP screen" << RESET_TEXT << std::endl;
                         resetPvPGame();
@@ -240,7 +241,7 @@ void GameEngine::handleEvents() {
                     // Check if the PvE button is clicked.
                     else if (isButtonClicked(x, y, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = PVE_SCREEN;
+                        currentGameState = PVE_SCREEN;
                         currentPlayer = 0;
                         std::cout << BLUE_TEXT << "Current state: PvE screen" << RESET_TEXT << std::endl;
                         resetPvEGame();
@@ -249,35 +250,35 @@ void GameEngine::handleEvents() {
                     // Check if the User Info button is clicked.
                     else if (isButtonClicked(x, y, START_X, START_Y)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = USER_INFO_SCREEN;
+                        currentGameState = USER_INFO_SCREEN;
                         std::cout << BLUE_TEXT << "Current state: User Info screen" << RESET_TEXT << std::endl;
                     }
                     
                     // Check if the Tutorial button is clicked.
                     else if (isButtonClicked(x, y, START_X, START_Y + SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = TUTORIAL_SCREEN;
+                        currentGameState = TUTORIAL_SCREEN;
                         std::cout << BLUE_TEXT << "Current state: Tutorial screen" << RESET_TEXT << std::endl;
                     }
                     
                     // Check if the About button is clicked.
                     else if (isButtonClicked(x, y, START_X, START_Y + 2 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING))) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = ABOUT_SCREEN;
+                        currentGameState = ABOUT_SCREEN;
                         std::cout << BLUE_TEXT << "Current state: About screen" << RESET_TEXT << std::endl;
                     }
                     
                     // Check if the Settings button is clicked.
                     else if (isButtonClicked(x, y, START_X, START_Y + 3 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING))) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = SETTINGS_SCREEN;
+                        currentGameState = SETTINGS_SCREEN;
                         std::cout << BLUE_TEXT << "Current state: Settings screen" << RESET_TEXT << std::endl;
                     }
                     
                     // Check if the Leaderboard button is clicked.
                     else if (isButtonClicked(x, y, START_X, START_Y + 4 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING))) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = LEADERBOARD_SCREEN;
+                        currentGameState = LEADERBOARD_SCREEN;
                         scrollOffset = 0;
                         std::cout << BLUE_TEXT << "Current state: Leaderboard screen" << RESET_TEXT << std::endl;
                     }
@@ -304,32 +305,33 @@ void GameEngine::handleEvents() {
                         startY += 30; // Move down for the next username
                     }
                 
-                } else if (currentState == PVP_SCREEN || 
-                           currentState == PVE_SCREEN || 
-                           currentState == ABOUT_SCREEN ||
-                           currentState == SETTINGS_SCREEN  || 
-                           currentState == TUTORIAL_SCREEN  || 
-                           currentState == USER_INFO_SCREEN ||
-                           currentState == LEADERBOARD_SCREEN) {
+                } else if (currentGameState == PVP_SCREEN || 
+                           currentGameState == PVE_SCREEN || 
+                           currentGameState == ABOUT_SCREEN ||
+                           currentGameState == SETTINGS_SCREEN  || 
+                           currentGameState == TUTORIAL_SCREEN  || 
+                           currentGameState == USER_INFO_SCREEN ||
+                           currentGameState == LEADERBOARD_SCREEN) {
                     // Check if the home button is clicked.
                     if (isButtonClicked(x, y, START_X, START_X)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
-                        currentState = START_SCREEN;
+                        currentGameState = START_SCREEN;
                         std::cout << BLUE_TEXT << "Current state: Start screen" << RESET_TEXT << std::endl;
                     }
                 }
 
-                if (currentState == TUTORIAL_SCREEN) {
+                if (currentGameState == TUTORIAL_SCREEN) {
                     handleNextButtonClickTutorial(x, y);
                     handlePrevButtonClickTutorial(x, y);
-                }
-                if (currentState == PVP_SCREEN) {
+                } else if (currentGameState == PVP_SCREEN) {
                     handleNextButtonClickPvP(x, y);
-                } else if (currentState == PVE_SCREEN) {
+                } else if (currentGameState == PVE_SCREEN) {
                     handleNextButtonClickPvE(x, y);
+                } else if (currentGameState == SETTINGS_SCREEN) {
+                    handleNextButtonGameMode(x, y);
                 }
                 // Check if the card is clicked in the PvP screen
-                // if (currentState == PVP_SCREEN) {
+                // if (currentGameState == PVP_SCREEN) {
                 //     for (int i = 0; i < 5; ++i) {
                 //         if (x >= cardRects[i].x && x <= cardRects[i].x + cardRects[i].w &&
                 //             y >= cardRects[i].y && y <= cardRects[i].y + cardRects[i].h) {
@@ -353,25 +355,25 @@ void GameEngine::update() {
 
 // Function to render the game objects
 void GameEngine::render() {
-    if (currentState == START_SCREEN) {
+    if (currentGameState == START_SCREEN) {
         renderStartScreen(this);
-    } else if (currentState == PVP_SCREEN) {
+    } else if (currentGameState == PVP_SCREEN) {
         renderPvPScreen(this);
-    } else if (currentState == PVE_SCREEN) {
+    } else if (currentGameState == PVE_SCREEN) {
         renderPvEScreen(this);
-    } else if (currentState == ABOUT_SCREEN) {
+    } else if (currentGameState == ABOUT_SCREEN) {
         renderAboutScreen(this);
-    } else if (currentState == TUTORIAL_SCREEN) {
+    } else if (currentGameState == TUTORIAL_SCREEN) {
         renderTutorialScreen(this);
-    } else if (currentState == SETTINGS_SCREEN) {
+    } else if (currentGameState == SETTINGS_SCREEN) {
         renderSettingsScreen(this);
-    } else if (currentState == USER_INFO_SCREEN) {
+    } else if (currentGameState == USER_INFO_SCREEN) {
         renderUserInfoScreen(this);
-    } else if (currentState == LEADERBOARD_SCREEN) {
+    } else if (currentGameState == LEADERBOARD_SCREEN) {
         renderLeaderboardScreen(this);
     } else {
         // Handle unexpected state
-        SDL_Log("Unexpected game state: %d", currentState);
+        SDL_Log("Unexpected game state: %d", currentGameState);
     }
 
     SDL_RenderPresent(renderer);
@@ -511,7 +513,7 @@ bool GameEngine::playButtonClickSound(const char* filePath) {
     return true;
 }
 
-void GameEngine::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color, bool centered = false) {
+void GameEngine::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color, bool centered, bool rightAligned) {
     SDL_Surface* textSurface = TTF_RenderText_Solid(font, text, color);
     if (textSurface) {
         SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
@@ -520,7 +522,13 @@ void GameEngine::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* 
         if (textTexture) {
             int textWidth, textHeight;
             TTF_SizeText(font, text, &textWidth, &textHeight);
-            SDL_Rect textRect = {centered ? x - textWidth / 2 : x, y, textWidth, textHeight};
+            SDL_Rect textRect = {x, y, textWidth, textHeight};
+            if (centered) {
+                textRect.x -= textWidth / 2;
+            }
+            if (rightAligned) {
+                textRect.x -= textWidth;
+            }
             SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
             SDL_DestroyTexture(textTexture);
         } else {
@@ -587,7 +595,7 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
         if (allFaceDown == true) {
             Uint32 mouseState = SDL_GetMouseState(&mouseX, &mouseY);
             if (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-                if (currentState == START_SCREEN) {
+                if (currentGameState == START_SCREEN) {
                     if (isButtonClicked(mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT) ||
                         isButtonClicked(mouseX, mouseY, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT) ||
                         isButtonClicked(mouseX, mouseY, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
@@ -595,7 +603,7 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
                             getCardRevealed()[i] = false;
                         }
                     }
-                } else if (currentState == PVP_SCREEN || currentState == PVE_SCREEN) {
+                } else if (currentGameState == PVP_SCREEN || currentGameState == PVE_SCREEN) {
                     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) {
                         for (int i = 0; i < 5; ++i) {
                             getCardRevealed()[i] = false;
@@ -620,9 +628,20 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
                 getCardRevealed()[i] = !getCardRevealed()[i];
                 mouseButtonPressed = true;
             }
+        } else if (allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT))) {
+            // when user right clicks, render outline of the current card index
+            if (!mouseButtonPressed && 
+                mouseX >= cardRect.x && mouseX <= cardRect.x + cardRect.w &&
+                mouseY >= cardRect.y && mouseY <= cardRect.y + cardRect.h) {
+                currentCardIndex = i;
+                mouseButtonPressed = true;
+            }
+
         } else {
             mouseButtonPressed = false;
         }
+
+
 
         // Render the card texture or back texture based on reveal state
         if (allowClick && !getCardRevealed()[i]) {
@@ -672,6 +691,13 @@ void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
     }
 }
 
+void GameEngine::handleNextButtonGameMode(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+        currentGameMode = static_cast<GameMode>((currentGameMode + 1) % NUMBER_OF_GAME_MODES);
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
 void GameEngine::resetPvPGame() {
     isDealtPvP = false;
     isSavedPvP = false;
@@ -685,5 +711,16 @@ void GameEngine::resetPvEGame() {
     isSavedPvE = false;
     for (int i = 0; i < 5; i++) {
         getCardRevealed()[i] = false;
+    }
+}
+
+const char* GameEngine::getCurrentGameModeString() const {
+    switch (currentGameMode) {
+        case BASIC_POKER:
+            return "Basic Poker";
+        case DRAW_POKER:
+            return "Draw Poker";
+        default:
+            return "Unknown";
     }
 }

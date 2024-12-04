@@ -18,10 +18,12 @@ extern bool isDealtPvP;
 extern bool isDealtPvE;
 extern bool isSavedPvP;
 extern bool isSavedPvE;
+extern int currentCardIndex;
 
 // Game class: Encapsulates the core functions of the game engine
 class GameEngine {
 public:
+    
     // Constructor: Initializes the game objects
     GameEngine();
 
@@ -50,7 +52,7 @@ public:
     bool playButtonClickSound(const char* filePath);
 
     // Function to render text on the screen
-    void renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color, bool centered);
+    void renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color, bool centered = false, bool rightAligned = false);
 
     // Function to toggle background music
     void toggleBackgroundMusic();
@@ -72,6 +74,8 @@ public:
     void handlePrevButtonClickTutorial(int mouseX, int mouseY);
     void handleNextButtonClickPvP(int mouseX, int mouseY);
     void handleNextButtonClickPvE(int mouseX, int mouseY);
+
+    void handleNextButtonGameMode(int mouseX, int mouseY);
 
     // Getters for game state
     bool running() { 
@@ -134,12 +138,23 @@ public:
     SDL_Rect* getCardRects() { 
         return cardRects; 
     }
+
+    const char* getCurrentGameModeString() const;
+
     // Current card set
     int currentCardSet = 0;
     int currentPlayer = 0;
 
     void resetPvPGame();
     void resetPvEGame();
+
+    enum GameMode {
+        BASIC_POKER,
+        DRAW_POKER,
+        NUMBER_OF_GAME_MODES
+    };
+
+    GameMode currentGameMode;
 
 private:
     // Indicates if the game is running.
@@ -166,8 +181,9 @@ private:
         LEADERBOARD_SCREEN
     };
 
+
     // Current game state.
-    GameState currentState;
+    GameState currentGameState;
 
     // Button textures
     SDL_Texture* backButtonTexture = nullptr;

@@ -19,6 +19,7 @@ public:
     std::vector<Player> players;
     void init(const std::vector<std::string>& usernames, int numberOfBots = 0);
     void dealCards(int numberOfCards);
+    void drawPlayerCards(Player& player, bool removedCards[5]);
     void whoWins();
     void savePlayerData(Player& player);
     void saveAllPlayerData();

@@ -50,6 +50,15 @@ void Gameplay::dealCards(int numberOfCards) {
     std::cout << "Remaining cards in the deck: " << deck.remainCards << '\n';
 }
 
+void Gameplay::drawPlayerCards(Player& player, bool removedCards[5]) {
+    for (int i = 0; i < 5; i++) {
+        if (removedCards[i]) {
+            player.hand.cards[i] = deck.cards[deck.remainCards - 1];
+            deck.remainCards--;
+        }
+    }
+}
+
 void Gameplay::whoWins() {
     Strength strength;
     for (int i = 0; i < numberOfPlayers; i++) {
@@ -74,9 +83,9 @@ void Gameplay::whoWins() {
 
 void Gameplay::savePlayerData(Player& player) {
     player.gamesPlayed++;
-    if (player.id == winner) {
+    if (player.id == players[winner].id) {
         player.winningStrategy[player.hand.handStrength]++;
-        player.chips += 20;
+        player.chips += 10 * numberOfPlayers;
     } else {
         player.chips -= 10;
     }

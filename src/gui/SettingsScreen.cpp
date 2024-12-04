@@ -12,6 +12,7 @@ void renderSettingsScreen(GameEngine* game) {
     SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
+    SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
     SDL_Texture* musicOnButtonTexture = game->getMusicOnButtonTexture();
     SDL_Texture* musicOffButtonTexture = game->getMusicOffButtonTexture();
     SDL_Texture* soundOnButtonTexture = game->getSoundOnButtonTexture();
@@ -50,9 +51,17 @@ void renderSettingsScreen(GameEngine* game) {
     SDL_RenderCopy(renderer, soundOffButtonTexture, NULL, &soundOffButtonRect);
     game->handleButtonHover(soundOffButtonTexture, mouseX, mouseY, soundOffButtonRect.x, soundOffButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
+    // Render current game mode
+    game->renderText(renderer, font, "Current Game Mode:", 400, 300, textColor, false);
+    game->renderText(renderer, font, game->getCurrentGameModeString(), windowWidth / 2 + 150, 210, textColor, false);
+
+    SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
+    game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
     // TODO:
     // Implement the functionality to toggle the music and sound effects settings
-    // Imolement input for min chip per game, the number of bots, game mode.
+    // Implement input for min chip per game, the number of bots, game mode.
 
     TTF_CloseFont(font);
 }

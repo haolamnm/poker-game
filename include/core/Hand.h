@@ -16,6 +16,7 @@ public:
     std::string handName;
 
     Card cards[5];
+    bool removedCards[5];
     std::vector<Card> strengthCards;
     void show();
     void sortCards();
