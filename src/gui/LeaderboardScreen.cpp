@@ -2,8 +2,9 @@
 
 #include "gui/LeaderboardScreen.h"
 
-// int scrollOffset = 0;
-// const int SCROLL_SPEED = 10;
+int scrollOffset = 0;
+int maxScrollOffset = 0;
+const int SCROLL_SPEED = 15;
 
 // Function to render the leaderboard screen
 void renderLeaderboardScreen(GameEngine* game) {
@@ -47,21 +48,29 @@ void renderLeaderboardScreen(GameEngine* game) {
 
     // Render column headers
     int startX = 50;
-    int startY = 150; // -scrollOffset;
+    int startY = 150;
     for (int j = 0; j < headerCount; j++) {
         game->renderText(renderer, leaderboardFont, headers[j], startX, startY, textColor, false);
         startX += columnWidths[j];
     }
 
+    maxScrollOffset = std::max(0, (nRow * 30) - (490 - 180)); // Maximum scroll offset
+
     // Render leaderboard entries
-    startY += 40; // Move down for the first row of data
+    startY += 40 - scrollOffset; // Move down for the first row of data
     for (int i = 0; i < nRow; i++) {
         startX = 50; // Reset to the start of the row
         for (int j = 0; j < nCol; j++) {
-            game->renderText(renderer, leaderboardFont, leaderboard[i][j].c_str(), startX, startY, textColor, false);
+            if (startY >= 180 && startY <= 490) {
+                game->renderText(renderer, leaderboardFont, leaderboard[i][j].c_str(), startX, startY, textColor, false);
+            }
             startX += columnWidths[j];
         }
         startY += 30; // Move down for the next row
+    }
+
+    if ((nRow * 30) > (490 - 180)) {
+        game->renderText(renderer, leaderboardFont, "Scroll to view more", windowWidth / 2, 550, textColor, true);
     }
 
     // Render the back button
@@ -73,15 +82,18 @@ void renderLeaderboardScreen(GameEngine* game) {
     TTF_CloseFont(leaderboardFont);
 }
 
-// void handleMouseWheelEvent(SDL_Event& event) {
-//     if (event.type == SDL_MOUSEWHEEL) {
-//         if (event.wheel.y > 0) {
-//             scrollOffset -= SCROLL_SPEED;
-//             if (scrollOffset < 0) {
-//                 scrollOffset = 0;
-//             }
-//         } else if (event.wheel.y < 0) {
-//             scrollOffset += SCROLL_SPEED;
-//         }
-//     }
-// }
+void handleMouseWheelEvent(SDL_Event& event) {
+    if (event.type == SDL_MOUSEWHEEL) {
+        if (event.wheel.y > 0) {
+            scrollOffset -= SCROLL_SPEED;
+            if (scrollOffset < 0) {
+                scrollOffset = 0;
+            }
+        } else if (event.wheel.y < 0) {
+            scrollOffset += SCROLL_SPEED;
+            if (scrollOffset > maxScrollOffset) {
+                scrollOffset = maxScrollOffset;
+            }
+        }
+    }
+}

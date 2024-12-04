@@ -277,6 +277,7 @@ void GameEngine::handleEvents() {
                     else if (isButtonClicked(x, y, START_X, START_Y + 4 * (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING))) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                         currentState = LEADERBOARD_SCREEN;
+                        scrollOffset = 0;
                         std::cout << BLUE_TEXT << "Current state: Leaderboard screen" << RESET_TEXT << std::endl;
                     }
 
@@ -336,6 +337,8 @@ void GameEngine::handleEvents() {
                 //     }
                 // }
                 break;
+            case SDL_MOUSEWHEEL:
+                handleMouseWheelEvent(event);
             default:
                 break;
         }
