@@ -40,11 +40,11 @@ void renderLeaderboardScreen(GameEngine* game) {
     int nCol = leaderboard[0].size();
 
     // Define column headers
-    const char* headers[] = {"Rank", "Username", "Chips", "Winrate", "Favorite Strategy"};
+    const char* headers[] = {"Rank", "Username", "Chips", "Games", "Winrate", "Favorite Strategy"};
     int headerCount = sizeof(headers) / sizeof(headers[0]);
 
     // Define column widths
-    int columnWidths[] = {75, 150, 100, 100, 200};
+    int columnWidths[] = {75, 150, 100, 100, 100, 200};
 
     // Render column headers
     int startX = 50;

@@ -1,12 +1,12 @@
-1,gaugau,48,0.5,One Pair,440
-2,haolam,54,0.314815,High Card,170
-3,anhtri,54,0.203704,One Pair,200
-4,hcp,1,0,High Card,190
+1,test3,2,0.5,One Pair,210
+2,gaugau,48,0.5,One Pair,440
+3,haolam,54,0.314815,High Card,170
+4,anhtri,56,0.214286,High Card,210
 5,hminh,1,0,High Card,190
 6,htbtran,1,0,High Card,190
-7,lmao,6,0,One Pair,140
+7,hcp,1,0,High Card,190
 8,lvminh,1,0,One Pair,190
-9,test2,0,0,Not have favorite strategy yet,200
-10,test3,0,0,Not have favorite strategy yet,200
-11,test4,0,0,Not have favorite strategy yet,200
-12,test5,0,0,Not have favorite strategy yet,200
+9,meomeo,0,0,None,200
+10,nathi,1,0,One Pair,190
+11,test2,2,0,One Pair,180
+12,lmao,8,0,High Card,120

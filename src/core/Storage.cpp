@@ -208,19 +208,20 @@ void Leaderboard::saveLeaderboard(const std::string& fileName) {
 }
 
 std::vector<std::vector<std::string>> Leaderboard::showLeaderboard() {
-    // Rank - Username - Chips - Winrate - Favorite Strategy set width to 15
+    // Rank - Username - Chips - Games played - Winrate - Favorite Strategy set width to 15
     updateLeaderboard();
     int nRow = players.size();
-    int nCol = 5;
+    int nCol = 6;
     std::vector<std::vector<std::string>> res(nRow, std::vector<std::string>(nCol));
     for (int i = 0; i < nRow; i++) {
         res[i][0] = std::to_string(players[i].rank);
         res[i][1] = players[i].username;
         res[i][2] = std::to_string(players[i].chips);
+        res[i][3] = std::to_string(players[i].gamesPlayed);
         std::stringstream ss;
         ss << std::fixed << std::setprecision(1) << players[i].winrate;
-        res[i][3] = ss.str();
-        res[i][4] = players[i].favoriteStrategy;
+        res[i][4] = ss.str();
+        res[i][5] = players[i].favoriteStrategy;
     }
     saveLeaderboard();
     return res;

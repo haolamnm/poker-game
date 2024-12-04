@@ -25,7 +25,7 @@ bool Login::createNewPlayer(const std::string& username, const std::string& pass
         return false;
     } else {
         unsigned int winningStrategy[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
-        storage.createNewPlayer(username, password, 0, 200, 0.0, 0, "Not have favorite strategy yet", winningStrategy);
+        storage.createNewPlayer(username, password, 0, 200, 0.0, 0, "None", winningStrategy);
         status = "New account created!";
         return true;
     }
