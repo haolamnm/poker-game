@@ -68,6 +68,7 @@ public:
 
     // Function to handle next button click
     void handleNextButtonClickTutorial(int mouseX, int mouseY);
+    void handlePrevButtonClickTutorial(int mouseX, int mouseY);
     void handleNextButtonClickPvP(int mouseX, int mouseY);
     void handleNextButtonClickPvE(int mouseX, int mouseY);
 
@@ -82,6 +83,9 @@ public:
     }
     SDL_Texture* getNextButtonTexture() const { 
         return nextButtonTexture; 
+    }
+    SDL_Texture* getPrevButtonTexture() const {
+        return prevButtonTexture;
     }
     SDL_Texture* getAboutButtonTexture() const { 
         return aboutButtonTexture; 
@@ -171,6 +175,7 @@ private:
     // Button textures
     SDL_Texture* backButtonTexture = nullptr;
     SDL_Texture* nextButtonTexture = nullptr;
+    SDL_Texture* prevButtonTexture = nullptr;
     SDL_Texture* aboutButtonTexture = nullptr;
     SDL_Texture* userInfoButtonTexture = nullptr;
     SDL_Texture* tutorialButtonTexture = nullptr;

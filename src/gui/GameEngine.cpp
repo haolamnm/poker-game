@@ -25,6 +25,7 @@ constexpr const char* CURSOR_PATH = "assets/imgs/cursor/cursor.png";
 
 constexpr const char* BUTTON_HOME_PATH = "assets/imgs/buttons/home.png";
 constexpr const char* BUTTON_NEXT_PATH = "assets/imgs/buttons/arrow_right.png";
+constexpr const char* BUTTON_PREV_PATH = "assets/imgs/buttons/arrow_left.png";
 constexpr const char* BUTTON_ABOUT_PATH = "assets/imgs/buttons/about_us.png";
 constexpr const char* BUTTON_TUTORIAL_PATH = "assets/imgs/buttons/tutorial.png";
 constexpr const char* BUTTON_SETTINGS_PATH = "assets/imgs/buttons/settings.png";
@@ -171,6 +172,7 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
     // Load button images for the game
     backButtonTexture = IMG_LoadTexture(renderer, BUTTON_HOME_PATH);
     nextButtonTexture = IMG_LoadTexture(renderer, BUTTON_NEXT_PATH);
+    prevButtonTexture = IMG_LoadTexture(renderer, BUTTON_PREV_PATH);
     aboutButtonTexture = IMG_LoadTexture(renderer, BUTTON_ABOUT_PATH);
     tutorialButtonTexture = IMG_LoadTexture(renderer, BUTTON_TUTORIAL_PATH);
     settingsButtonTexture = IMG_LoadTexture(renderer, BUTTON_SETTINGS_PATH);
@@ -187,6 +189,7 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
     if (!aboutButtonTexture || 
         !backButtonTexture  ||
         !nextButtonTexture  ||
+        !prevButtonTexture  ||
         !userInfoButtonTexture || 
         !tutorialButtonTexture ||
         !settingsButtonTexture || 
@@ -316,6 +319,7 @@ void GameEngine::handleEvents() {
 
                 if (currentState == TUTORIAL_SCREEN) {
                     handleNextButtonClickTutorial(x, y);
+                    handlePrevButtonClickTutorial(x, y);
                 }
                 if (currentState == PVP_SCREEN) {
                     handleNextButtonClickPvP(x, y);
@@ -407,6 +411,11 @@ void GameEngine::clean() {
     if (nextButtonTexture) {
         SDL_DestroyTexture(nextButtonTexture);
         nextButtonTexture = nullptr;
+    }
+
+    if (prevButtonTexture) {
+        SDL_DestroyTexture(prevButtonTexture);
+        prevButtonTexture = nullptr;
     }
 
     if (aboutButtonTexture) {
@@ -622,6 +631,16 @@ void GameEngine::handleNextButtonClickTutorial(int mouseX, int mouseY) {
     SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentCardSet = (currentCardSet + 1) % 9;
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
+void GameEngine::handlePrevButtonClickTutorial(int mouseX, int mouseY) {
+    SDL_Rect prevButtonRect = {PREV_BUTTON_X, PREV_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    if (isButtonClicked(mouseX, mouseY, PREV_BUTTON_X, PREV_BUTTON_Y)) {
+        // Decrease currentCardSet, wrap around 0 -> 8
+        currentCardSet = (currentCardSet - 1 + 9) % 9;
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }
 

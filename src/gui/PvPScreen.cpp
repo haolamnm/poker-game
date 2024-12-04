@@ -98,10 +98,6 @@ void renderPvPScreen(GameEngine* game) {
                 }
             }
             if (allCardsFaceUp) {
-                // 0, 1, 2
-                // 2, 0, 1
-                // game->currentplayer = 2 -> gameplay.players[game->currentPlayer].id = 1
-                // winner = 1
                 game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
             }
             SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);

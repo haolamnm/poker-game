@@ -39,6 +39,9 @@ constexpr int PVE_BUTTON_Y = 470;
 constexpr int NEXT_BUTTON_X = 730;
 constexpr int NEXT_BUTTON_Y = 530;
 
+constexpr int PREV_BUTTON_X = 20;
+constexpr int PREV_BUTTON_Y = 530;
+
 // Constants for card dimensions
 constexpr int CARD_WIDTH = 100;
 constexpr int CARD_HEIGHT = 150;

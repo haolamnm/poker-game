@@ -2,6 +2,9 @@
 
 #include "gui/LeaderboardScreen.h"
 
+// int scrollOffset = 0;
+// const int SCROLL_SPEED = 10;
+
 // Function to render the leaderboard screen
 void renderLeaderboardScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
@@ -44,7 +47,7 @@ void renderLeaderboardScreen(GameEngine* game) {
 
     // Render column headers
     int startX = 50;
-    int startY = 150;
+    int startY = 150; // -scrollOffset;
     for (int j = 0; j < headerCount; j++) {
         game->renderText(renderer, leaderboardFont, headers[j], startX, startY, textColor, false);
         startX += columnWidths[j];
@@ -69,3 +72,16 @@ void renderLeaderboardScreen(GameEngine* game) {
     // Close the leaderboard font
     TTF_CloseFont(leaderboardFont);
 }
+
+// void handleMouseWheelEvent(SDL_Event& event) {
+//     if (event.type == SDL_MOUSEWHEEL) {
+//         if (event.wheel.y > 0) {
+//             scrollOffset -= SCROLL_SPEED;
+//             if (scrollOffset < 0) {
+//                 scrollOffset = 0;
+//             }
+//         } else if (event.wheel.y < 0) {
+//             scrollOffset += SCROLL_SPEED;
+//         }
+//     }
+// }

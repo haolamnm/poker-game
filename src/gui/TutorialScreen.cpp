@@ -9,6 +9,7 @@ void renderTutorialScreen(GameEngine* game) {
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
+    SDL_Texture* prevButtonTexture = game->getPrevButtonTexture();
 
     // Get the window dimensions
     int windowWidth, windowHeight;
@@ -40,9 +41,16 @@ void renderTutorialScreen(GameEngine* game) {
     SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
 
+    // Handle prev button hover
+    game->handleButtonHover(prevButtonTexture, mouseX, mouseY, PREV_BUTTON_X, PREV_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+    // Render the prev button
+    SDL_Rect prevButtonRect = {PREV_BUTTON_X, PREV_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_RenderCopy(renderer, prevButtonTexture, NULL, &prevButtonRect);
+
     // Array of card file paths for each set
     const char* cardSets[9][5] = {
-        {CARD_Q_H, CARD_J_H, CARD_10_H, CARD_9_H, CARD_8_H},  // Straight flush, queen high
+        {CARD_K_H, CARD_J_H, CARD_10_H, CARD_9_H, CARD_8_H},  // Straight flush, king high
         {CARD_9_H, CARD_9_D, CARD_9_C, CARD_9_S, CARD_JOKER}, // Four of a kind, 9
         {CARD_3_C, CARD_3_S, CARD_3_D, CARD_6_C, CARD_6_H},   // Full house, 3 over 6
         {CARD_K_C, CARD_10_C, CARD_7_C, CARD_6_C, CARD_4_C},  // Flush, king high
@@ -53,9 +61,22 @@ void renderTutorialScreen(GameEngine* game) {
         {CARD_K_H, CARD_J_H, CARD_8_C, CARD_7_D, CARD_4_S}    // High card, king
     };
 
+    const char* cardSetStrength[9] = {
+        "Straight flush (K)",
+        "Four of a kind (9)",
+        "Full house (3 6)",
+        "Flush (K)",
+        "Straight (7)",
+        "Three of a kind (2)",
+        "Two pairs (J 4)",
+        "One pair (4)",
+        "High card (K)"
+    };
+
     // Array of fade cards for each set
     int fadeCards[9] = {0, 1, 0, 0, 0, 2, 1, 3, 4};
 
     // Render the current set of cards
     game->renderCards(cardSets[game->currentCardSet], false, fadeCards[game->currentCardSet], false);
+    game->renderText(renderer, font, cardSetStrength[game->currentCardSet], windowWidth / 2, 450, textColor, true);
 }

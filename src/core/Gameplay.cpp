@@ -56,11 +56,6 @@ void Gameplay::whoWins() {
         players[i].hand.sortCards();
         players[i].hand.handStrength = strength.evaluateHand(players[i].hand);
     }
-    // 0, 1, 2
-
-    // 0, 1, 2
-    // 1, 2, 0
-    // Determine the winner
     winner = 0;
     bool isTie = false;
     int tiePlayer = 0;
