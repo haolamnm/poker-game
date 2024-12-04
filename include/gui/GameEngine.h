@@ -17,6 +17,7 @@ extern Lobby lobby;
 extern bool isDealtPvP;
 extern bool isDealtPvE;
 extern bool isSavedPvP;
+extern bool isSavedPvE;
 
 // Game class: Encapsulates the core functions of the game engine
 class GameEngine {

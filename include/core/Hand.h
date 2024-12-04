@@ -4,6 +4,7 @@
 #include "Card.h"
 #include <string>
 #include <algorithm>
+#include <vector>
 #include <iostream>
 
 class Hand {

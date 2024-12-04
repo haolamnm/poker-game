@@ -60,7 +60,7 @@ void renderPvPScreen(GameEngine* game) {
             }
         }
         gameplay.whoWins();
-         for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+        for (int i = 0; i < gameplay.numberOfPlayers; i++) {
             std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
             gameplay.players[i].hand.show();
             std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")" << '\n';
@@ -71,7 +71,6 @@ void renderPvPScreen(GameEngine* game) {
         } else {
             std::cout << "It's a tie!" << '\n';
         }
-        // Screen Winner, PvE, Save Data must be called once
 
         // Save player data after dealing cards and determining the winner
         if (!isSavedPvP) {
