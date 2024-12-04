@@ -31,10 +31,10 @@ constexpr const char* BUTTON_TUTORIAL_PATH = "assets/imgs/buttons/tutorial.png";
 constexpr const char* BUTTON_SETTINGS_PATH = "assets/imgs/buttons/settings.png";
 constexpr const char* BUTTON_USER_INFO_PATH = "assets/imgs/buttons/user_info.png";
 constexpr const char* BUTTON_LEADERBOARD_PATH = "assets/imgs/buttons/leaderboard.png";
-// constexpr const char* BUTTON_MUSIC_PATH = "assets/imgs/buttons/background_music_off.png";
-// constexpr const char* BUTTON_SOUND_PATH = "assets/imgs/buttons/sound_effects_off.png";
-// constexpr const char* BUTTON_PVP_PATH = "assets/imgs/buttons/pvp.png";
-// constexpr const char* BUTTON_PVE_PATH = "assets/imgs/buttons/pve.png";
+constexpr const char* BUTTON_MUSIC_ON_PATH = "assets/imgs/buttons/background_music_on.png";
+constexpr const char* BUTTON_MUSIC_OFF_PATH = "assets/imgs/buttons/background_music_off.png";
+constexpr const char* BUTTON_SOUND_ON_PATH = "assets/imgs/buttons/sound_effects_on.png";
+constexpr const char* BUTTON_SOUND_OFF_PATH = "assets/imgs/buttons/sound_effects_off.png";
 
 constexpr const char* BUTTON_CLICK_SOUND_PATH = "assets/audios/button_click.wav";
 constexpr const char* BACKGROUND_MUSIC_PATH = "assets/audios/background_music.mp3";
@@ -178,14 +178,11 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
     settingsButtonTexture = IMG_LoadTexture(renderer, BUTTON_SETTINGS_PATH);
     userInfoButtonTexture = IMG_LoadTexture(renderer, BUTTON_USER_INFO_PATH);
     leaderboardButtonTexture = IMG_LoadTexture(renderer, BUTTON_LEADERBOARD_PATH);
-    // musicToggleButtonTexture = IMG_LoadTexture(renderer, BUTTON_MUSIC_PATH);
-    // soundToggleButtonTexture = IMG_LoadTexture(renderer, BUTTON_SOUND_PATH);
-    // pvpButtonTexture = IMG_LoadTexture(renderer, BUTTON_PVP_PATH);
-    // pveButtonTexture = IMG_LoadTexture(renderer, BUTTON_PVE_PATH);
+    musicOnButtonTexture = IMG_LoadTexture(renderer, BUTTON_MUSIC_ON_PATH);
+    musicOffButtonTexture = IMG_LoadTexture(renderer, BUTTON_MUSIC_OFF_PATH);
+    soundOnButtonTexture = IMG_LoadTexture(renderer, BUTTON_SOUND_ON_PATH);
+    soundOffButtonTexture = IMG_LoadTexture(renderer, BUTTON_SOUND_OFF_PATH);
     
-    // Check if the button images were loaded successfully
-    // TODO: !pvpButtonTexture || !pveButtonTexture ||
-    // TODO: !musicToggleButtonTexture || !soundToggleButtonTexture ||
     if (!aboutButtonTexture || 
         !backButtonTexture  ||
         !nextButtonTexture  ||
@@ -193,7 +190,11 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
         !userInfoButtonTexture || 
         !tutorialButtonTexture ||
         !settingsButtonTexture || 
-        !leaderboardButtonTexture) {
+        !leaderboardButtonTexture ||
+        !musicOnButtonTexture  ||
+        !musicOffButtonTexture ||
+        !soundOnButtonTexture  ||
+        !soundOffButtonTexture) {
         std::cerr << RED_TEXT << "Failed to load button images: " << IMG_GetError() << RESET_TEXT << std::endl;
         return false;
     }
@@ -446,15 +447,25 @@ void GameEngine::clean() {
         leaderboardButtonTexture = nullptr;
     }
 
-    // if (musicToggleButtonTexture) {
-    //     SDL_DestroyTexture(musicToggleButtonTexture);
-    //     musicToggleButtonTexture = nullptr;
-    // }
+    if (musicOnButtonTexture) {
+        SDL_DestroyTexture(musicOnButtonTexture);
+        musicOnButtonTexture = nullptr;
+    }
 
-    // if (soundToggleButtonTexture) {
-    //     SDL_DestroyTexture(soundToggleButtonTexture);
-    //     soundToggleButtonTexture = nullptr;
-    // }
+    if (musicOffButtonTexture) {
+        SDL_DestroyTexture(musicOffButtonTexture);
+        musicOffButtonTexture = nullptr;
+    }
+
+    if (soundOnButtonTexture) {
+        SDL_DestroyTexture(soundOnButtonTexture);
+        soundOnButtonTexture = nullptr;
+    }
+
+    if (soundOffButtonTexture) {
+        SDL_DestroyTexture(soundOffButtonTexture);
+        soundOffButtonTexture = nullptr;
+    }
 
     // Quit SDL and SDL_TTF
     TTF_Quit();

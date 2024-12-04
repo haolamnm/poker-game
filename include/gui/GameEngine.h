@@ -102,22 +102,18 @@ public:
     SDL_Texture* getLeaderboardButtonTexture() const { 
         return leaderboardButtonTexture; 
     }
-   
-    // TODO: Uncomment these lines
-    // SDL_Texture *getPvpButtonTexture() const {
-    //     return pvpButtonTexture;
-    // }
-    // SDL_Texture *getPveButtonTexture() const {
-    //     return pveButtonTexture;
-    // }
-
-    // Getters for toggle button textures
-    // SDL_Texture* getMusicToggleButtonTexture() const { 
-    //     return musicToggleButtonTexture; 
-    // }
-    // SDL_Texture* getSoundToggleButtonTexture() const { 
-    //     return soundToggleButtonTexture; 
-    // }
+    SDL_Texture* getMusicOnButtonTexture() const { 
+        return musicOnButtonTexture; 
+    }
+    SDL_Texture* getMusicOffButtonTexture() const { 
+        return musicOffButtonTexture; 
+    }
+    SDL_Texture* getSoundOnButtonTexture() const { 
+        return soundOnButtonTexture; 
+    }
+    SDL_Texture* getSoundOffButtonTexture() const { 
+        return soundOffButtonTexture; 
+    }
 
     // Getters for game objects
     TTF_Font* getFont() { 
@@ -181,10 +177,10 @@ private:
     SDL_Texture* tutorialButtonTexture = nullptr;
     SDL_Texture* settingsButtonTexture = nullptr;
     SDL_Texture* leaderboardButtonTexture = nullptr;
-
-    // Toggle button textures
-    // SDL_Texture* musicToggleButtonTexture = nullptr;
-    // SDL_Texture* soundToggleButtonTexture = nullptr;
+    SDL_Texture* musicOnButtonTexture = nullptr;
+    SDL_Texture* musicOffButtonTexture = nullptr;
+    SDL_Texture* soundOnButtonTexture = nullptr;
+    SDL_Texture* soundOffButtonTexture = nullptr;
     
     // Font
     TTF_Font* font;
