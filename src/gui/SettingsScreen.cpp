@@ -69,7 +69,6 @@ void renderSettingsScreen(GameEngine* game) {
 
     // Render default chip betted
     std::string defaultChipBettedText = "Default chip betted: " + std::to_string(defaultChipBetted);
-    std::cout << defaultChipBettedText << std::endl;
     game->renderText(renderer, font, defaultChipBettedText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
 
     // TODO:

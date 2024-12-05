@@ -23,6 +23,7 @@ extern bool isSavedPvE;
 extern bool isDrawButtonClicked;
 extern bool drawButtonFlag;
 extern bool isFoldButtonClicked;
+extern bool foldButtonFlag;
 extern bool isCallButtonClicked;
 extern bool callButtonFlag;
 extern bool isRaiseButtonClicked;

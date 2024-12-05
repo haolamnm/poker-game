@@ -341,7 +341,7 @@ void GameEngine::handleEvents() {
                         }
                         if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
                             if (callButtonFlag == false) handleCallButtonClickPvP(x, y);
-                            handleFoldButtonClickPvP(x, y);
+                            if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
                             handleRaiseButtonClickPvP(x, y);
                         }
                     }
@@ -662,14 +662,14 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
         }
 
         // Handle card reveal logic
-        if (allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+        if (foldButtonFlag == false && allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT))) {
             if (!mouseButtonPressed && 
                 mouseX >= cardRect.x && mouseX <= cardRect.x + cardRect.w &&
                 mouseY >= cardRect.y && mouseY <= cardRect.y + cardRect.h) {
                 getCardRevealed()[i] = !getCardRevealed()[i];
                 mouseButtonPressed = true;
             }
-        } else if (currentDrawPokerRound == DRAW_ROUND && allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT))) {
+        } else if (foldButtonFlag == false && currentDrawPokerRound == DRAW_ROUND && allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT))) {
             // when user right clicks, render outline of the current card index
             if (!mouseButtonPressed && 
                 mouseX >= cardRect.x && mouseX <= cardRect.x + cardRect.w &&
@@ -788,6 +788,7 @@ void GameEngine::resetPvPGame() {
     isCallButtonClicked = false;
     callButtonFlag = false;
     isFoldButtonClicked = false;
+    foldButtonFlag = false;
     isRaiseButtonClicked = false;
     currentCardIndex = -1;
     currentDrawPokerRound = FIRST_BETTING_ROUND;

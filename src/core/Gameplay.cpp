@@ -61,12 +61,13 @@ void Gameplay::drawPlayerCards(Player& player) {
 void Gameplay::whoWins() {
     Strength strength;
     for (int i = 0; i < numberOfPlayers; i++) {
-        players[i].hand.evaluateHand();
+        if (players[i].isFolded == false) players[i].hand.evaluateHand();
     }
     winner = 0;
     bool isTie = false;
     int tiePlayer = 0;
     for (int i = 1; i < numberOfPlayers; i++) {
+        if (players[i].isFolded) continue;
         if (strength.compareHands(players[i].hand, players[winner].hand) == 1) {
             winner = i;
         } else if (strength.compareHands(players[i].hand, players[winner].hand) == 0) {

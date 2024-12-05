@@ -7,6 +7,7 @@ bool isSavedPvP = false;
 bool isDrawButtonClicked = false;
 bool drawButtonFlag = false;
 bool isFoldButtonClicked = false;
+bool foldButtonFlag = false;
 bool isCallButtonClicked = false;
 bool callButtonFlag = false;
 bool isRaiseButtonClicked = false;
@@ -130,6 +131,7 @@ void renderPvPScreen(GameEngine* game) {
                 gameplay.resetDeck(); // Reset the deck for a new game
                 gameplay.dealCards(numberOfCards);
             }
+
             const char* cardSets[usernames.size()][5];
             // Array of card file paths
             for (int i = 0; i < gameplay.numberOfPlayers; i++) {
@@ -139,36 +141,38 @@ void renderPvPScreen(GameEngine* game) {
                 }
             }
             for (int i = 0; i < gameplay.numberOfPlayers; i++) {
-                gameplay.players[i].hand.evaluateHand();
+                if (gameplay.players[i].isFolded == false) gameplay.players[i].hand.evaluateHand();
             }
+            
             if (game->currentPlayer < gameplay.numberOfPlayers) {
+                foldButtonFlag = gameplay.players[gameplay.players[game->currentPlayer].id].isFolded;
                 if (game->currentDrawPokerRound == GameEngine::DRAW_ROUND) {
-                if (drawButtonFlag == false && isDrawButtonClicked == true) {
-                    isDrawButtonClicked = false;
-                    drawButtonFlag = true;
-                    gameplay.drawPlayerCards(gameplay.players[gameplay.players[game->currentPlayer].id]);
-                }
-                if (currentCardIndex != -1) {
-                    int selectedCards = gameplay.countSelectedCards(gameplay.players[game->currentPlayer].id);
-                    if (selectedCards < 3 || gameplay.players[game->currentPlayer].hand.removedCards[currentCardIndex]) {
-                        gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex] = 
-                        !gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex];
+                    if (drawButtonFlag == false && isDrawButtonClicked == true) {
+                        isDrawButtonClicked = false;
+                        drawButtonFlag = true;
+                        gameplay.drawPlayerCards(gameplay.players[gameplay.players[game->currentPlayer].id]);
                     }
-                    currentCardIndex = -1;
-                }
-                // Outline for the selected card
-                SDL_Rect cardRect = {0, 0, 0, 0};
-                for (int i = 0; i < 5; i++) {
-                    if (gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[i]) {
-                        cardRect = game->getCardRects()[i];
-                        SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255); // Cyan color
-                        SDL_Rect outlineRect = {cardRect.x - 6, cardRect.y - 6, cardRect.w + 12, cardRect.h + 12}; // Make the outline thicker
-                        SDL_RenderDrawRect(renderer, &outlineRect);
-                        outlineRect = {cardRect.x - 5, cardRect.y - 5, cardRect.w + 10, cardRect.h + 10}; // Draw another outline for thickness
-                        SDL_RenderDrawRect(renderer, &outlineRect);
+                    if (currentCardIndex != -1) {
+                        int selectedCards = gameplay.countSelectedCards(gameplay.players[game->currentPlayer].id);
+                        if (selectedCards < 3 || gameplay.players[game->currentPlayer].hand.removedCards[currentCardIndex]) {
+                            gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex] = 
+                            !gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex];
+                        }
+                        currentCardIndex = -1;
+                    }
+                    // Outline for the selected card
+                    SDL_Rect cardRect = {0, 0, 0, 0};
+                    for (int i = 0; i < 5; i++) {
+                        if (gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[i]) {
+                            cardRect = game->getCardRects()[i];
+                            SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255); // Cyan color
+                            SDL_Rect outlineRect = {cardRect.x - 6, cardRect.y - 6, cardRect.w + 12, cardRect.h + 12}; // Make the outline thicker
+                            SDL_RenderDrawRect(renderer, &outlineRect);
+                            outlineRect = {cardRect.x - 5, cardRect.y - 5, cardRect.w + 10, cardRect.h + 10}; // Draw another outline for thickness
+                            SDL_RenderDrawRect(renderer, &outlineRect);
+                        }
                     }
                 }
-            }
                 if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND)) {
                 if (isRaiseButtonClicked == true) {
                     isRaiseButtonClicked = false;
@@ -178,10 +182,13 @@ void renderPvPScreen(GameEngine* game) {
 
                     std::cout << "Raise button clicked" << '\n';
                 }
-                if (isFoldButtonClicked == true) {
+                if (foldButtonFlag == false && isFoldButtonClicked == true) {
                     isFoldButtonClicked = false;
+                    foldButtonFlag = true;
+                    gameplay.players[gameplay.players[game->currentPlayer].id].isFolded = true;
                     std::cout << "Fold button clicked" << '\n';
                 }
+
                 if (game->currentPlayer > 0 && callButtonFlag == false && isCallButtonClicked == true) {
                     isCallButtonClicked = false;
                     callButtonFlag = true;
@@ -193,18 +200,19 @@ void renderPvPScreen(GameEngine* game) {
 
                     }
                     std::cout << "Call button clicked" << '\n';
+                    }
                 }
-            }
 
                 if (!isSavedPvP) {
-                isSavedPvP = true;
-                for (Player& player : gameplay.players) {
-                    gameplay.savePlayerData(player);
+                    isSavedPvP = true;
+                    for (Player& player : gameplay.players) {
+                        gameplay.savePlayerData(player);
+                    }
+                    gameplay.saveAllPlayerData();
                 }
-                gameplay.saveAllPlayerData();
-            }
 
                 // Render the 5 cards
+                std::cout << gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted << '\n';
                 std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
                 game->renderText(renderer, smallFont, betText.c_str(), 780, 100, textColor, false, true);
                 std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
@@ -215,7 +223,11 @@ void renderPvPScreen(GameEngine* game) {
 
                 // Render the "username" text
                 game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 100, textColor, true);
-                game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
+                if (foldButtonFlag) {
+                    game->renderText(renderer, mediumFont, "Folded", WINDOW_WIDTH / 2, 150, textColor, true);
+                    const char* foldedCardSet[] = {CARD_BACK, CARD_BACK, CARD_BACK, CARD_BACK, CARD_BACK};
+                    game->renderCards(foldedCardSet, true, 0, true);
+                } else game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
                 SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 bool allCardsFaceUp = true;
                 for (int i = 0; i < 5; i++) {
@@ -228,7 +240,7 @@ void renderPvPScreen(GameEngine* game) {
                     std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips -
                                                                   gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
                     game->renderText(renderer, smallFont, chipText.c_str(), 780, 75, textColor, false, true);
-                    game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
+                    if (foldButtonFlag == false) game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
                 }
                 SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
                 game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
