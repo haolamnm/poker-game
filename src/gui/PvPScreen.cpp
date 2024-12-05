@@ -26,6 +26,7 @@ void renderPvPScreen(GameEngine* game) {
     SDL_Texture* callButtonTexture = game->getCallButtonTexture();
     SDL_Texture* drawButtonTexture = game->getdrawButtonTexture();
     SDL_Texture* raiseButtonTexture = game->getRaiseButtonTexture();
+    SDL_Color textColor = {255, 255, 255, 255};
 
     // Get the mouse coordinates
     int mouseX, mouseY;
@@ -52,7 +53,6 @@ void renderPvPScreen(GameEngine* game) {
     
     else if (game->currentPlayer <= usernames.size()) {
         // Render the current game mode at the bottom of the screen
-        SDL_Color textColor = {255, 255, 255, 255};
         std::string gameModeText = "Game Mode: " + std::string(game->getCurrentGameModeString());
         game->renderText(renderer, smallFont, gameModeText.c_str(), WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50, textColor, true);
         if (game->currentGameMode == GameEngine::BASIC_POKER) {
@@ -73,17 +73,6 @@ void renderPvPScreen(GameEngine* game) {
                     cardSets[i][j] = CARD_FILES[currentCard.rank * 4 + currentCard.suit].c_str();
                 }
             }
-            // for (int i = 0; i < gameplay.numberOfPlayers; i++) {
-            //     std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
-            //     gameplay.players[i].hand.show();
-            //     std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")" << '\n';
-            //     std::cout << '\n';
-            // }
-            // if (gameplay.winner != -1) {
-            //     std::cout << "Winner: " << gameplay.players[gameplay.winner].username << '\n';
-            // } else {
-            //     std::cout << "It's a tie!" << '\n';
-            // }
 
             // Save player data after dealing cards and determining the winner
             if (!isSavedPvP) {
@@ -100,8 +89,7 @@ void renderPvPScreen(GameEngine* game) {
             }
 
             // Render the 5 cards
-            SDL_Color textColor = {255, 255, 255, 255}; // White color
-            if (game->currentPlayer < usernames.size()) {
+            if (game->currentPlayer < gameplay.numberOfPlayers) {
                 // Render the current player's chips
                 // std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips);
                 // game->renderText(renderer, smallFont, chipText.c_str(), 780, 100, textColor, false, true);
@@ -136,7 +124,6 @@ void renderPvPScreen(GameEngine* game) {
         } else if (game->currentGameMode == GameEngine::DRAW_POKER) {
             static Gameplay gameplay;
             int numberOfCards = 5;
-
             if (!isDealtPvP) {
                 isDealtPvP = true;
                 gameplay.init(usernames, 0);
@@ -154,8 +141,8 @@ void renderPvPScreen(GameEngine* game) {
             for (int i = 0; i < gameplay.numberOfPlayers; i++) {
                 gameplay.players[i].hand.evaluateHand();
             }
-
-            if (game->currentDrawPokerRound == GameEngine::DRAW_ROUND) {
+            if (game->currentPlayer < gameplay.numberOfPlayers) {
+                if (game->currentDrawPokerRound == GameEngine::DRAW_ROUND) {
                 if (drawButtonFlag == false && isDrawButtonClicked == true) {
                     isDrawButtonClicked = false;
                     drawButtonFlag = true;
@@ -182,7 +169,7 @@ void renderPvPScreen(GameEngine* game) {
                     }
                 }
             }
-            if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND)) {
+                if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND)) {
                 if (isRaiseButtonClicked == true) {
                     isRaiseButtonClicked = false;
                     gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
@@ -195,7 +182,7 @@ void renderPvPScreen(GameEngine* game) {
                     isFoldButtonClicked = false;
                     std::cout << "Fold button clicked" << '\n';
                 }
-                if (callButtonFlag == false && isCallButtonClicked == true) {
+                if (game->currentPlayer > 0 && callButtonFlag == false && isCallButtonClicked == true) {
                     isCallButtonClicked = false;
                     callButtonFlag = true;
                     if (gameplay.players[gameplay.players[game->currentPlayer].id].chips >= gameplay.highestBet) {
@@ -209,7 +196,7 @@ void renderPvPScreen(GameEngine* game) {
                 }
             }
 
-            if (!isSavedPvP) {
+                if (!isSavedPvP) {
                 isSavedPvP = true;
                 for (Player& player : gameplay.players) {
                     gameplay.savePlayerData(player);
@@ -217,17 +204,13 @@ void renderPvPScreen(GameEngine* game) {
                 gameplay.saveAllPlayerData();
             }
 
-            // Render the 5 cards
-            SDL_Color textColor = {255, 255, 255, 255}; // White color
-            if (game->currentPlayer < usernames.size()) {
-                // Render the current player's chips
+                // Render the 5 cards
                 std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
                 game->renderText(renderer, smallFont, betText.c_str(), 780, 100, textColor, false, true);
                 std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
                 game->renderText(renderer, smallFont, totalBetText.c_str(), 780, 125, textColor, false, true);
 
                 // Render round text                
-                SDL_Color textColor = {255, 255, 255, 255}; // White color
                 game->renderText(renderer, roundFont, game->getCurrentRoundString(), WINDOW_WIDTH / 2, 50, textColor, true);
 
                 // Render the "username" text
@@ -269,8 +252,7 @@ void renderPvPScreen(GameEngine* game) {
                 SDL_Rect drawButtonRect = {DRAW_BUTTON_X, DRAW_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 SDL_RenderCopy(renderer, drawButtonTexture, NULL, &drawButtonRect);
                 game->handleButtonHover(drawButtonTexture, mouseX, mouseY, DRAW_BUTTON_X, DRAW_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-            }
-            else if (game->currentDrawPokerRound == GameEngine::SHOWDOWN_ROUND) {
+            } else if (game->currentDrawPokerRound == GameEngine::SHOWDOWN_ROUND) {
                 gameplay.whoWins();
                 if (gameplay.winner != -1) {
                     std::string winner = gameplay.players[gameplay.winner].username;
@@ -282,11 +264,10 @@ void renderPvPScreen(GameEngine* game) {
                 } else {
                     game->renderText(renderer, font, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
                 }
-            }
-            else if (game->currentPlayer == usernames.size()) {
+            } else if (game->currentPlayer == usernames.size()) {
                 game->currentDrawPokerRound = (GameEngine::drawPokerRound) ((int) game->currentDrawPokerRound + 1);
                 game->currentPlayer = 0;
-            } 
+            }
         }
     }
     TTF_CloseFont(mediumFont);

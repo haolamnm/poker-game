@@ -784,7 +784,9 @@ void GameEngine::resetPvPGame() {
     isDealtPvP = false;
     isSavedPvP = false;
     isDrawButtonClicked = false;
+    drawButtonFlag = false;
     isCallButtonClicked = false;
+    callButtonFlag = false;
     isFoldButtonClicked = false;
     isRaiseButtonClicked = false;
     currentCardIndex = -1;
