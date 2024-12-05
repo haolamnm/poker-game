@@ -13,8 +13,9 @@ int currentCardIndex = -1;
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
-    TTF_Font* mediumFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 24);
+    TTF_Font* mediumFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 40);
     TTF_Font* smallFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
+    TTF_Font* roundFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 34);
     SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
@@ -41,13 +42,17 @@ void renderPvPScreen(GameEngine* game) {
     const std::vector<std::string>& usernames = lobby.getUsernames();
     if (usernames.size() < 2) {
         // Render a message indicating that more players are needed
-        SDL_Color textColor = {255, 0, 0, 255}; // Red color
+        SDL_Color redColor = {255, 0, 0, 255}; // Red color
         TTF_Font* msgFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 28);
-        game->renderText(renderer, msgFont, "Need at least 2 players to play PvP", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, textColor, true);
+        game->renderText(renderer, msgFont, "Need at least 2 players to play PvP", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, redColor, true);
         TTF_CloseFont(msgFont);
     } 
     
     else if (game->currentPlayer <= usernames.size()) {
+        // Render the current game mode at the bottom of the screen
+        SDL_Color textColor = {255, 255, 255, 255};
+        std::string gameModeText = "Game Mode: " + std::string(game->getCurrentGameModeString());
+        game->renderText(renderer, smallFont, gameModeText.c_str(), WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50, textColor, true);
         if (game->currentGameMode == GameEngine::BASIC_POKER) {
             static Gameplay gameplay;
             int numberOfCards = 5;
@@ -206,16 +211,18 @@ void renderPvPScreen(GameEngine* game) {
             if (game->currentPlayer < usernames.size()) {
                 // Render the current player's chips
                 std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips);
-                game->renderText(renderer, smallFont, chipText.c_str(), 780, 100, textColor, false, true);
+                game->renderText(renderer, smallFont, chipText.c_str(), 780, 75, textColor, false, true);
                 std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
-                game->renderText(renderer, smallFont, betText.c_str(), 780, 150, textColor, false, true);
+                game->renderText(renderer, smallFont, betText.c_str(), 780, 100, textColor, false, true);
                 std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
-                game->renderText(renderer, smallFont, totalBetText.c_str(), 780, 200, textColor, false, true);
-                // Render round text
-                std::string roundText = "Round: " + std::to_string(game->currentDrawPokerRound);
-                game->renderText(renderer, font, roundText.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
+                game->renderText(renderer, smallFont, totalBetText.c_str(), 780, 125, textColor, false, true);
+
+                // Render round text                
+                SDL_Color textColor = {255, 255, 255, 255}; // White color
+                game->renderText(renderer, roundFont, game->getCurrentRoundString(), WINDOW_WIDTH / 2, 50, textColor, true);
+
                 // Render the "username" text
-                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 100, textColor, true);
+                game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 100, textColor, true);
                 game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
                 SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 bool allCardsFaceUp = true;
@@ -272,4 +279,5 @@ void renderPvPScreen(GameEngine* game) {
     }
     TTF_CloseFont(mediumFont);
     TTF_CloseFont(smallFont);
+    TTF_CloseFont(roundFont);
 }

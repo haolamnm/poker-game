@@ -809,3 +809,18 @@ const char* GameEngine::getCurrentGameModeString() const {
             return "Unknown";
     }
 }
+
+const char* GameEngine::getCurrentRoundString() const {
+    switch (currentDrawPokerRound) {
+        case FIRST_BETTING_ROUND:
+            return "ROUND 1: Betting";
+        case DRAW_ROUND:
+            return "ROUND 2: Draw";
+        case SECOND_BETTING_ROUND:
+            return "ROUND 3: Betting";
+        case SHOWDOWN_ROUND:
+            return "ROUND 4: Showdown";
+        default:
+            return "Unknown Round";
+    }
+}

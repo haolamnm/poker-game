@@ -26,9 +26,6 @@ void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots)
     }
     std::mt19937 seed(static_cast<unsigned long>(std::time(0)));
     shuffle(players.begin(), players.end(), seed);
-    for (int i = 0; i < numberOfPlayers; i++) {
-        std::cout << "Player " << i << ": " << players[i].username << '\n';
-    }
     deck.setup();
     deck.shuffle();
 }
@@ -52,10 +49,6 @@ void Gameplay::dealCards(int numberOfCards) {
 }
 
 void Gameplay::drawPlayerCards(Player& player) {
-    std::cout << player.username << '\n';
-    for (int i = 0; i < 5; i++) {
-        std::cout << player.hand.removedCards[i] << '\n';
-    }
     for (int i = 0; i < 5; i++) {
         if (player.hand.removedCards[i]) {
             player.hand.cards[i] = deck.cards[deck.remainCards - 1];
@@ -92,8 +85,6 @@ void Gameplay::savePlayerData(Player& player) {
         player.winningStrategy[player.hand.handStrength]++;
         player.chips += totalChipsBetted;
     } else {
-        std::cout << "Player " << player.username << " lost" << '\n';
-        std::cout << "Chips betted: " << player.chipsBetted << '\n';
         player.chips -= player.chipsBetted;
     }
     int gamesWon = 0;

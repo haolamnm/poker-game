@@ -15,6 +15,7 @@ void renderStartScreen(GameEngine* game) {
     
     // Render the start screen background
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+    
     SDL_RenderClear(renderer);
 
     int mouseX, mouseY;

@@ -169,6 +169,7 @@ public:
     }
 
     const char* getCurrentGameModeString() const;
+    const char* getCurrentRoundString() const;
 
     // Current card set
     int currentCardSet = 0;

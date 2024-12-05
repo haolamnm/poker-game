@@ -68,8 +68,9 @@ void renderSettingsScreen(GameEngine* game) {
     game->handleButtonHover(rasieButtonTexture, mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render default chip betted
-    std::string chipText = "Default chip betted: " + std::to_string(defaultChipBetted);
-    game->renderText(renderer, font, chipText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
+    std::string defaultChipBettedText = "Default chip betted: " + std::to_string(defaultChipBetted);
+    std::cout << defaultChipBettedText << std::endl;
+    game->renderText(renderer, font, defaultChipBettedText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
 
     // TODO:
     // Implement the functionality to toggle the music and sound effects settings
