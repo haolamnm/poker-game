@@ -1,6 +1,6 @@
-PWD c:\Users\hao\Downloads\Poker-main (2)\Poker-main\report
+PWD c:\Users\hao\Downloads\Poker-main (2)\Poker-main\Poker\report
 INPUT C:\Users\hao\AppData\Local\MiKTeX\miktex\data\le\pdftex\pdflatex.fmt
-INPUT c:\Users\hao\Downloads\Poker-main (2)\Poker-main\report\main.tex
+INPUT c:\Users\hao\Downloads\Poker-main (2)\Poker-main\Poker\report\main.tex
 OUTPUT main.log
 INPUT C:\Users\hao\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
 INPUT C:\Users\hao\AppData\Local\Programs\MiKTeX\tex\latex\base\article.cls
