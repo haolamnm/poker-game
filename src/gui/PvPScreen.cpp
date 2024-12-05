@@ -6,7 +6,15 @@ bool isDealtPvP = false;
 bool isSavedPvP = false;
 bool isDrawButtonClicked = false;
 int currentCardIndex = -1;
-int round = -1;
+
+enum drawPokerRound {
+    FIRST_BETTING_ROUND = 1,
+    DRAW_ROUND,
+    SECOND_BETTING_ROUND,
+    SHOWDOWN_ROUND
+};
+
+drawPokerRound currentDrawPokerRound = FIRST_BETTING_ROUND;
 
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
@@ -196,8 +204,11 @@ void renderPvPScreen(GameEngine* game) {
                 // Render the current player's chips
                 std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips);
                 game->renderText(renderer, smallFont, chipText.c_str(), 780, 100, textColor, false, true);
+                // Render round text
+                std::string roundText = "Round: " + std::to_string(currentDrawPokerRound);
+                game->renderText(renderer, font, roundText.c_str(), windowWidth / 2, 50, textColor, true);
                 // Render the "username" text
-                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), windowWidth / 2, 50, textColor, true);
+                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), windowWidth / 2, 100, textColor, true);
                 game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
                 SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 bool allCardsFaceUp = true;
@@ -242,7 +253,8 @@ void renderPvPScreen(GameEngine* game) {
                 SDL_Rect drawButtonRect = {buttonX4, buttonY4, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 SDL_RenderCopy(renderer, drawButtonTexture, NULL, &drawButtonRect);
                 game->handleButtonHover(drawButtonTexture, mouseX, mouseY, buttonX4, buttonY4, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-            } else if (game->currentPlayer == usernames.size()) {
+            }
+            else if (currentDrawPokerRound == SHOWDOWN_ROUND) {
                 gameplay.whoWins();
                 if (gameplay.winner != -1) {
                     std::string winner = gameplay.players[gameplay.winner].username;
@@ -255,6 +267,11 @@ void renderPvPScreen(GameEngine* game) {
                     game->renderText(renderer, font, "It's a tie!", windowWidth / 2, 50, textColor, true);
                 }
             }
+            else if (game->currentPlayer == usernames.size()) {
+                if (currentDrawPokerRound == SECOND_BETTING_ROUND) currentDrawPokerRound = SHOWDOWN_ROUND;
+                else currentDrawPokerRound = (drawPokerRound) ((int) currentDrawPokerRound + 1);
+                game->currentPlayer = 0;
+            } 
         }
     }
     TTF_CloseFont(mediumFont);

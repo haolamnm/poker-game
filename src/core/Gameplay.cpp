@@ -89,7 +89,7 @@ void Gameplay::savePlayerData(Player& player) {
     player.gamesPlayed++;
     if (player.id == players[winner].id) {
         player.winningStrategy[player.hand.handStrength]++;
-        player.chips += 10 * numberOfPlayers;
+        player.chips += 10 * (numberOfPlayers - 1);
     } else {
         player.chips -= 10;
     }
