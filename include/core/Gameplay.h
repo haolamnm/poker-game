@@ -15,7 +15,8 @@ private:
 public:
     int numberOfPlayers;
     int winner;
-    int totalChipsBetted;
+    unsigned int totalChipsBetted;
+    unsigned int highestBet;
 
     std::vector<Player> players;
     void init(const std::vector<std::string>& usernames, int numberOfBots = 0);

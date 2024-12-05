@@ -21,8 +21,10 @@ extern bool isSavedPvP;
 extern bool isSavedPvE;
 
 extern bool isDrawButtonClicked;
+extern bool drawButtonFlag;
 extern bool isFoldButtonClicked;
 extern bool isCallButtonClicked;
+extern bool callButtonFlag;
 extern bool isRaiseButtonClicked;
 
 extern int currentCardIndex;

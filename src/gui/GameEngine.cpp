@@ -337,10 +337,10 @@ void GameEngine::handleEvents() {
                     handleNextButtonClickPvP(x, y);
                     if (currentGameMode == DRAW_POKER) {
                         if (currentDrawPokerRound == DRAW_ROUND) {
-                            handleDrawButtonClickPvP(x, y);
+                            if (drawButtonFlag == false) handleDrawButtonClickPvP(x, y);
                         }
                         if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
-                            handleCallButtonClickPvP(x, y);
+                            if (callButtonFlag == false) handleCallButtonClickPvP(x, y);
                             handleFoldButtonClickPvP(x, y);
                             handleRaiseButtonClickPvP(x, y);
                         }
@@ -722,6 +722,11 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
     std::vector<std::string> usernames = lobby.getUsernames();
     if (currentPlayer < usernames.size() && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
+        if (currentDrawPokerRound == DRAW_ROUND) {
+            drawButtonFlag = false;
+        } else if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
+            callButtonFlag = false;
+        }
     } 
 }
 

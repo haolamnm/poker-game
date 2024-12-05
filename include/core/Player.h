@@ -10,7 +10,7 @@ public:
     std::string username = "BOT";
     int id = -1;
     Hand hand;
-    int chipsBetted = 0;
+    unsigned int chipsBetted = 0;
 
     unsigned int gamesPlayed = 0;
     unsigned int chips = 200;
