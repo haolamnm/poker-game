@@ -14,12 +14,21 @@
 #include "../core/Lobby.h"
 
 extern Lobby lobby;
+
 extern bool isDealtPvP;
 extern bool isDealtPvE;
 extern bool isSavedPvP;
 extern bool isSavedPvE;
+
 extern bool isDrawButtonClicked;
+extern bool isFoldButtonClicked;
+extern bool isCallButtonClicked;
+extern bool isRaiseButtonClicked;
+
 extern int currentCardIndex;
+
+// For settings
+extern int defaultChipBetted;
 
 // Game class: Encapsulates the core functions of the game engine
 class GameEngine {
@@ -76,8 +85,14 @@ public:
     void handleNextButtonClickPvP(int mouseX, int mouseY);
     void handleNextButtonClickPvE(int mouseX, int mouseY);
 
-    void handleNextButtonGameMode(int mouseX, int mouseY);
+    void handleNextButtonClickSettings(int mouseX, int mouseY);
+    void handleRaiseButtonClickSettings(int mouseX, int mouseY);
+
     void handleDrawButtonClickPvP(int mouseX, int mouseY);
+    void handleFoldButtonClickPvP(int mouseX, int mouseY);
+    void handleCallButtonClickPvP(int mouseX, int mouseY);
+    void handleRaiseButtonClickPvP(int mouseX, int mouseY);
+
 
     // Getters for game state
     bool running() { 
@@ -167,6 +182,14 @@ public:
         DRAW_POKER,
         NUMBER_OF_GAME_MODES
     };
+
+    enum drawPokerRound {
+        FIRST_BETTING_ROUND = 1,
+        DRAW_ROUND,
+        SECOND_BETTING_ROUND,
+        SHOWDOWN_ROUND
+    };
+    drawPokerRound currentDrawPokerRound;
 
     GameMode currentGameMode;
 

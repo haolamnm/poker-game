@@ -6,9 +6,12 @@
 bool isMusicOn = true;
 bool isSoundEffectsOn = true;
 
+// For settings chip
+int defaultChipBetted = 20;
+
 // Function to render the Settings screen
 void renderSettingsScreen(GameEngine* game) {
-    TTF_Font* font = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
+    TTF_Font* font = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18); // TODO: Create a constant for small, medium and big font.
     SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
@@ -17,6 +20,7 @@ void renderSettingsScreen(GameEngine* game) {
     SDL_Texture* musicOffButtonTexture = game->getMusicOffButtonTexture();
     SDL_Texture* soundOnButtonTexture = game->getSoundOnButtonTexture();
     SDL_Texture* soundOffButtonTexture = game->getSoundOffButtonTexture();
+    SDL_Texture* rasieButtonTexture = game->getRaiseButtonTexture();
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -58,6 +62,14 @@ void renderSettingsScreen(GameEngine* game) {
     SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
     game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+    SDL_Rect rasieButtonRect = {RAISE_BUTTON_X, RAISE_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_RenderCopy(renderer, rasieButtonTexture, NULL, &rasieButtonRect);
+    game->handleButtonHover(rasieButtonTexture, mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+    // Render default chip betted
+    std::string chipText = "Default chip betted: " + std::to_string(defaultChipBetted);
+    game->renderText(renderer, font, chipText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
 
     // TODO:
     // Implement the functionality to toggle the music and sound effects settings

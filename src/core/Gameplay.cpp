@@ -2,6 +2,7 @@
 
 /* ------------------Gameplay------------------ */
 void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots) {
+    totalChipsBetted = 0;
     this->numberOfPlayers = usernames.size() + numberOfBots;
     players.assign(numberOfPlayers, Player());
     for (int i = 0; i < numberOfPlayers; i++) {
@@ -89,9 +90,11 @@ void Gameplay::savePlayerData(Player& player) {
     player.gamesPlayed++;
     if (player.id == players[winner].id) {
         player.winningStrategy[player.hand.handStrength]++;
-        player.chips += 10 * (numberOfPlayers - 1);
+        player.chips += totalChipsBetted;
     } else {
-        player.chips -= 10;
+        std::cout << "Player " << player.username << " lost" << '\n';
+        std::cout << "Chips betted: " << player.chipsBetted << '\n';
+        player.chips -= player.chipsBetted;
     }
     int gamesWon = 0;
     for (int i = 0; i < 9; i++) {
@@ -125,7 +128,7 @@ int Gameplay::countSelectedCards(int id) {
     int cnt = 0;
     for (int i = 0; i < 5; i++) {
         if (players[id].hand.removedCards[i]) {
-            ++cnt;
+            cnt++;
         }
     }
     return cnt;

@@ -20,6 +20,9 @@
 #define RESET_TEXT  "\033[0m"
 
 // Constants for button dimensions and positions
+constexpr int WINDOW_WIDTH = 800;
+constexpr int WINDOW_HEIGHT = 600;
+
 constexpr int SMALL_BUTTON_WIDTH = 50;
 constexpr int SMALL_BUTTON_HEIGHT = 50;
 constexpr int SMALL_BUTTON_SPACING = 20;
@@ -41,6 +44,18 @@ constexpr int NEXT_BUTTON_Y = 530;
 
 constexpr int PREV_BUTTON_X = 20;
 constexpr int PREV_BUTTON_Y = 530;
+
+constexpr int FOLD_BUTTON_X = 20;
+constexpr int FOLD_BUTTON_Y  = 530;
+
+constexpr int CALL_BUTTON_X = 90;
+constexpr int CALL_BUTTON_Y = 530;
+
+constexpr int RAISE_BUTTON_X = 20;
+constexpr int RAISE_BUTTON_Y = 460;
+
+constexpr int DRAW_BUTTON_X = 90;
+constexpr int DRAW_BUTTON_Y = 460;
 
 // Constants for card dimensions
 constexpr int CARD_WIDTH = 100;

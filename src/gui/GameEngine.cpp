@@ -59,7 +59,7 @@ GameEngine::GameEngine() {
     backgroundMusic = nullptr;
     currentGameState = START_SCREEN;
     currentGameMode = BASIC_POKER;
-    
+    currentDrawPokerRound = FIRST_BETTING_ROUND;
     
     // Initialize the card states and rectangles
     for (int i = 0; i < 5; ++i) {
@@ -245,7 +245,6 @@ void GameEngine::handleEvents() {
                     if (isButtonClicked(x, y, PVP_BUTTON_X, PVP_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                         currentGameState = PVP_SCREEN;
-                        currentPlayer = 0;
                         std::cout << BLUE_TEXT << "Current state: PvP screen" << RESET_TEXT << std::endl;
                         resetPvPGame();
                     }
@@ -254,7 +253,6 @@ void GameEngine::handleEvents() {
                     else if (isButtonClicked(x, y, PVE_BUTTON_X, PVE_BUTTON_Y, BIG_BUTTON_WIDTH, BIG_BUTTON_HEIGHT)) {
                         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
                         currentGameState = PVE_SCREEN;
-                        currentPlayer = 0;
                         std::cout << BLUE_TEXT << "Current state: PvE screen" << RESET_TEXT << std::endl;
                         resetPvEGame();
                     }
@@ -338,12 +336,20 @@ void GameEngine::handleEvents() {
                 } else if (currentGameState == PVP_SCREEN) {
                     handleNextButtonClickPvP(x, y);
                     if (currentGameMode == DRAW_POKER) {
-                        handleDrawButtonClickPvP(x, y);
+                        if (currentDrawPokerRound == DRAW_ROUND) {
+                            handleDrawButtonClickPvP(x, y);
+                        }
+                        if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
+                            handleCallButtonClickPvP(x, y);
+                            handleFoldButtonClickPvP(x, y);
+                            handleRaiseButtonClickPvP(x, y);
+                        }
                     }
                 } else if (currentGameState == PVE_SCREEN) {
                     handleNextButtonClickPvE(x, y);
                 } else if (currentGameState == SETTINGS_SCREEN) {
-                    handleNextButtonGameMode(x, y);
+                    handleNextButtonClickSettings(x, y);
+                    handleRaiseButtonClickSettings(x, y);
                 }
                 // Check if the card is clicked in the PvP screen
                 // if (currentGameState == PVP_SCREEN) {
@@ -663,7 +669,7 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
                 getCardRevealed()[i] = !getCardRevealed()[i];
                 mouseButtonPressed = true;
             }
-        } else if (allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT))) {
+        } else if (currentDrawPokerRound == DRAW_ROUND && allowClick && (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT))) {
             // when user right clicks, render outline of the current card index
             if (!mouseButtonPressed && 
                 mouseX >= cardRect.x && mouseX <= cardRect.x + cardRect.w &&
@@ -726,7 +732,7 @@ void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
     }
 }
 
-void GameEngine::handleNextButtonGameMode(int mouseX, int mouseY) {
+void GameEngine::handleNextButtonClickSettings(int mouseX, int mouseY) {
     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentGameMode = static_cast<GameMode>((currentGameMode + 1) % NUMBER_OF_GAME_MODES);
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
@@ -734,21 +740,58 @@ void GameEngine::handleNextButtonGameMode(int mouseX, int mouseY) {
 }
 
 void GameEngine::handleDrawButtonClickPvP(int mouseX, int mouseY) {
-    if (isButtonClicked(mouseX, mouseY, START_X + SMALL_BUTTON_WIDTH + SMALL_BUTTON_SPACING, 600 - (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING) * 2)) {
+    if (isButtonClicked(mouseX, mouseY, DRAW_BUTTON_X, DRAW_BUTTON_Y)) {
         isDrawButtonClicked = true;
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }
 
+void GameEngine::handleCallButtonClickPvP(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, CALL_BUTTON_X, CALL_BUTTON_Y)) {
+        isCallButtonClicked = true;
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
+void GameEngine::handleFoldButtonClickPvP(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, FOLD_BUTTON_X, FOLD_BUTTON_Y)) {
+        isFoldButtonClicked = true;
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
+void GameEngine::handleRaiseButtonClickPvP(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y)) {
+        isRaiseButtonClicked = true;        
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
+void GameEngine::handleRaiseButtonClickSettings(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y)) {
+        defaultChipBetted += 20;     
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
 void GameEngine::resetPvPGame() {
+    currentPlayer = 0;
     isDealtPvP = false;
     isSavedPvP = false;
+    isDrawButtonClicked = false;
+    isCallButtonClicked = false;
+    isFoldButtonClicked = false;
+    isRaiseButtonClicked = false;
+    currentCardIndex = -1;
+    currentDrawPokerRound = FIRST_BETTING_ROUND;
+    
     for (int i = 0; i < 5; i++) {
         getCardRevealed()[i] = false;
     }
 }
 
 void GameEngine::resetPvEGame() {
+    currentPlayer = 0;
     isDealtPvE = false;
     isSavedPvE = false;
     for (int i = 0; i < 5; i++) {
