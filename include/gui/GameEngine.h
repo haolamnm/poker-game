@@ -18,6 +18,7 @@ extern bool isDealtPvP;
 extern bool isDealtPvE;
 extern bool isSavedPvP;
 extern bool isSavedPvE;
+extern bool isDrawButtonClicked;
 extern int currentCardIndex;
 
 // Game class: Encapsulates the core functions of the game engine
@@ -76,6 +77,7 @@ public:
     void handleNextButtonClickPvE(int mouseX, int mouseY);
 
     void handleNextButtonGameMode(int mouseX, int mouseY);
+    void handleDrawButtonClickPvP(int mouseX, int mouseY);
 
     // Getters for game state
     bool running() { 
@@ -118,6 +120,18 @@ public:
     }
     SDL_Texture* getSoundOffButtonTexture() const { 
         return soundOffButtonTexture; 
+    }
+    SDL_Texture* getFoldButtonTexture() const { 
+        return foldButtonTexture; 
+    }
+    SDL_Texture* getCallButtonTexture() const { 
+        return callButtonTexture; 
+    }
+    SDL_Texture* getRaiseButtonTexture() const { 
+        return raiseButtonTexture; 
+    }
+    SDL_Texture* getdrawButtonTexture() const { 
+        return drawButtonTexture; 
     }
 
     // Getters for game objects
@@ -198,6 +212,10 @@ private:
     SDL_Texture* musicOffButtonTexture = nullptr;
     SDL_Texture* soundOnButtonTexture = nullptr;
     SDL_Texture* soundOffButtonTexture = nullptr;
+    SDL_Texture* foldButtonTexture = nullptr;
+    SDL_Texture* callButtonTexture = nullptr;
+    SDL_Texture* drawButtonTexture = nullptr;
+    SDL_Texture* raiseButtonTexture = nullptr;
     
     // Font
     TTF_Font* font;

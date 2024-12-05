@@ -35,6 +35,10 @@ constexpr const char* BUTTON_MUSIC_ON_PATH = "assets/imgs/buttons/background_mus
 constexpr const char* BUTTON_MUSIC_OFF_PATH = "assets/imgs/buttons/background_music_off.png";
 constexpr const char* BUTTON_SOUND_ON_PATH = "assets/imgs/buttons/sound_effects_on.png";
 constexpr const char* BUTTON_SOUND_OFF_PATH = "assets/imgs/buttons/sound_effects_off.png";
+constexpr const char* BUTTON_FOLD_PATH = "assets/imgs/buttons/fold.png";
+constexpr const char* BUTTON_CALL_PATH = "assets/imgs/buttons/call.png";
+constexpr const char* BUTTON_RESET_PATH = "assets/imgs/buttons/draw.png";
+constexpr const char* BUTTON_RAISE_PATH = "assets/imgs/buttons/raise.png";
 
 constexpr const char* BUTTON_CLICK_SOUND_PATH = "assets/audios/button_click.wav";
 constexpr const char* BACKGROUND_MUSIC_PATH = "assets/audios/background_music.mp3";
@@ -183,6 +187,10 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
     musicOffButtonTexture = IMG_LoadTexture(renderer, BUTTON_MUSIC_OFF_PATH);
     soundOnButtonTexture = IMG_LoadTexture(renderer, BUTTON_SOUND_ON_PATH);
     soundOffButtonTexture = IMG_LoadTexture(renderer, BUTTON_SOUND_OFF_PATH);
+    foldButtonTexture = IMG_LoadTexture(renderer, BUTTON_FOLD_PATH);
+    callButtonTexture = IMG_LoadTexture(renderer, BUTTON_CALL_PATH);
+    drawButtonTexture = IMG_LoadTexture(renderer, BUTTON_RESET_PATH);
+    raiseButtonTexture = IMG_LoadTexture(renderer, BUTTON_RAISE_PATH);
     
     if (!aboutButtonTexture || 
         !backButtonTexture  ||
@@ -195,7 +203,11 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
         !musicOnButtonTexture  ||
         !musicOffButtonTexture ||
         !soundOnButtonTexture  ||
-        !soundOffButtonTexture) {
+        !soundOffButtonTexture || 
+        !foldButtonTexture     ||
+        !callButtonTexture     ||
+        !raiseButtonTexture    ||
+        !drawButtonTexture) {
         std::cerr << RED_TEXT << "Failed to load button images: " << IMG_GetError() << RESET_TEXT << std::endl;
         return false;
     }
@@ -325,6 +337,9 @@ void GameEngine::handleEvents() {
                     handlePrevButtonClickTutorial(x, y);
                 } else if (currentGameState == PVP_SCREEN) {
                     handleNextButtonClickPvP(x, y);
+                    if (currentGameMode == DRAW_POKER) {
+                        handleDrawButtonClickPvP(x, y);
+                    }
                 } else if (currentGameState == PVE_SCREEN) {
                     handleNextButtonClickPvE(x, y);
                 } else if (currentGameState == SETTINGS_SCREEN) {
@@ -469,6 +484,26 @@ void GameEngine::clean() {
         soundOffButtonTexture = nullptr;
     }
 
+    if (foldButtonTexture) {
+        SDL_DestroyTexture(foldButtonTexture);
+        foldButtonTexture = nullptr;
+    }
+
+    if (callButtonTexture) {
+        SDL_DestroyTexture(callButtonTexture);
+        callButtonTexture = nullptr;
+    }
+
+    if (raiseButtonTexture) {
+        SDL_DestroyTexture(raiseButtonTexture);
+        raiseButtonTexture = nullptr;
+    }
+
+    if (drawButtonTexture) {
+        SDL_DestroyTexture(drawButtonTexture);
+        drawButtonTexture = nullptr;
+    }
+    
     // Quit SDL and SDL_TTF
     TTF_Quit();
     SDL_Quit();
@@ -661,7 +696,7 @@ void GameEngine::renderCards(const char* cardFiles[5], bool allowClick, int fade
 }
 
 void GameEngine::handleNextButtonClickTutorial(int mouseX, int mouseY) {
-    SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    // SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentCardSet = (currentCardSet + 1) % 9;
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
@@ -669,7 +704,7 @@ void GameEngine::handleNextButtonClickTutorial(int mouseX, int mouseY) {
 }
 
 void GameEngine::handlePrevButtonClickTutorial(int mouseX, int mouseY) {
-    SDL_Rect prevButtonRect = {PREV_BUTTON_X, PREV_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    // SDL_Rect prevButtonRect = {PREV_BUTTON_X, PREV_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     if (isButtonClicked(mouseX, mouseY, PREV_BUTTON_X, PREV_BUTTON_Y)) {
         // Decrease currentCardSet, wrap around 0 -> 8
         currentCardSet = (currentCardSet - 1 + 9) % 9;
@@ -694,6 +729,13 @@ void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
 void GameEngine::handleNextButtonGameMode(int mouseX, int mouseY) {
     if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentGameMode = static_cast<GameMode>((currentGameMode + 1) % NUMBER_OF_GAME_MODES);
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
+void GameEngine::handleDrawButtonClickPvP(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, START_X + SMALL_BUTTON_WIDTH + SMALL_BUTTON_SPACING, 600 - (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING) * 2)) {
+        isDrawButtonClicked = true;
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }

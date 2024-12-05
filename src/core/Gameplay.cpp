@@ -50,20 +50,24 @@ void Gameplay::dealCards(int numberOfCards) {
     std::cout << "Remaining cards in the deck: " << deck.remainCards << '\n';
 }
 
-void Gameplay::drawPlayerCards(Player& player, bool removedCards[5]) {
+void Gameplay::drawPlayerCards(Player& player) {
+    std::cout << player.username << '\n';
     for (int i = 0; i < 5; i++) {
-        if (removedCards[i]) {
+        std::cout << player.hand.removedCards[i] << '\n';
+    }
+    for (int i = 0; i < 5; i++) {
+        if (player.hand.removedCards[i]) {
             player.hand.cards[i] = deck.cards[deck.remainCards - 1];
             deck.remainCards--;
         }
     }
+    std::cout << "Remaining cards in the deck: " << deck.remainCards << '\n';
 }
 
 void Gameplay::whoWins() {
     Strength strength;
     for (int i = 0; i < numberOfPlayers; i++) {
-        players[i].hand.sortCards();
-        players[i].hand.handStrength = strength.evaluateHand(players[i].hand);
+        players[i].hand.evaluateHand();
     }
     winner = 0;
     bool isTie = false;
@@ -115,5 +119,15 @@ std::vector<std::vector<std::string>> Gameplay::showLeaderboard() {
 
 void Gameplay::resetDeck() {
     deck.reset();
+}
+
+int Gameplay::countSelectedCards(int id) {
+    int cnt = 0;
+    for (int i = 0; i < 5; i++) {
+        if (players[id].hand.removedCards[i]) {
+            ++cnt;
+        }
+    }
+    return cnt;
 }
 /* ------------------End of Gameplay------------------ */

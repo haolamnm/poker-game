@@ -16,10 +16,12 @@ public:
     std::string handName;
 
     Card cards[5];
+    Card sortedCards[5];
     bool removedCards[5];
     std::vector<Card> strengthCards;
     void show();
     void sortCards();
+    void evaluateHand();
 };
 
 class Strength {

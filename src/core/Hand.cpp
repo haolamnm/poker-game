@@ -8,47 +8,57 @@ void Hand::show() {
 }
 
 void Hand::sortCards() {
-    std::sort(cards, cards + numberOfOnHandCards, [&](Card& a, Card& b) {
+    for (int i = 0; i < 5; i++) {
+        sortedCards[i] = cards[i];
+    }
+    std::sort(sortedCards, sortedCards + numberOfOnHandCards, [&](Card& a, Card& b) {
         return a.rank < b.rank;
     });
 }
 
+void Hand::evaluateHand() {
+    Strength strength;
+    sortCards();
+    handStrength = strength.evaluateHand(*this);
+}
+/* ------------------End of Hand------------------ */
+
 bool Strength::isStraightFlush(Hand& hand) {
     for (int i = 0; i < 4; i++) {
-        if (hand.cards[i].suit != hand.cards[i + 1].suit) return false;
-        else if (hand.cards[i + 1].rank - hand.cards[i].rank != 1) return false;
+        if (hand.sortedCards[i].suit != hand.sortedCards[i + 1].suit) return false;
+        else if (hand.sortedCards[i + 1].rank - hand.sortedCards[i].rank != 1) return false;
     }
     hand.strengthCards.clear();
     hand.strengthCards = {
-        hand.cards[0],
-        hand.cards[1],
-        hand.cards[2],
-        hand.cards[3],
-        hand.cards[4]
+        hand.sortedCards[0],
+        hand.sortedCards[1],
+        hand.sortedCards[2],
+        hand.sortedCards[3],
+        hand.sortedCards[4]
     };
     return true;
 }
 
 bool Strength::isFourOfAKind(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].rank == hand.cards[1].rank &&
-        hand.cards[1].rank == hand.cards[2].rank &&
-        hand.cards[2].rank == hand.cards[3].rank) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank &&
+        hand.sortedCards[1].rank == hand.sortedCards[2].rank &&
+        hand.sortedCards[2].rank == hand.sortedCards[3].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3]
         };
         return true;
-    } else if (hand.cards[1].rank == hand.cards[2].rank &&
-        hand.cards[2].rank == hand.cards[3].rank &&
-        hand.cards[3].rank == hand.cards[4].rank) {
+    } else if (hand.sortedCards[1].rank == hand.sortedCards[2].rank &&
+        hand.sortedCards[2].rank == hand.sortedCards[3].rank &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -57,26 +67,26 @@ bool Strength::isFourOfAKind(Hand& hand) {
 
 bool Strength::isFullHouse(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].rank == hand.cards[1].rank &&
-        hand.cards[1].rank == hand.cards[2].rank &&
-        hand.cards[3].rank == hand.cards[4].rank) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank &&
+        hand.sortedCards[1].rank == hand.sortedCards[2].rank &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
-    } else if (hand.cards[0].rank == hand.cards[1].rank &&
-        hand.cards[2].rank == hand.cards[3].rank &&
-        hand.cards[3].rank == hand.cards[4].rank) {
+    } else if (hand.sortedCards[0].rank == hand.sortedCards[1].rank &&
+        hand.sortedCards[2].rank == hand.sortedCards[3].rank &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -85,16 +95,16 @@ bool Strength::isFullHouse(Hand& hand) {
 
 bool Strength::isFlush(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].suit == hand.cards[1].suit &&
-        hand.cards[1].suit == hand.cards[2].suit &&
-        hand.cards[2].suit == hand.cards[3].suit &&
-        hand.cards[3].suit == hand.cards[4].suit) {
+    if (hand.sortedCards[0].suit == hand.sortedCards[1].suit &&
+        hand.sortedCards[1].suit == hand.sortedCards[2].suit &&
+        hand.sortedCards[2].suit == hand.sortedCards[3].suit &&
+        hand.sortedCards[3].suit == hand.sortedCards[4].suit) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -103,16 +113,16 @@ bool Strength::isFlush(Hand& hand) {
 
 bool Strength::isStraight(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].rank == hand.cards[1].rank - 1 &&
-        hand.cards[1].rank == hand.cards[2].rank - 1 &&
-        hand.cards[2].rank == hand.cards[3].rank - 1 &&
-        hand.cards[3].rank == hand.cards[4].rank - 1) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank - 1 &&
+        hand.sortedCards[1].rank == hand.sortedCards[2].rank - 1 &&
+        hand.sortedCards[2].rank == hand.sortedCards[3].rank - 1 &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank - 1) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -121,28 +131,28 @@ bool Strength::isStraight(Hand& hand) {
 
 bool Strength::isThreeOfAKind(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].rank == hand.cards[1].rank &&
-        hand.cards[1].rank == hand.cards[2].rank) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank &&
+        hand.sortedCards[1].rank == hand.sortedCards[2].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2]
         };
         return true;
-    } else if (hand.cards[1].rank == hand.cards[2].rank &&
-        hand.cards[2].rank == hand.cards[3].rank) {
+    } else if (hand.sortedCards[1].rank == hand.sortedCards[2].rank &&
+        hand.sortedCards[2].rank == hand.sortedCards[3].rank) {
         hand.strengthCards = {
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3]
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3]
         };
         return true;
-    } else if (hand.cards[2].rank == hand.cards[3].rank &&
-        hand.cards[3].rank == hand.cards[4].rank) {
+    } else if (hand.sortedCards[2].rank == hand.sortedCards[3].rank &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -151,33 +161,33 @@ bool Strength::isThreeOfAKind(Hand& hand) {
 
 bool Strength::isTwoPair(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].rank == hand.cards[1].rank &&
-        hand.cards[2].rank == hand.cards[3].rank) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank &&
+        hand.sortedCards[2].rank == hand.sortedCards[3].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3]
         };
         return true;
     }
-    if (hand.cards[0].rank == hand.cards[1].rank &&
-        hand.cards[3].rank == hand.cards[4].rank) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[0],
+            hand.sortedCards[1],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
-    if (hand.cards[1].rank == hand.cards[2].rank &&
-        hand.cards[3].rank == hand.cards[4].rank) {
+    if (hand.sortedCards[1].rank == hand.sortedCards[2].rank &&
+        hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[1],
-            hand.cards[2],
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[1],
+            hand.sortedCards[2],
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -186,31 +196,31 @@ bool Strength::isTwoPair(Hand& hand) {
 
 bool Strength::isOnePair(Hand& hand) {
     hand.strengthCards.clear();
-    if (hand.cards[0].rank == hand.cards[1].rank) {
+    if (hand.sortedCards[0].rank == hand.sortedCards[1].rank) {
         hand.strengthCards = {
-            hand.cards[0],
-            hand.cards[1]
+            hand.sortedCards[0],
+            hand.sortedCards[1]
         };
         return true;
     }
-    if (hand.cards[1].rank == hand.cards[2].rank) {
+    if (hand.sortedCards[1].rank == hand.sortedCards[2].rank) {
         hand.strengthCards = {
-            hand.cards[1],
-            hand.cards[2]
+            hand.sortedCards[1],
+            hand.sortedCards[2]
         };
         return true;
     }
-    if (hand.cards[2].rank == hand.cards[3].rank) {
+    if (hand.sortedCards[2].rank == hand.sortedCards[3].rank) {
         hand.strengthCards = {
-            hand.cards[2],
-            hand.cards[3]
+            hand.sortedCards[2],
+            hand.sortedCards[3]
         };
         return true;
     }
-    if (hand.cards[3].rank == hand.cards[4].rank) {
+    if (hand.sortedCards[3].rank == hand.sortedCards[4].rank) {
         hand.strengthCards = {
-            hand.cards[3],
-            hand.cards[4]
+            hand.sortedCards[3],
+            hand.sortedCards[4]
         };
         return true;
     }
@@ -257,4 +267,3 @@ int Strength::compareHands(Hand& hand1, Hand& hand2) {
     }
     return 0;
 }
-/* ------------------End of Hand------------------ */

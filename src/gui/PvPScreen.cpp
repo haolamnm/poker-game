@@ -4,16 +4,23 @@
 
 bool isDealtPvP = false;
 bool isSavedPvP = false;
+bool isDrawButtonClicked = false;
 int currentCardIndex = -1;
+int round = -1;
 
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
-    TTF_Font* smallFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);    
+    TTF_Font* mediumFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 24);
+    TTF_Font* smallFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
     SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
+    SDL_Texture* foldButtonTexture = game->getFoldButtonTexture();
+    SDL_Texture* callButtonTexture = game->getCallButtonTexture();
+    SDL_Texture* drawButtonTexture = game->getdrawButtonTexture();
+    SDL_Texture* raiseButtonTexture = game->getRaiseButtonTexture();
 
     // Get the window dimensions
     int windowWidth, windowHeight;
@@ -101,7 +108,7 @@ void renderPvPScreen(GameEngine* game) {
                     }
                 }
                 if (allCardsFaceUp) {
-                    game->renderText(renderer, smallFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+                    game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
                 }
                 SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
                 game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
@@ -135,12 +142,31 @@ void renderPvPScreen(GameEngine* game) {
                     cardSets[i][j] = CARD_FILES[currentCard.rank * 4 + currentCard.suit].c_str();
                 }
             }
-            gameplay.whoWins();
+            for (int i = 0; i < gameplay.numberOfPlayers; i++) {
+                std::cout << "Player's id: " << gameplay.players[i].id << " (" << gameplay.players[i].username << ")" << '\n';
+                gameplay.players[i].hand.evaluateHand();
+                gameplay.players[i].hand.show();
+                std::cout << "Hand strength: " << gameplay.players[i].hand.handStrength << " (" << gameplay.players[i].hand.handName << ")" << '\n';
+                std::cout << '\n';
+            }
+            if (gameplay.winner != -1) {
+                std::cout << "Winner: " << gameplay.players[gameplay.winner].username << '\n';
+            } else {
+                std::cout << "It's a tie!" << '\n';
+            }
+            // gameplay.whoWins();
 
             if (currentCardIndex != -1) {
-                gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex] = 
-                !gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex];
+                int selectedCards = gameplay.countSelectedCards(gameplay.players[game->currentPlayer].id);
+                if (selectedCards < 3 || gameplay.players[game->currentPlayer].hand.removedCards[currentCardIndex]) {
+                    gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex] = 
+                    !gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[currentCardIndex];
+                }
                 currentCardIndex = -1;
+            }
+            if (isDrawButtonClicked == true) {
+                isDrawButtonClicked = false;
+                gameplay.drawPlayerCards(gameplay.players[gameplay.players[game->currentPlayer].id]);
             }
 
             // Outline for the selected card
@@ -149,7 +175,9 @@ void renderPvPScreen(GameEngine* game) {
                 if (gameplay.players[gameplay.players[game->currentPlayer].id].hand.removedCards[i]) {
                     cardRect = game->getCardRects()[i];
                     SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255); // Cyan color
-                    SDL_Rect outlineRect = {cardRect.x - 2, cardRect.y - 2, cardRect.w + 4, cardRect.h + 4}; // Make the outline bigger
+                    SDL_Rect outlineRect = {cardRect.x - 6, cardRect.y - 6, cardRect.w + 12, cardRect.h + 12}; // Make the outline thicker
+                    SDL_RenderDrawRect(renderer, &outlineRect);
+                    outlineRect = {cardRect.x - 5, cardRect.y - 5, cardRect.w + 10, cardRect.h + 10}; // Draw another outline for thickness
                     SDL_RenderDrawRect(renderer, &outlineRect);
                 }
             }
@@ -180,23 +208,55 @@ void renderPvPScreen(GameEngine* game) {
                     }
                 }
                 if (allCardsFaceUp) {
-                    game->renderText(renderer, smallFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+                    game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
                 }
                 SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
                 game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+                // Calculate positions for the buttons in a 2x2 grid
+                int buttonX1 = START_X;
+                int buttonY1 = windowHeight - SMALL_BUTTON_HEIGHT - SMALL_BUTTON_SPACING;
+                int buttonX2 = START_X + SMALL_BUTTON_WIDTH + SMALL_BUTTON_SPACING;
+                int buttonY2 = windowHeight - SMALL_BUTTON_HEIGHT - SMALL_BUTTON_SPACING;
+                int buttonX3 = START_X;
+                int buttonY3 = windowHeight - (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING) * 2;
+                int buttonX4 = START_X + SMALL_BUTTON_WIDTH + SMALL_BUTTON_SPACING;
+                int buttonY4 = windowHeight - (SMALL_BUTTON_HEIGHT + SMALL_BUTTON_SPACING) * 2;
+
+                // Render fold button
+                SDL_Rect foldButtonRect = {buttonX1, buttonY1, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+                SDL_RenderCopy(renderer, foldButtonTexture, NULL, &foldButtonRect);
+                game->handleButtonHover(foldButtonTexture, mouseX, mouseY, buttonX1, buttonY1, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+                // Render call button
+                SDL_Rect callButtonRect = {buttonX2, buttonY2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+                SDL_RenderCopy(renderer, callButtonTexture, NULL, &callButtonRect);
+                game->handleButtonHover(callButtonTexture, mouseX, mouseY, buttonX2, buttonY2, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+                // Render raise button
+                SDL_Rect raiseButtonRect = {buttonX3, buttonY3, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+                SDL_RenderCopy(renderer, raiseButtonTexture, NULL, &raiseButtonRect);
+                game->handleButtonHover(raiseButtonTexture, mouseX, mouseY, buttonX3, buttonY3, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+                // Render reset button
+                SDL_Rect drawButtonRect = {buttonX4, buttonY4, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+                SDL_RenderCopy(renderer, drawButtonTexture, NULL, &drawButtonRect);
+                game->handleButtonHover(drawButtonTexture, mouseX, mouseY, buttonX4, buttonY4, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
             } else if (game->currentPlayer == usernames.size()) {
+                gameplay.whoWins();
                 if (gameplay.winner != -1) {
                     std::string winner = gameplay.players[gameplay.winner].username;
                     game->renderText(renderer, font, "Winner:", windowWidth / 2, 50, textColor, true);
                     game->renderText(renderer, font, winner.c_str(), windowWidth / 2, 125, textColor, true);
                     game->renderCards(cardSets[gameplay.winner], false, 0, false);
                     // Winner hand stregth
-                    game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+                    game->renderText(renderer, mediumFont, gameplay.players[gameplay.winner].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
                 } else {
                     game->renderText(renderer, font, "It's a tie!", windowWidth / 2, 50, textColor, true);
                 }
             }
         }
     }
+    TTF_CloseFont(mediumFont);
     TTF_CloseFont(smallFont);
 }
