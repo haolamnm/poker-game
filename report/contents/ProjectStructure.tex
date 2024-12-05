@@ -1,0 +1,66 @@
+\section{Project Structure}
+\label{sec:project-structure-section}
+
+\hspace{1cm} For this part of the report, we will discuss the project structure, including the folder structure, file structure, variable, constant, class, and structure naming conventions. 
+
+\vspace{0.5cm}
+
+\hspace{1cm} The naming convention is a set of rules for choosing the character sequence to represent the name of a variable, constant, function, class, file, folder, or other entity in the source code. The naming convention is essential because it helps the reader understand the code more easily and quickly. In this project, we follow the naming convention below:
+
+\subsection{Folder Structure}
+\begin{itemize}
+    \item \textbf{Lowercase}: All characters in the folder name are lowercase.
+    \item \textbf{Underscore}: If the folder name consists of multiple words, separate them with an underscore.
+\end{itemize}
+
+Our folder structure is as follows:
+\begin{itemize}
+    \item \textbf{src}: Contains all source code files written in C++. There are two subfolders with two main categories of source code files.
+    \begin{itemize}
+        \item \textbf{core}: Contains all the source files relate to the core mechanics of the game.
+        \item \textbf{gui}: Contains all the source files relate to graphical user interface of the game.
+    \end{itemize}
+    \item \textbf{include}: Contains all header files. There are two subfolders with two main categories of header files.
+    \begin{itemize}
+        \item \textbf{core}: Contains all the header files relate to the core mechanics of the game.
+        \item \textbf{gui}: Contains all the header files relate to graphical user interface of the game.
+    \end{itemize}
+    \item \textbf{bin}: Contains all executable files, object files and dynamic libraries. There is a subfolder called obj. Inside the obj folder, there are two subfolders with two main categories of object files.
+    \begin{itemize}
+        \item \textbf{core}: Contains all the object files relate to the core mechanics of the game.
+        \item \textbf{gui}: Contains all the object files relate to graphical user interface of the game.
+    \end{itemize}
+    \item \textbf{assets}: Contains all assets used in the project. There are three subfolders inside our assets folder.
+    \begin{itemize}
+        \item \textbf{imgs}: Contains all images used in the project. There are imgs for backgrounds, buttons, cards, cursor and icons for our game application.
+        \item \textbf{audios}: Contains all sounds used in the project. There are audios for background music, button click sound, card shuffle sound and card flip sound.
+        \item \textbf{fonts}: Contains all fonts used in the project. There are fonts for the game title, game buttons and game text.
+    \end{itemize}
+    \item \textbf{libs}: Contains all libraries used in the project.
+    \begin{itemize}
+        \item \textbf{SDL2}: Contains all SDL2 libraries. This is our main library for creating the graphical user interface.
+        \item \textbf{cmake}: Contains all CMake libraries.
+    \end{itemize}
+    \item \textbf{report}: Contains all report files which are source code files written in LaTeX.
+    \begin{itemize}
+        \item \textbf{contents}: Contains all the contents of the report. We want to keep the report organized, so we separate the report into multiple files and put them in the contents folder.
+        \item \textbf{figures}: Contains all figures used in the report. The figures are images, graphs, tables, etc.
+    \end{itemize}
+\end{itemize}
+
+\subsection{File Structure}
+\begin{itemize}
+    \item \textbf{lowercase}: Only one exception is our main file, which is named \textbf{main.cpp}.
+    \item \textbf{CamelCase}: We decide that all of the header files and source files are named in CamelCase.
+    \item \textbf{Underscore \& hyphen}: This is for files in SDL2 libraries, which are named in lowercase and separated by an underscore. Beside that, our files in assets are named in lowercase and separated by an underscore or hyphen.
+\end{itemize}
+
+\subsection{Variable, constant, class, structure}
+\begin{itemize}
+    \item \textbf{camelCase}: We decide that all of the variables are named in camelCase. Notice that the first letter of the first word is lowercase, and the first letter of the following words is uppercase.
+    \item \textbf{CamelCase}: For classes and structures in our project, we decide that all of the classes and structures are named in CamelCase. Notice that the first letter of each word is uppercase.
+    \item \textbf{ALL CAPS}: We decide that all of the constants are named in ALL CAPS. Notice that if the constant consists of multiple words, we will separate them with an underscore.
+\end{itemize}
+
+\subsection{Function Prototype and Definition}
+\hspace{1cm} We decide that all of the functions are named in camelCase. Notice that the first letter of the first word is lowercase, and the first letter of the following words is uppercase.

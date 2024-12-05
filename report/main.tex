@@ -4,10 +4,12 @@
 % Last update: 23/11/2024
 
 \documentclass[12pt]{article}
+\usepackage{tikz}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{pdflscape}
 \usepackage{fancyhdr}
+\usepackage{ulem}
 \usepackage{graphicx}
 \usepackage[colorlinks = true,
             linkcolor = magenta,
@@ -101,9 +103,19 @@
 % Table of contribution
 \input{contents/TableOfContribution.tex}
 
-% References
-\input{contents/References.tex}
+% Acknowledgement
+\include{contents/Acknowledgement}
 
 % Report contents
+\include{contents/Introduction}
+\include{contents/ProjectStructure}
+\include{contents/Chart}
+\include{contents/SDL2GameStructure}
+\include{contents/Implementation}
+\include{contents/Conclusion}
+\include{contents/FutureWork}
+
+% References
+\include{contents/References}
 
 \end{document}
