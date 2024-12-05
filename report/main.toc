@@ -1,20 +1,16 @@
 \contentsline {section}{\numberline {1}Group Information}{2}{section.1}%
 \contentsline {section}{\numberline {2}Table of Contribution}{2}{section.2}%
-<<<<<<< HEAD
-\contentsline {section}{\numberline {3}List of References}{2}{section.3}%
-=======
-\contentsline {section}{\numberline {3}Acknowledgement}{2}{section.3}%
-\contentsline {section}{\numberline {4}Introduction}{3}{section.4}%
-\contentsline {section}{\numberline {5}Project Structure}{3}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Folder Structure}{3}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}File Structure}{5}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Variable, constant, class, structure}{5}{subsection.5.3}%
-\contentsline {subsection}{\numberline {5.4}Function Prototype and Definition}{5}{subsection.5.4}%
-\contentsline {section}{\numberline {6}Chart}{5}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Core class relationship}{5}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}GUI function relationship}{5}{subsection.6.2}%
-\contentsline {subsection}{\numberline {6.3}Program flowchart}{6}{subsection.6.3}%
-\contentsline {section}{\numberline {7}SDL2 Game Structure}{6}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Core Components}{6}{subsection.7.1}%
-\contentsline {section}{\numberline {8}List of References}{7}{section.8}%
->>>>>>> master
+\contentsline {section}{\numberline {3}Acknowledgement}{3}{section.3}%
+\contentsline {section}{\numberline {4}Introduction}{4}{section.4}%
+\contentsline {section}{\numberline {5}Project Structure}{5}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Folder Structure}{5}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}File Structure}{6}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Variable, constant, class, structure}{6}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Function Prototype and Definition}{6}{subsection.5.4}%
+\contentsline {section}{\numberline {6}Chart}{7}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Core class relationship}{7}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}GUI function relationship}{7}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Program flowchart}{7}{subsection.6.3}%
+\contentsline {section}{\numberline {7}SDL2 Game Structure}{8}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Core Components}{8}{subsection.7.1}%
+\contentsline {section}{\numberline {8}List of References}{9}{section.8}%
