@@ -288,10 +288,13 @@ void GameEngine::handleEvents() {
                         if (foldButtonFlag == false && drawButtonFlag == false) handleDrawButtonClickPvP(x, y);
                         handleNextButtonClickPvP(x, y);
                     } else if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
+                        if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
+                        if (foldButtonFlag == false) handleRaiseButtonClickPvP(x, y);
+                        if (foldButtonFlag == true || raiseButtonFlag == true) handleNextButtonClickPvP(x, y);
+                    } else if (currentDrawPokerRound == FIRST_BETTING_FOLD_CALL || currentDrawPokerRound == SECOND_BETTING_FOLD_CALL) {
                         if (foldButtonFlag == false && callButtonFlag == false && highestBet > 0) handleCallButtonClickPvP(x, y);
                         if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
-                        if (foldButtonFlag == false && callButtonFlag == false) handleRaiseButtonClickPvP(x, y);
-                        if (foldButtonFlag == true || callButtonFlag == true || raiseButtonFlag == true) handleNextButtonClickPvP(x, y);
+                        if (foldButtonFlag == true || callButtonFlag == true) handleNextButtonClickPvP(x, y);
                     } else if (currentDrawPokerRound == SHOWDOWN_ROUND) {
                         handleNextButtonClickPvP(x, y);
                     }
@@ -618,6 +621,9 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
             callButtonFlag = false;
             foldButtonFlag = false;
             raiseButtonFlag = false;
+        } else if (currentDrawPokerRound == FIRST_BETTING_FOLD_CALL || currentDrawPokerRound == SECOND_BETTING_FOLD_CALL) {
+            callButtonFlag = false;
+            foldButtonFlag = false;
         }
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     } 
@@ -717,11 +723,15 @@ const char* GameEngine::getCurrentGameModeString() const {
 const char* GameEngine::getCurrentRoundString() const {
     switch (currentDrawPokerRound) {
         case FIRST_BETTING_ROUND:
-            return "ROUND 1: Betting";
+            return "ROUND 1: Raise";
+        case FIRST_BETTING_FOLD_CALL:
+            return "ROUND 1: Fold/Call";
         case DRAW_ROUND:
             return "ROUND 2: Draw";
         case SECOND_BETTING_ROUND:
-            return "ROUND 3: Betting";
+            return "ROUND 3: Raise";
+        case SECOND_BETTING_FOLD_CALL:
+            return "ROUND 3: Fold/Call";
         case SHOWDOWN_ROUND:
             return "ROUND 4: Showdown";
         default:

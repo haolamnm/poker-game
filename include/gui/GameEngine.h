@@ -227,8 +227,10 @@ public:
 
     enum drawPokerRound {
         FIRST_BETTING_ROUND = 1,
+        FIRST_BETTING_FOLD_CALL,
         DRAW_ROUND,
         SECOND_BETTING_ROUND,
+        SECOND_BETTING_FOLD_CALL,
         SHOWDOWN_ROUND
     };
     drawPokerRound currentDrawPokerRound;
