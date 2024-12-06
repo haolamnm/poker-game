@@ -288,6 +288,7 @@ void GameEngine::handleEvents() {
             break;
         case SDL_MOUSEWHEEL:
             handleMouseWheelEvent(event);
+            break;
         default:
             break;
         }
