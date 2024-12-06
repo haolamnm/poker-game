@@ -288,7 +288,7 @@ void GameEngine::handleEvents() {
                         if (foldButtonFlag == false && drawButtonFlag == false) handleDrawButtonClickPvP(x, y);
                         handleNextButtonClickPvP(x, y);
                     } else if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
-                        if (foldButtonFlag == false && callButtonFlag == false) handleCallButtonClickPvP(x, y);
+                        if (foldButtonFlag == false && callButtonFlag == false && highestBet > 0) handleCallButtonClickPvP(x, y);
                         if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
                         if (foldButtonFlag == false && callButtonFlag == false) handleRaiseButtonClickPvP(x, y);
                         if (foldButtonFlag == true || callButtonFlag == true || raiseButtonFlag == true) handleNextButtonClickPvP(x, y);
@@ -617,6 +617,7 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
             foldButtonFlag = false;
             raiseButtonFlag = false;
         }
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     } 
 }
 
@@ -625,6 +626,7 @@ void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
     // TODO: Implement extern variable for number of bots
     if (currentPlayer < static_cast<int>(usernames.size()) + 5 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }
 
@@ -665,7 +667,7 @@ void GameEngine::handleRaiseButtonClickPvP(int mouseX, int mouseY) {
 
 void GameEngine::handleRaiseButtonClickSettings(int mouseX, int mouseY) {
     if (isButtonClicked(mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y)) {
-        defaultChipBetted += 20;     
+        defaultChipsBetted += 20;     
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }

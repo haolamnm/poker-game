@@ -25,6 +25,8 @@ bool isRaiseButtonClicked = false;
 bool raiseButtonFlag = false;
 int currentCardIndex = -1;
 
+unsigned int highestBet = 0;
+
 // Function to render the PvP screen
 void renderPvPScreen(GameEngine* game) {
     TTF_Font* bigFontVintage = game->getBigFontVintage();
@@ -68,7 +70,7 @@ void renderPvPScreen(GameEngine* game) {
 
             if (!isDealtPvP) {
                 isDealtPvP = true;
-                gameplay.entryFee = defaultChipBetted;
+                gameplay.entryFee = defaultChipsBetted;
                 gameplay.init(usernames, 0);
                 gameplay.resetDeck(); // Reset the deck for a new game
                 gameplay.dealCards(numberOfCards);
@@ -143,7 +145,7 @@ void renderPvPScreen(GameEngine* game) {
             int numberOfCards = 5;
             if (!isDealtPvP) {
                 isDealtPvP = true;
-                gameplay.entryFee = defaultChipBetted;
+                gameplay.entryFee = defaultChipsBetted;
                 gameplay.init(usernames, 0);
                 gameplay.resetDeck(); // Reset the deck for a new game
                 gameplay.dealCards(numberOfCards); 
@@ -207,6 +209,7 @@ void renderPvPScreen(GameEngine* game) {
                         raiseButtonFlag = true;
                         gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
                         gameplay.highestBet = std::max(gameplay.highestBet, gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
+                        highestBet = gameplay.highestBet;
                         gameplay.totalChipsBetted += 10;
 
                         std::cout << "Raise button clicked" << '\n';
@@ -217,8 +220,7 @@ void renderPvPScreen(GameEngine* game) {
                         gameplay.players[gameplay.players[game->currentPlayer].id].isFolded = true;
                         std::cout << "Fold button clicked" << '\n';
                     }
-
-                    if (callButtonFlag == false && isCallButtonClicked == true) {
+                    if (gameplay.highestBet > 0 && callButtonFlag == false && isCallButtonClicked == true) {
                         isCallButtonClicked = false;
                         callButtonFlag = true;
                         if (gameplay.players[gameplay.players[game -> currentPlayer].id].chips >= gameplay.highestBet &&

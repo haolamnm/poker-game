@@ -43,7 +43,8 @@ extern bool raiseButtonFlag;
 
 extern int currentCardIndex;
 
-extern int defaultChipBetted;
+extern unsigned int defaultChipsBetted;
+extern unsigned int highestBet;
 
 class GameEngine {
 private:

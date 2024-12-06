@@ -53,7 +53,7 @@ void renderPvEScreen(GameEngine* game) {
 
         if (!isDealtPvE) {
             isDealtPvE = true;
-            gameplay.entryFee = defaultChipBetted;
+            gameplay.entryFee = defaultChipsBetted;
             gameplay.init(usernames, 5);
             gameplay.resetDeck(); // Reset the deck for a new game
             gameplay.dealCards(numberOfCards);

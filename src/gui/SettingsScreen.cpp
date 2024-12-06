@@ -18,7 +18,7 @@ bool isMusicOn = true;
 bool isSoundEffectsOn = true;
 
 // For settings chip
-int defaultChipBetted = 20;
+unsigned int defaultChipsBetted = 20;
 
 // Function to render the Settings screen
 void renderSettingsScreen(GameEngine* game) {
@@ -77,8 +77,8 @@ void renderSettingsScreen(GameEngine* game) {
     game->handleButtonHover(rasieButtonTexture, mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render default chip betted
-    std::string defaultChipBettedText = "Default chip betted: " + std::to_string(defaultChipBetted);
-    game->renderText(renderer, smallFontVintage, defaultChipBettedText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
+    std::string defaultChipsBettedText = "Default chip betted: " + std::to_string(defaultChipsBetted);
+    game->renderText(renderer, smallFontVintage, defaultChipsBettedText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
 
     // TODO:
     // Implement the functionality to toggle the music and sound effects settings
