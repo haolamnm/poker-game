@@ -1,6 +1,19 @@
+/*
+FILE: src/core/Gameplay.cpp
+
+DESCRIPTION: Implementation file for the gameplay class. This file
+contains the implementation of the member functions of the gameplay
+class. Handle things like initializing the gameplay, dealing cards,
+determining the winner, etc.
+
+NOTE: Gameplay means the game mechanics, such as dealing cards, resetting the deck, determining the winner, etc. There are also
+some functions for all poker game mode.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #include "core/Gameplay.h"
 
-/* ------------------Gameplay------------------ */
 void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots) {
     totalChipsBetted = 0;
     this->numberOfPlayers = usernames.size() + numberOfBots;
@@ -125,4 +138,3 @@ int Gameplay::countSelectedCards(int id) {
     }
     return cnt;
 }
-/* ------------------End of Gameplay------------------ */

@@ -1,3 +1,20 @@
+/*
+FILE: src/core/Hand.cpp
+
+DESCRIPTION: Implementation file for the both hand and strenght 
+class. This file contains the implementation of the member 
+functions of the hand and strength class. Handle things like 
+showing the hand, sorting the hand, and evaluating the hand. 
+Also, there are functions to determine the strength of the hand 
+and compare two hands.
+
+NOTE: A hand is a set of cards held by a player during a game. 
+And the strength of a hand is determined by the combination of 
+cards
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #include "core/Hand.h"
 
 /* ------------------Hand------------------ */
