@@ -102,9 +102,6 @@ void renderPvPScreen(GameEngine* game) {
 
             // Render the 5 cards
             if (game->currentPlayer < gameplay.numberOfPlayers) {
-                // Render the current player's chips
-                // std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips);
-                // game->renderText(renderer, smallFont, chipText.c_str(), 780, 100, textColor, false, true);
                 // Render the "username" text
                 game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
                 game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
@@ -117,6 +114,9 @@ void renderPvPScreen(GameEngine* game) {
                     }
                 }
                 if (allCardsFaceUp) {
+                    std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips -
+                                                                  gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
+                    game->renderText(renderer, smallFont, chipText.c_str(), 780, 75, textColor, false, true);
                     game->renderText(renderer, mediumFont, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
                 }
                 SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
