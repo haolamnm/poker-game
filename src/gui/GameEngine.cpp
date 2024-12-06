@@ -341,8 +341,10 @@ void GameEngine::handleEvents() {
                         }
                         if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
                             if (callButtonFlag == false) handleCallButtonClickPvP(x, y);
-                            if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
-                            handleRaiseButtonClickPvP(x, y);
+                            if (foldButtonFlag == false) {
+                                handleFoldButtonClickPvP(x, y);
+                                handleRaiseButtonClickPvP(x, y);
+                            }
                         }
                     }
                 } else if (currentGameState == PVE_SCREEN) {

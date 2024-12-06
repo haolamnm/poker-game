@@ -173,7 +173,7 @@ void renderPvPScreen(GameEngine* game) {
                         }
                     }
                 }
-                if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND)) {
+                if (foldButtonFlag == false && (game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND)) {
                 if (isRaiseButtonClicked == true) {
                     isRaiseButtonClicked = false;
                     gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
