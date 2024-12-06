@@ -1,9 +1,18 @@
+/*
+FILE: include/core/Card.h
+
+DESCRIPTION: Header file for the card class. This file contains 
+the. This file contains the class declaration for a single card 
+in our game.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #ifndef CARD_H
 #define CARD_H
 
 #include <string>
 
-// Enumerations for suits and ranks
 enum Suits {
     SUIT_EMPTY = -1,
     CLUBS,
@@ -12,7 +21,6 @@ enum Suits {
     SPADES
 };
 
-// Enumerations for ranks
 enum Ranks {
     RANK_EMPTY = -1,
     TWO,
@@ -30,7 +38,6 @@ enum Ranks {
     ACE
 };
 
-// Card class: Represents a card in a deck of cards
 class Card {
 public:
     Suits suit = SUIT_EMPTY;

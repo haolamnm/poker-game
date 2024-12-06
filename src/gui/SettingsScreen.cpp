@@ -1,4 +1,15 @@
-// Description: Implementation of the renderSettingsScreen function
+/*
+FILE: src/gui/SettingsScreen.cpp
+
+DESCRIPTION: Implementation file for the settings screen. This file is
+part of the GUI subsystem and is used to render the settings screen. This
+file contains the function definition for rendering the settings screen.
+
+NOTE: We can configure the background music, sound effects, and game mode
+in this screen.
+
+AUTHOR: Lam Chi Hao.
+*/
 
 #include "gui/SettingsScreen.h"
 

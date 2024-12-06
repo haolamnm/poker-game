@@ -1,3 +1,14 @@
+/*
+FILE: include/core/Login.h
+
+DESCRIPTION: Header file for the login class. This file contains
+the class declaration for the login of the game. In the class, we
+handle the login of the game, create a new player, and show the
+status of the login.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #ifndef LOGIN_H
 #define LOGIN_H
 
@@ -16,7 +27,6 @@ private:
     Storage storage;
     std::string status;
 public:
-    // std::string statusCode;
     StatusCode statusCode = OK;
 
     bool login(const std::string& username, const std::string& password);
@@ -24,4 +34,4 @@ public:
     const std::string show();
 };
 
-#endif // LOGIN_H
+#endif

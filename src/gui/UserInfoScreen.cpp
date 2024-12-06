@@ -1,4 +1,18 @@
-// Description: Implementation of the UserInfoScreen rendering and input handling functions
+/*
+FILE: src/gui/UserInfoScreen.cpp
+
+DESCRIPTION: Implementation file for the user info screen. This 
+file is part of the GUI subsystem and is used to render the user 
+info screen. This file contains the function definition for 
+rendering the user info screen. In this file, we implement the
+handleTextInput function to handle text input from the user.
+
+NOTE: The user info screen is where the player can create a new
+account or login to an existing account. After logging in, the
+player will be pushed into the lobby.
+
+AUTHOR: Lam Chi Hao & Le Nguyen Anh Tri.
+*/
 
 #include "gui/UserInfoScreen.h"
 
@@ -92,9 +106,6 @@ void renderUserInfoScreen(GameEngine* game) {
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
-    // Get the window size
-    int windowWidth, windowHeight;
-    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
     // Render the User Info screen background
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
@@ -102,7 +113,7 @@ void renderUserInfoScreen(GameEngine* game) {
 
     // Render the "Login" text at the top
     SDL_Color textColor = {255, 255, 255, 255};
-    game->renderText(renderer, font, "Login", windowWidth / 2, 50, textColor, true);
+    game->renderText(renderer, font, "Login", WINDOW_WIDTH / 2, 50, textColor, true);
 
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
@@ -114,10 +125,10 @@ void renderUserInfoScreen(GameEngine* game) {
     const int inputFieldHeight = 40;
 
     // Render "username: " text
-    game->renderText(renderer, inputFont, "username: ", windowWidth / 2 - inputFieldWidth / 2 - 190, 195, textColor, false);
+    game->renderText(renderer, inputFont, "username: ", WINDOW_WIDTH / 2 - inputFieldWidth / 2 - 190, 195, textColor, false);
 
     // Render username input text
-    SDL_Rect usernameInputRect = {windowWidth / 2 - inputFieldWidth / 2, 200, inputFieldWidth, inputFieldHeight};
+    SDL_Rect usernameInputRect = {WINDOW_WIDTH / 2 - inputFieldWidth / 2, 200, inputFieldWidth, inputFieldHeight};
     SDL_RenderSetClipRect(renderer, &usernameInputRect); // Set clipping rectangle
     if (!usernameInput.empty()) {
         SDL_Surface* usernameInputSurface = TTF_RenderText_Solid(inputFont, usernameInput.c_str(), textColor);
@@ -146,11 +157,11 @@ void renderUserInfoScreen(GameEngine* game) {
     SDL_RenderDrawRect(renderer, &usernameBorderRect);
 
     // Render "password: " text
-    game->renderText(renderer, inputFont, "password: ", windowWidth / 2 - inputFieldWidth / 2 - 190, 295, textColor, false);
+    game->renderText(renderer, inputFont, "password: ", WINDOW_WIDTH / 2 - inputFieldWidth / 2 - 190, 295, textColor, false);
 
     // Render password input text (masked with asterisks)
     std::string maskedPassword(passwordInput.length(), '*');
-    SDL_Rect passwordInputRect = {windowWidth / 2 - inputFieldWidth / 2, 300, inputFieldWidth, inputFieldHeight};
+    SDL_Rect passwordInputRect = {WINDOW_WIDTH / 2 - inputFieldWidth / 2, 300, inputFieldWidth, inputFieldHeight};
     SDL_RenderSetClipRect(renderer, &passwordInputRect); // Set clipping rectangle
     if (!maskedPassword.empty()) {
         SDL_Surface* passwordInputSurface = TTF_RenderText_Solid(inputFont, maskedPassword.c_str(), textColor);
@@ -180,28 +191,28 @@ void renderUserInfoScreen(GameEngine* game) {
 
     // Render the new account prompt and buttons if needed
     if (showNewAccountPrompt) {
-        game->renderText(renderer, promptFont, "The account seems does not exist!", windowWidth / 2, 400, textColor, true);
-        game->renderText(renderer, promptFont, "Do you want to create a new account?", windowWidth / 2, 425, textColor, true);
+        game->renderText(renderer, promptFont, "The account seems does not exist!", WINDOW_WIDTH / 2, 400, textColor, true);
+        game->renderText(renderer, promptFont, "Do you want to create a new account?", WINDOW_WIDTH / 2, 425, textColor, true);
 
         // Define button dimensions
         const int buttonWidth = 80;
         const int buttonHeight = 40;
 
         // Render "Yes" button
-        yesButtonRect = {windowWidth / 2 - buttonWidth, 450, buttonWidth, buttonHeight};
+        yesButtonRect = {WINDOW_WIDTH / 2 - buttonWidth, 450, buttonWidth, buttonHeight};
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color for "Yes" button
         SDL_RenderFillRect(renderer, &yesButtonRect);
         game->renderText(renderer, inputFont, "Yes", yesButtonRect.x + buttonWidth / 2, yesButtonRect.y + buttonHeight / 2 - 25, textColor, true);
 
         // Render "No" button
-        noButtonRect = {windowWidth / 2, 450, buttonWidth, buttonHeight};
+        noButtonRect = {WINDOW_WIDTH / 2, 450, buttonWidth, buttonHeight};
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color for "No" button
         SDL_RenderFillRect(renderer, &noButtonRect);
         game->renderText(renderer, inputFont, "No", noButtonRect.x + buttonWidth / 2, noButtonRect.y + buttonHeight / 2 - 25, textColor, true);
     }
 
     if (lobby.getUsernames().size() >= MAX_LOBBY_SIZE) {
-        game->renderText(renderer, promptFont, "The lobby is full!", windowWidth / 2, 500, textColor, true);
+        game->renderText(renderer, promptFont, "The lobby is full!", WINDOW_WIDTH / 2, 500, textColor, true);
     }
     // Close the input font
     TTF_CloseFont(inputFont);

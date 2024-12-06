@@ -13,4 +13,6 @@
 \contentsline {subsection}{\numberline {6.3}Program flowchart}{7}{subsection.6.3}%
 \contentsline {section}{\numberline {7}SDL2 Game Structure}{8}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Core Components}{8}{subsection.7.1}%
-\contentsline {section}{\numberline {8}List of References}{9}{section.8}%
+\contentsline {section}{\numberline {8}Implementation}{9}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Core Mechanics}{9}{subsection.8.1}%
+\contentsline {section}{\numberline {9}List of References}{10}{section.9}%

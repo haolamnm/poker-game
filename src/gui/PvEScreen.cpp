@@ -1,4 +1,15 @@
-// Description: Implementation of the renderPvEScreen function
+/*
+FILE: src/gui/PvEScreen.cpp
+
+Description: Implementation file for the Player vs Environment
+(PvE). This file is part of the GUI subsystem and is used to
+render the PvE screen. This file contains the function definition
+for rendering the PvE screen.
+
+NOTE: PvE only availables in the BASIC POKER game mode.
+
+AUTHOR: Lam Chi Hao & Le Nguyen Anh Tri.
+*/
 
 #include "gui/PvEScreen.h"
 
@@ -15,8 +26,6 @@ void renderPvEScreen(GameEngine* game) {
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
     
     // Get window dimensions
-    int windowWidth, windowHeight;
-    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
     // Render the PvE screen background
     SDL_SetRenderDrawColor(renderer, 9, 70, 27, 255);
@@ -38,7 +47,7 @@ void renderPvEScreen(GameEngine* game) {
         // Render a message indicating that at least 1 player is needed
         SDL_Color textColor = {255, 0, 0, 255}; // Red color
         TTF_Font* msgFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 28);
-        game->renderText(renderer, msgFont, "Need at least 1 player to play PvE", windowWidth / 2, windowHeight / 2, textColor, true);
+        game->renderText(renderer, msgFont, "Need at least 1 player to play PvE", WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, textColor, true);
         TTF_CloseFont(msgFont);
     } else {
         static Gameplay gameplay;
@@ -87,7 +96,7 @@ void renderPvEScreen(GameEngine* game) {
         if (game->currentPlayer < gameplay.numberOfPlayers) {
             // Render the "username" text
             // gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str()
-            game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), windowWidth / 2, 50, textColor, true);
+            game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
             game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
             SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
             bool allCardsFaceUp = true;
@@ -98,20 +107,20 @@ void renderPvEScreen(GameEngine* game) {
                 }
             }
             if (allCardsFaceUp) {
-                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
             }
             SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
             game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
         } else if (game->currentPlayer == gameplay.numberOfPlayers) {
             if (gameplay.winner != -1) {
                 std::string winner = gameplay.players[gameplay.winner].username;
-                game->renderText(renderer, font, "Winner:", windowWidth / 2, 50, textColor, true);
-                game->renderText(renderer, font, winner.c_str(), windowWidth / 2, 125, textColor, true);
+                game->renderText(renderer, font, "Winner:", WINDOW_WIDTH / 2, 50, textColor, true);
+                game->renderText(renderer, font, winner.c_str(), WINDOW_WIDTH / 2, 125, textColor, true);
                 game->renderCards(cardSets[gameplay.winner], false, 0, false);
                 // Winner hand stregth
-                game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), windowWidth / 2, 450, textColor, true);
+                game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
             } else {
-                game->renderText(renderer, font, "It's a tie!", windowWidth / 2, 50, textColor, true);
+                game->renderText(renderer, font, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
             }
         }
     }

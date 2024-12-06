@@ -1,5 +1,16 @@
-// Description: Header file for precompiled header
-// Purpose: To include all the necessary header files in one place
+/*
+FILE: include/pch.h
+
+DESCRIPTION: Precompiled header file for the project. This file 
+contains the necessary header files and constants for game 
+assets such as images, sounds, and fonts.
+
+NOTE: There are lots of constexprs, which are used to define
+constants at compile time, avoid using #define macros. These
+constants can be used in multiple files.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
 
 #ifndef PCH_H
 #define PCH_H
@@ -11,15 +22,20 @@
 
 #include <string>
 
-// Text colors for console output
-// Purpose: Indicates different types of debug messages in the console
+/*
+NOTE: The following constants are used for colors in the game.
+PURPOSE: Handle the debug messages when running the game.
+*/
 #define RED_TEXT    "\033[1;31m"
 #define GREEN_TEXT  "\033[1;32m"
 #define YELLOW_TEXT "\033[1;33m"
 #define BLUE_TEXT   "\033[1;34m"
 #define RESET_TEXT  "\033[0m"
 
-// Constants for button dimensions and positions
+/*
+NOTE: The following constants are used for define dimensions of 
+the window and buttons in the game.
+*/
 constexpr int WINDOW_WIDTH = 800;
 constexpr int WINDOW_HEIGHT = 600;
 
@@ -57,10 +73,13 @@ constexpr int RAISE_BUTTON_Y = 460;
 constexpr int DRAW_BUTTON_X = 90;
 constexpr int DRAW_BUTTON_Y = 460;
 
-// Constants for card dimensions
 constexpr int CARD_WIDTH = 100;
 constexpr int CARD_HEIGHT = 150;
 
+/*
+NOTE: The following constants are used for define the paths of
+the game assets such as images, sounds, and fonts.
+*/
 constexpr const char* CARD_A_C = "assets/imgs/cards/A-C.png";
 constexpr const char* CARD_A_D = "assets/imgs/cards/A-D.png";
 constexpr const char* CARD_A_H = "assets/imgs/cards/A-H.png";
@@ -130,33 +149,56 @@ constexpr const char* CARD_JOKER = "assets/imgs/cards/JOKER.png";
 constexpr const char* CARD_BACK = "assets/imgs/cards/BACK.png";
 
 /*
-enum Suits {
-    SUIT_EMPTY = -1,
-    CLUBS,
-    DIAMONDS,
-    HEARTS,
-    SPADES
-};
-
-// Enumerations for ranks
-enum Ranks {
-    RANK_EMPTY = -1,
-    ACE,
-    TWO,
-    THREE,
-    FOUR,
-    FIVE,
-    SIX,
-    SEVEN,
-    EIGHT,
-    NINE,
-    TEN,
-    JACK,
-    QUEEN,
-    KING
-};
+NOTE: The following constants are used for define the icon and
+cursor of the game.
 */
+constexpr const char* ICON_PATH = "assets/imgs/icon/icon.png";
+constexpr const char* CURSOR_PATH = "assets/imgs/cursor/cursor.png";
 
+/*
+NOTE: The following constants are used for define the audio
+settings in the game.
+*/
+constexpr int AUDIO_FREQUENCY = 44100;
+constexpr int AUDIO_CHANNELS = 2;
+constexpr int AUDIO_CHUNK_SIZE = 2048;
+constexpr int BACKGROUND_MUSIC_VOLUME = 0; // 0 to 128
+constexpr const char* BUTTON_CLICK_SOUND_PATH = "assets/audios/button_click.wav";
+constexpr const char* BACKGROUND_MUSIC_PATH = "assets/audios/background_music.mp3";
+
+/*
+NOTE: The following constants are used for define the font
+settings in the game.
+*/
+constexpr int FONT_SIZE = 64;
+constexpr const char* FONT_PATH = "assets/fonts/SVN-Vintage.otf";
+
+/*
+NOTE: The following constants are used for define the paths of
+the buttons in the game.
+*/
+constexpr const char* BUTTON_HOME_PATH = "assets/imgs/buttons/home.png";
+constexpr const char* BUTTON_FOLD_PATH = "assets/imgs/buttons/fold.png";
+constexpr const char* BUTTON_CALL_PATH = "assets/imgs/buttons/call.png";
+constexpr const char* BUTTON_RESET_PATH = "assets/imgs/buttons/draw.png";
+constexpr const char* BUTTON_RAISE_PATH = "assets/imgs/buttons/raise.png";
+constexpr const char* BUTTON_ABOUT_PATH = "assets/imgs/buttons/about_us.png";
+constexpr const char* BUTTON_PREV_PATH = "assets/imgs/buttons/arrow_left.png";
+constexpr const char* BUTTON_NEXT_PATH = "assets/imgs/buttons/arrow_right.png";
+constexpr const char* BUTTON_TUTORIAL_PATH = "assets/imgs/buttons/tutorial.png";
+constexpr const char* BUTTON_SETTINGS_PATH = "assets/imgs/buttons/settings.png";
+constexpr const char* BUTTON_USER_INFO_PATH = "assets/imgs/buttons/user_info.png";
+constexpr const char* BUTTON_LEADERBOARD_PATH = "assets/imgs/buttons/leaderboard.png";
+constexpr const char* BUTTON_SOUND_ON_PATH = "assets/imgs/buttons/sound_effects_on.png";
+constexpr const char* BUTTON_SOUND_OFF_PATH = "assets/imgs/buttons/sound_effects_off.png";
+constexpr const char* BUTTON_MUSIC_ON_PATH = "assets/imgs/buttons/background_music_on.png";
+constexpr const char* BUTTON_MUSIC_OFF_PATH = "assets/imgs/buttons/background_music_off.png";
+
+/*
+NOTE: This is an array of the paths of the card images. We use 
+this to easily retrieve the image of a card based on its suit 
+and rank.
+*/
 const std::string CARD_FILES[52] = {
     CARD_2_C, CARD_2_D, CARD_2_H, CARD_2_S,
     CARD_3_C, CARD_3_D, CARD_3_H, CARD_3_S,
@@ -173,4 +215,4 @@ const std::string CARD_FILES[52] = {
     CARD_A_C, CARD_A_D, CARD_A_H, CARD_A_S
 };
 
-#endif // PCH_H
+#endif

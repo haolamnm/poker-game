@@ -1,3 +1,15 @@
+/*
+FILE: include/core/Gameplay.h
+
+DESCRIPTION: Header file for the gameplay class. This file 
+contains class declaration for the gameplay of the game.
+
+NOTE: Gameplay means the game mechanics, such as dealing cards, resetting the deck, determining the winner, etc. There are also
+some functions for DRAW POKER game mode.
+
+AUTHOR: Le Nguyen Anh Tri & Lam Chi Hao.
+*/
+
 #ifndef GAMEPLAY_H
 #define GAMEPLAY_H
 
@@ -11,15 +23,17 @@ private:
     Deck deck;
     Storage storage;
     Leaderboard leaderboard;
-
 public:
     int numberOfPlayers;
     int winner;
     unsigned int totalChipsBetted;
     unsigned int highestBet;
-
     std::vector<Player> players;
+
+    // Functions to initialize the gameplay
     void init(const std::vector<std::string>& usernames, int numberOfBots = 0);
+
+    // Functions to handle the gameplay
     void dealCards(int numberOfCards);
     void drawPlayerCards(Player& player);
     void whoWins();
@@ -30,4 +44,4 @@ public:
     int countSelectedCards(int id);
 };
 
-#endif // GAMEPLAY_H
+#endif

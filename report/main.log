@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.11.26)  5 DEC 2024 13:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (MiKTeX 24.4) (preloaded format=pdflatex 2024.11.26)  5 DEC 2024 15:36
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -612,7 +612,7 @@ Package hyperref Info: Link coloring ON on input line 92.
 
 \c@lstlisting=\count343
 (contents/Coverpaper.tex
-<figures/hcmus-logo.jpeg, id=70, 496.9767pt x 496.9767pt>
+<figures/hcmus-logo.jpeg, id=78, 496.9767pt x 496.9767pt>
 File: figures/hcmus-logo.jpeg Graphic file (type jpg)
 <use figures/hcmus-logo.jpeg>
 Package pdftex.def Info: figures/hcmus-logo.jpeg  used on input line 13.
@@ -706,6 +706,12 @@ l.113 \include{contents/SDL2GameStructure}
 \openout2 = `contents/Implementation.aux'.
 
  (contents/Implementation.tex)
+
+[9
+
+
+
+]
 \openout2 = `contents/Conclusion.aux'.
 
  (contents/Conclusion.tex)
@@ -716,10 +722,7 @@ l.113 \include{contents/SDL2GameStructure}
 
  (contents/References.tex)
 
-[9
-
-
-
+[10
 
 
 
@@ -735,20 +738,20 @@ LaTeX2e <2024-11-01>
 L3 programming layer <2024-11-02>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: C1DDCDEB482ABE4C004A38DB0047B613;2388.
+(rerunfilecheck)             Checksum: A0B54C880DDFC7417C6381389B226665;2633.
  ) 
 Here is how much of TeX's memory you used:
- 23025 strings out of 473682
- 428160 string characters out of 5720167
- 810563 words of memory out of 5000000
- 45628 multiletter control sequences out of 15000+600000
+ 23032 strings out of 473682
+ 428260 string characters out of 5720167
+ 810651 words of memory out of 5000000
+ 45632 multiletter control sequences out of 15000+600000
  566700 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  102i,11n,107p,622b,680s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\hao\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1200.pk><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmcsc10.pfb><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Users/hao/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on main.pdf (10 pages, 379396 bytes).
+Output written on main.pdf (11 pages, 380990 bytes).
 PDF statistics:
- 185 PDF objects out of 1000 (max. 8388607)
- 30 named destinations out of 1000 (max. 500000)
- 146 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 203 PDF objects out of 1000 (max. 8388607)
+ 33 named destinations out of 1000 (max. 500000)
+ 162 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -2,10 +2,12 @@
 2,lmao,34,0.441176,One Pair,290
 3,test1,242,0.438017,One Pair,840
 4,test2,245,0.436735,One Pair,870
-5,test3,87,0.333333,High Card,240
-6,haolam,65,0.292308,One Pair,100
-7,anhtri,74,0.243243,High Card,210
-8,htbtran,1,0,High Card,190
-9,lvminh,1,0,One Pair,190
-10,meomeo,0,0,None,200
-11,hminh,1,0,High Card,190
+5,window2,7,0.428571,One Pair,280
+6,test3,87,0.333333,High Card,240
+7,haolam,65,0.292308,One Pair,100
+8,window1,7,0.285714,High Card,160
+9,anhtri,74,0.243243,High Card,210
+10,hminh,1,0,High Card,190
+11,htbtran,1,0,High Card,190
+12,lvminh,1,0,One Pair,190
+13,meomeo,0,0,None,200

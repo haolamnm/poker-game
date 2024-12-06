@@ -1,4 +1,18 @@
-// Description: This file contains the implementation of the renderLeaderboardScreen function
+/*
+FILE: src/gui/LeaderboardScreen.cpp
+
+DESCRIPTION: Implementation file for the leaderboard screen. This 
+file is part of the GUI subsystem and is used to render the 
+leaderboard screen. This file contains the function definition
+for rendering the leaderboard screen. We also handle the mouse
+scroll event in this file.
+
+NOTE: The leaderboard screen is where the player can view the
+leaderboard of the game. The leaderboard shows the top players
+based on their winrate.
+
+AUTHOR: Lam Chi Hao & Le Nguyen Anh Tri.
+*/
 
 #include "gui/LeaderboardScreen.h"
 
@@ -6,7 +20,6 @@ int scrollOffset = 0;
 int maxScrollOffset = 0;
 const int SCROLL_SPEED = 15;
 
-// Function to render the leaderboard screen
 void renderLeaderboardScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
     SDL_Window* window = game->getWindow();
@@ -15,9 +28,6 @@ void renderLeaderboardScreen(GameEngine* game) {
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
-    // Get the window dimensions
-    int windowWidth, windowHeight;
-    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
     // Render the Leaderboard screen background
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
@@ -25,7 +35,7 @@ void renderLeaderboardScreen(GameEngine* game) {
 
     // Render the Leaderboard screen title
     SDL_Color textColor = {255, 255, 255, 255};
-    game->renderText(renderer, font, "Leaderboard", windowWidth / 2, 50, textColor, true);
+    game->renderText(renderer, font, "Leaderboard", WINDOW_WIDTH / 2, 50, textColor, true);
 
     // Load the font for the leaderboard entries
     TTF_Font* leaderboardFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
@@ -56,7 +66,6 @@ void renderLeaderboardScreen(GameEngine* game) {
 
     maxScrollOffset = std::max(0, (nRow * 30) - (490 - 180)); // Maximum scroll offset
 
-    // Render leaderboard entries
     startY += 40 - scrollOffset; // Move down for the first row of data
     for (int i = 0; i < nRow; i++) {
         startX = 50; // Reset to the start of the row
@@ -70,7 +79,7 @@ void renderLeaderboardScreen(GameEngine* game) {
     }
 
     if ((nRow * 30) > (490 - 180)) {
-        game->renderText(renderer, leaderboardFont, "Scroll to view more", windowWidth / 2, 550, textColor, true);
+        game->renderText(renderer, leaderboardFont, "Scroll to view more", WINDOW_WIDTH / 2, 550, textColor, true);
     }
 
     // Render the back button
