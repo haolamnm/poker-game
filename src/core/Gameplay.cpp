@@ -16,6 +16,7 @@ AUTHOR: Le Nguyen Anh Tri.
 
 void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots) {
     totalChipsBetted = 0;
+    highestBet = 0;
     this->numberOfPlayers = usernames.size() + numberOfBots;
     players.assign(numberOfPlayers, Player());
     for (int i = 0; i < numberOfPlayers; i++) {

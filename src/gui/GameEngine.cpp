@@ -292,6 +292,8 @@ void GameEngine::handleEvents() {
                         if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
                         if (foldButtonFlag == false && callButtonFlag == false) handleRaiseButtonClickPvP(x, y);
                         if (foldButtonFlag == true || callButtonFlag == true || raiseButtonFlag == true) handleNextButtonClickPvP(x, y);
+                    } else if (currentDrawPokerRound == SHOWDOWN_ROUND) {
+                        handleNextButtonClickPvP(x, y);
                     }
                 }
             } else if (currentGameState == PVE_SCREEN) {

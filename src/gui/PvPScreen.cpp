@@ -175,6 +175,49 @@ void renderPvPScreen(GameEngine* game) {
                 std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
                 game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
 
+
+                if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND) && foldButtonFlag == false) {
+                    if (isRaiseButtonClicked == true) {
+                        isRaiseButtonClicked = false;
+                        raiseButtonFlag = true;
+                        gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
+                        if (gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted > gameplay.highestBet) {
+                            gameplay.highestBet = gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted;
+                            highestBet = gameplay.highestBet;
+                        }
+                        gameplay.totalChipsBetted += 10;
+
+                        std::cout << "Raise button clicked" << '\n';
+                    }
+                    if (foldButtonFlag == false && isFoldButtonClicked == true) {
+                        isFoldButtonClicked = false;
+                        foldButtonFlag = true;
+                        gameplay.players[gameplay.players[game->currentPlayer].id].isFolded = true;
+                        std::cout << "Fold button clicked" << '\n';
+                    }
+                    if (gameplay.highestBet > 0 && callButtonFlag == false && isCallButtonClicked == true) {
+                        isCallButtonClicked = false;
+                        callButtonFlag = true;
+                        if (gameplay.players[gameplay.players[game->currentPlayer].id].chips >= gameplay.highestBet &&
+                            gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted < gameplay.highestBet) {
+                            int cost = gameplay.highestBet - gameplay.players[game -> currentPlayer].chipsBetted;
+                            gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += cost;
+                            gameplay.totalChipsBetted += cost;
+                        } else {
+                            // render not enough money to call
+
+                        }
+                        std::cout << "Call button clicked" << '\n';
+                    }
+                }
+                std::cout << gameplay.highestBet << '\n';
+                int Y_GAP = 25;
+                for (int i = 0; i < game->currentPlayer; i++) {
+                    if (gameplay.players[gameplay.players[i].id].chipsBetted < gameplay.highestBet) {
+                        game->renderText(renderer, smallFontVintage, gameplay.players[gameplay.players[i].id].username.c_str(), 25, 75 + i * Y_GAP, textColor, false);
+                    }
+                }
+
                 if (game->currentDrawPokerRound == GameEngine::DRAW_ROUND) {
                     if (drawButtonFlag == false && isDrawButtonClicked == true) {
                         isDrawButtonClicked = false;
@@ -202,40 +245,6 @@ void renderPvPScreen(GameEngine* game) {
                         }
                     }
                 }
-
-                if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND) && foldButtonFlag == false) {
-                    if (isRaiseButtonClicked == true) {
-                        isRaiseButtonClicked = false;
-                        raiseButtonFlag = true;
-                        gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
-                        gameplay.highestBet = std::max(gameplay.highestBet, gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
-                        highestBet = gameplay.highestBet;
-                        gameplay.totalChipsBetted += 10;
-
-                        std::cout << "Raise button clicked" << '\n';
-                    }
-                    if (foldButtonFlag == false && isFoldButtonClicked == true) {
-                        isFoldButtonClicked = false;
-                        foldButtonFlag = true;
-                        gameplay.players[gameplay.players[game->currentPlayer].id].isFolded = true;
-                        std::cout << "Fold button clicked" << '\n';
-                    }
-                    if (gameplay.highestBet > 0 && callButtonFlag == false && isCallButtonClicked == true) {
-                        isCallButtonClicked = false;
-                        callButtonFlag = true;
-                        if (gameplay.players[gameplay.players[game -> currentPlayer].id].chips >= gameplay.highestBet &&
-                            gameplay.players[gameplay.players[game -> currentPlayer].id].chipsBetted < gameplay.highestBet) {
-                            int cost = gameplay.highestBet - gameplay.players[game -> currentPlayer].chipsBetted;
-                            gameplay.players[gameplay.players[game -> currentPlayer].id].chipsBetted += cost;
-                            gameplay.totalChipsBetted += cost;
-                        } else {
-                            // render not enough money to call
-
-                        }
-                        std::cout << "Call button clicked" << '\n';
-                        }
-                }
-
                 // Render round text                
                 game->renderText(renderer, mediumFontVintage, game->getCurrentRoundString(), WINDOW_WIDTH / 2, 50, textColor, true);
 
