@@ -20,12 +20,9 @@ bool isSavedPvE = false;
 // Function to render the PvE screen
 void renderPvEScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
-    SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
-    
-    // Get window dimensions
 
     // Render the PvE screen background
     SDL_SetRenderDrawColor(renderer, 9, 70, 27, 255);
@@ -59,7 +56,10 @@ void renderPvEScreen(GameEngine* game) {
             gameplay.resetDeck(); // Reset the deck for a new game
             gameplay.dealCards(numberOfCards);
         }
-        const char* cardSets[gameplay.numberOfPlayers][5];
+        const char*** cardSets = new const char**[gameplay.numberOfPlayers];
+        for (int i = 0; i < gameplay.numberOfPlayers; ++i) {
+            cardSets[i] = new const char*[5];
+        }
         // Array of card file paths
         for (int i = 0; i < gameplay.numberOfPlayers; i++) {
             for (int j = 0; j < numberOfCards; j++) {
@@ -123,5 +123,9 @@ void renderPvEScreen(GameEngine* game) {
                 game->renderText(renderer, font, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
             }
         }
+        for (int i = 0; i < gameplay.numberOfPlayers; ++i) {
+            delete[] cardSets[i];
+        }
+        delete[] cardSets;
     }
 }

@@ -190,7 +190,7 @@ void Leaderboard::updateLeaderboard() {
     std::sort(players.begin(), players.end(), [&](Player& a, Player& b) {
         return a.winrate > b.winrate;
     });
-    for (int i = 0; i < players.size(); i++) {
+    for (int i = 0; i < static_cast<int>(players.size()); i++) {
         players[i].rank = i + 1;
     }
     saveLeaderboard();

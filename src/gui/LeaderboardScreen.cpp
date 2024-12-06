@@ -22,7 +22,6 @@ const int SCROLL_SPEED = 15;
 
 void renderLeaderboardScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
-    SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
 

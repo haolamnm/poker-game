@@ -585,7 +585,7 @@ void GameEngine::handlePrevButtonClickTutorial(int mouseX, int mouseY) {
 
 void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
     std::vector<std::string> usernames = lobby.getUsernames();
-    if (currentPlayer < usernames.size() && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    if (currentPlayer < static_cast<int>(usernames.size()) && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
         if (currentDrawPokerRound == DRAW_ROUND) {
             drawButtonFlag = false;
@@ -597,7 +597,8 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
 
 void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
     std::vector<std::string> usernames = lobby.getUsernames();
-    if (currentPlayer < usernames.size() + 5 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    // TODO: Implement extern variable for number of bots
+    if (currentPlayer < static_cast<int>(usernames.size()) + 5 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
     }
 }

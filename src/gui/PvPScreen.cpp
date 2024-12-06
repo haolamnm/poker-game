@@ -30,7 +30,6 @@ void renderPvPScreen(GameEngine* game) {
     TTF_Font* mediumFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 40);
     TTF_Font* smallFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
     TTF_Font* roundFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 34);
-    SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
@@ -63,7 +62,7 @@ void renderPvPScreen(GameEngine* game) {
         TTF_CloseFont(msgFont);
     } 
     
-    else if (game->currentPlayer <= usernames.size()) {
+    else if (game->currentPlayer <= static_cast<int>(usernames.size())) {
         // Render the current game mode at the bottom of the screen
         std::string gameModeText = "Game Mode: " + std::string(game->getCurrentGameModeString());
         game->renderText(renderer, smallFont, gameModeText.c_str(), WINDOW_WIDTH / 2, WINDOW_HEIGHT - 50, textColor, true);
@@ -77,7 +76,10 @@ void renderPvPScreen(GameEngine* game) {
                 gameplay.resetDeck(); // Reset the deck for a new game
                 gameplay.dealCards(numberOfCards);
             }
-            const char* cardSets[usernames.size()][5];
+            const char*** cardSets = new const char**[usernames.size()];
+            for (size_t i = 0; i < usernames.size(); ++i) {
+                cardSets[i] = new const char*[5];
+            }
             // Array of card file paths
             for (int i = 0; i < gameplay.numberOfPlayers; i++) {
                 for (int j = 0; j < numberOfCards; j++) {
@@ -121,7 +123,7 @@ void renderPvPScreen(GameEngine* game) {
                 }
                 SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
                 game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-            } else if (game->currentPlayer == usernames.size()) {
+            } else if (game->currentPlayer == static_cast<int>(usernames.size())) {
                 if (gameplay.winner != -1) {
                     std::string winner = gameplay.players[gameplay.winner].username;
                     game->renderText(renderer, font, "Winner:", WINDOW_WIDTH / 2, 50, textColor, true);
@@ -133,6 +135,10 @@ void renderPvPScreen(GameEngine* game) {
                     game->renderText(renderer, font, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
                 }
             }
+            for (size_t i = 0; i < usernames.size(); ++i) {
+                delete[] cardSets[i];
+            }
+            delete[] cardSets;
         } else if (game->currentGameMode == GameEngine::DRAW_POKER) {
             static Gameplay gameplay;
             int numberOfCards = 5;
@@ -143,7 +149,10 @@ void renderPvPScreen(GameEngine* game) {
                 gameplay.dealCards(numberOfCards);
             }
 
-            const char* cardSets[usernames.size()][5];
+            const char*** cardSets = new const char**[usernames.size()];
+            for (size_t i = 0; i < usernames.size(); ++i) {
+                cardSets[i] = new const char*[5];
+            }
             // Array of card file paths
             for (int i = 0; i < gameplay.numberOfPlayers; i++) {
                 for (int j = 0; j < numberOfCards; j++) {
@@ -287,10 +296,14 @@ void renderPvPScreen(GameEngine* game) {
                 } else {
                     game->renderText(renderer, font, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
                 }
-            } else if (game->currentPlayer == usernames.size()) {
+            } else if (game->currentPlayer == static_cast<int>(usernames.size())) {
                 game->currentDrawPokerRound = (GameEngine::drawPokerRound) ((int) game->currentDrawPokerRound + 1);
                 game->currentPlayer = 0;
             }
+            for (size_t i = 0; i < usernames.size(); ++i) {
+                delete[] cardSets[i];
+            }
+            delete[] cardSets;
         }
     }
     TTF_CloseFont(mediumFont);

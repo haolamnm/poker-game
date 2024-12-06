@@ -17,7 +17,6 @@ AUTHOR: Lam Chi Hao.
 
 void renderAboutScreen(GameEngine* game) {
     TTF_Font* font = game->getFont();
-    SDL_Window* window = game->getWindow();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
 

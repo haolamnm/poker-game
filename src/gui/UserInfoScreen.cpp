@@ -87,7 +87,6 @@ void handleTextInput(SDL_Event& event) {
 void renderUserInfoScreen(GameEngine* game) {
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
-    SDL_Window* window = game->getWindow();
     TTF_Font* font = game->getFont();
 
     // Load a smaller font for the input fields

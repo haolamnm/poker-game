@@ -7,7 +7,7 @@ void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots)
     players.assign(numberOfPlayers, Player());
     for (int i = 0; i < numberOfPlayers; i++) {
         players[i].id = i;
-        if (i < usernames.size()) {
+        if (i < static_cast<int>(usernames.size())) {
             players[i].username = usernames[i];
             std::vector<std::string> playerData = storage.getPlayerData(usernames[i]);
             if (!playerData.empty()) {
@@ -91,7 +91,7 @@ void Gameplay::savePlayerData(Player& player) {
     int gamesWon = 0;
     for (int i = 0; i < 9; i++) {
         gamesWon += player.winningStrategy[i];
-        int mostWinningStrategy = 0;
+        unsigned int mostWinningStrategy = 0;
         if (player.winningStrategy[i] >= mostWinningStrategy) {
             mostWinningStrategy = player.winningStrategy[i];
             player.favoriteStrategy = player.hand.handName;
