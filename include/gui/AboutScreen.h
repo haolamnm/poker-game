@@ -1,12 +1,23 @@
-// Description: Header file for the about screen.
+/*
+FILE: include/gui/AboutScreen.h
+
+DESCRIPTION: Header file for the about screen. This file is part 
+of the GUI subsystem and is used to render the about screen. 
+This file contains the function declaration for rendering the 
+about screen.
+
+NOTE: The about screen is where the player can view information 
+about the game.
+
+AUTHOR: Lam Chi Hao.
+*/
 
 #ifndef ABOUT_SCREEN_H
 #define ABOUT_SCREEN_H
 
-#include <SDL2/SDL.h>
 #include "gui/GameEngine.h"
+#include <SDL2/SDL.h>
 
-// Function to render the about screen
 void renderAboutScreen(GameEngine* game);
 
-#endif // ABOUT_SCREEN_H
+#endif

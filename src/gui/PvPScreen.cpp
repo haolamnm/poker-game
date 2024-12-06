@@ -1,4 +1,15 @@
-// Description: Implementation of the renderPvPScreen function
+/*
+FILE: src/gui/PvPScreen.cpp
+
+DESCRIPTION: Implementation file for the Player vs Player (PvP)
+screen. This file is part of the GUI subsystem and is used to
+render the PvP screen. This file contains the function definition
+for rendering the PvP screen.
+
+NOTE: PvP availables in all game mode.
+
+AUTHOR: Lam Chi Hao & Le Nguyen Anh Tri.
+*/
 
 #include "gui/PvPScreen.h"
 

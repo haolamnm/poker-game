@@ -1,4 +1,16 @@
-// Description: Implementation of the renderStartScreen function that renders the start screen of the game
+/*
+FILE: src/gui/StartScreen.cpp
+
+DESCRIPTION: Implementation file for the start screen. This file is part
+of the GUI subsystem and is used to render the start screen. This file
+contains the function definition for rendering the start screen.
+
+NOTE: In the start screen, the player can choose to play PvP or PvE mode,
+view their user account information, view the tutorial, view the about
+screen, view the settings screen, and view the leaderboard.
+
+AUTHOR: Lam Chi Hao.
+*/
 
 #include "gui/StartScreen.h"
 

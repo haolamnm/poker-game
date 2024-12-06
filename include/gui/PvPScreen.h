@@ -1,13 +1,23 @@
-// Description: Header file for the PvP screen
+/*
+FILE: include/gui/PvPScreen.h
+
+DESCRIPTION: Header file for the Player vs Player (PvP) screen. 
+This file is part of the GUI subsystem and is used to render the 
+PvP screen. This file contains the function declaration for 
+rendering the PvP screen.
+
+NOTE: PvP availables in all game mode.
+
+AUTHOR: Lam Chi Hao.
+*/
 
 #ifndef PVP_SCREEN_H
 #define PVP_SCREEN_H
 
-#include <SDL2/SDL.h>
 #include "gui/GameEngine.h"
 #include "core/Gameplay.h"
+#include <SDL2/SDL.h>
 
-// Function to render the PvP screen
 void renderPvPScreen(GameEngine* game);
 
-#endif // PVP_SCREEN_H
+#endif

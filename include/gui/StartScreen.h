@@ -1,15 +1,25 @@
-// Description: Header file for start screen
+/*
+FILE: include/gui/StartScreen.h
+
+DESCRIPTION: Header file for the start screen. This file is part 
+of the GUI subsystem and is used to render the start screen. 
+This file contains the function declaration for rendering the 
+start screen.
+
+NOTE: The start screen is the first screen that the player sees 
+when they open the game. It contains the game title and buttons 
+to navigate to other screens.
+
+AUTHOR: Lam Chi Hao.
+*/
 
 #ifndef START_SCREEN_H
 #define START_SCREEN_H
 
-#include <SDL2/SDL.h>
 #include "gui/GameEngine.h"
+#include <SDL2/SDL.h>
 
-// Function to render the start screen
 void renderStartScreen(GameEngine* game);
-
-// Function to render the usernames
 void renderUsernames(GameEngine* game);
 
-#endif // START_SCREEN_H
+#endif

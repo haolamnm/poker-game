@@ -1,4 +1,15 @@
-// Description: Implementation of the renderTutorialScreen function
+/*
+FILE: src/gui/TutorialScreen.cpp
+
+DESCRIPTION: Implementation file for the tutorial screen. This file is
+part of the GUI subsystem and is used to render the tutorial screen. This
+file contains the function definition for rendering the tutorial screen.
+
+NOTE: The tutorial screen is where the player can view the poker card
+combinations and their corresponding strengths.
+
+AUTHOR: Lam Chi Hao.
+*/
 
 #include "gui/TutorialScreen.h"
 

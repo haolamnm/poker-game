@@ -1,3 +1,15 @@
+/*
+FILE: include/core/Deck.h
+
+DESCRIPTION: Header file for the deck class. This file contains 
+the class declaration for a deck of cards in our game. In this
+class, we handle things like setting up the deck, shuffling the
+deck, and resetting the deck. We also keep track of the number of
+cards remaining in the deck.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #ifndef DECK_H
 #define DECK_H
 
