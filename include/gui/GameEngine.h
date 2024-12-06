@@ -83,8 +83,9 @@ private:
     SDL_Texture* drawButtonTexture = nullptr;
     SDL_Texture* raiseButtonTexture = nullptr;
     
-    // TODO: Implemt small, medium and big font.
-    TTF_Font* font;
+    TTF_Font* bigFontVintage;
+    TTF_Font* mediumFontVintage;
+    TTF_Font* smallFontVintage;
 
     SDL_Rect cardRects[5];
     bool cardRevealed[5];
@@ -184,8 +185,14 @@ public:
     SDL_Texture* getdrawButtonTexture() const { 
         return drawButtonTexture; 
     }
-    TTF_Font* getFont() { 
-        return font; 
+    TTF_Font* getBigFontVintage() { 
+        return bigFontVintage; 
+    }
+    TTF_Font* getMediumFontVintage() { 
+        return mediumFontVintage; 
+    }
+    TTF_Font* getSmallFontVintage() { 
+        return smallFontVintage; 
     }
     SDL_Window* getWindow() { 
         return window; 

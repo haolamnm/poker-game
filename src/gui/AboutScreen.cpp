@@ -16,7 +16,7 @@ AUTHOR: Lam Chi Hao.
 #include "gui/AboutScreen.h"
 
 void renderAboutScreen(GameEngine* game) {
-    TTF_Font* font = game->getFont();
+    TTF_Font* bigFontVintage = game->getBigFontVintage();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
 
@@ -29,7 +29,7 @@ void renderAboutScreen(GameEngine* game) {
 
     // Render the About Us screen title
     SDL_Color textColor = {255, 255, 255, 255};
-    game->renderText(renderer, font, "About Us", WINDOW_WIDTH / 2, 50, textColor, true);
+    game->renderText(renderer, bigFontVintage, "About Us", WINDOW_WIDTH / 2, 50, textColor, true);
 
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};

@@ -19,7 +19,7 @@ bool isSavedPvE = false;
 
 // Function to render the PvE screen
 void renderPvEScreen(GameEngine* game) {
-    TTF_Font* font = game->getFont();
+    TTF_Font* bigFontVintage = game->getBigFontVintage();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
@@ -96,7 +96,7 @@ void renderPvEScreen(GameEngine* game) {
         if (game->currentPlayer < gameplay.numberOfPlayers) {
             // Render the "username" text
             // gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str()
-            game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
+            game->renderText(renderer, bigFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
             game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);
             SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
             bool allCardsFaceUp = true;
@@ -107,20 +107,20 @@ void renderPvEScreen(GameEngine* game) {
                 }
             }
             if (allCardsFaceUp) {
-                game->renderText(renderer, font, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
+                game->renderText(renderer, bigFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
             }
             SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
             game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
         } else if (game->currentPlayer == gameplay.numberOfPlayers) {
             if (gameplay.winner != -1) {
                 std::string winner = gameplay.players[gameplay.winner].username;
-                game->renderText(renderer, font, "Winner:", WINDOW_WIDTH / 2, 50, textColor, true);
-                game->renderText(renderer, font, winner.c_str(), WINDOW_WIDTH / 2, 125, textColor, true);
+                game->renderText(renderer, bigFontVintage, "Winner:", WINDOW_WIDTH / 2, 50, textColor, true);
+                game->renderText(renderer, bigFontVintage, winner.c_str(), WINDOW_WIDTH / 2, 125, textColor, true);
                 game->renderCards(cardSets[gameplay.winner], false, 0, false);
                 // Winner hand stregth
-                game->renderText(renderer, font, gameplay.players[gameplay.winner].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
+                game->renderText(renderer, bigFontVintage, gameplay.players[gameplay.winner].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
             } else {
-                game->renderText(renderer, font, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
+                game->renderText(renderer, bigFontVintage, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
             }
         }
         for (int i = 0; i < gameplay.numberOfPlayers; ++i) {

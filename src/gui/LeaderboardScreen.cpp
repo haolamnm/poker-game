@@ -18,13 +18,15 @@ AUTHOR: Lam Chi Hao & Le Nguyen Anh Tri.
 
 int scrollOffset = 0;
 int maxScrollOffset = 0;
-const int SCROLL_SPEED = 15;
+constexpr const int SCROLL_SPEED = 15;
 
 void renderLeaderboardScreen(GameEngine* game) {
-    TTF_Font* font = game->getFont();
+    TTF_Font* bigFontVintage = game->getBigFontVintage();
+    TTF_Font* smallFontVintage = game->getSmallFontVintage();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
 
+    // Get the mouse coordinations
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
 
@@ -34,14 +36,7 @@ void renderLeaderboardScreen(GameEngine* game) {
 
     // Render the Leaderboard screen title
     SDL_Color textColor = {255, 255, 255, 255};
-    game->renderText(renderer, font, "Leaderboard", WINDOW_WIDTH / 2, 50, textColor, true);
-
-    // Load the font for the leaderboard entries
-    TTF_Font* leaderboardFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
-    if (!leaderboardFont) {
-        std::cerr << "Failed to load leaderboard font: " << TTF_GetError() << std::endl;
-        return;
-    }
+    game->renderText(renderer, bigFontVintage, "Leaderboard", WINDOW_WIDTH / 2, 50, textColor, true);
 
     // Get the leaderboard data    
     std::vector<std::vector<std::string>> leaderboard = lobby.handleLeaderboard();
@@ -59,7 +54,7 @@ void renderLeaderboardScreen(GameEngine* game) {
     int startX = 50;
     int startY = 150;
     for (int j = 0; j < headerCount; j++) {
-        game->renderText(renderer, leaderboardFont, headers[j], startX, startY, textColor, false);
+        game->renderText(renderer, smallFontVintage, headers[j], startX, startY, textColor, false);
         startX += columnWidths[j];
     }
 
@@ -70,7 +65,7 @@ void renderLeaderboardScreen(GameEngine* game) {
         startX = 50; // Reset to the start of the row
         for (int j = 0; j < nCol; j++) {
             if (startY >= 180 && startY <= 490) {
-                game->renderText(renderer, leaderboardFont, leaderboard[i][j].c_str(), startX, startY, textColor, false);
+                game->renderText(renderer, smallFontVintage, leaderboard[i][j].c_str(), startX, startY, textColor, false);
             }
             startX += columnWidths[j];
         }
@@ -78,16 +73,13 @@ void renderLeaderboardScreen(GameEngine* game) {
     }
 
     if ((nRow * 30) > (490 - 180)) {
-        game->renderText(renderer, leaderboardFont, "Scroll to view more", WINDOW_WIDTH / 2, 550, textColor, true);
+        game->renderText(renderer, smallFontVintage, "Scroll to view more", WINDOW_WIDTH / 2, 550, textColor, true);
     }
 
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
     game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-
-    // Close the leaderboard font
-    TTF_CloseFont(leaderboardFont);
 }
 
 void handleMouseWheelEvent(SDL_Event& event) {

@@ -170,8 +170,12 @@ constexpr const char* BACKGROUND_MUSIC_PATH = "assets/audios/background_music.mp
 NOTE: The following constants are used for define the font
 settings in the game.
 */
-constexpr int FONT_SIZE = 64;
-constexpr const char* FONT_PATH = "assets/fonts/SVN-Vintage.otf";
+constexpr int SMALL_FONT_SIZE = 18;
+constexpr int MEDIUM_FONT_SIZE = 36;
+constexpr int BIG_FONT_SIZE = 64;
+constexpr const char* FONT_RETRON_PATH = "assets/fonts/SVN-Retron2000.otf";
+constexpr const char* FONT_VINTAGE_PATH = "assets/fonts/SVN-Vintage.otf";
+constexpr const char* FONT_DETERMINATION_PATH = "assets/fonts/SVN-DeterminationSans.otf";
 
 /*
 NOTE: The following constants are used for define the paths of
