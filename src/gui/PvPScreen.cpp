@@ -102,8 +102,6 @@ void renderPvPScreen(GameEngine* game) {
             // Render the 5 cards
             if (game->currentPlayer < gameplay.numberOfPlayers) {
                 // Render the current player's chips
-                // std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips);
-                // game->renderText(renderer, smallFont, chipText.c_str(), 780, 100, textColor, false, true);
                 // Render the "username" text
                 game->renderText(renderer, bigFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
                 game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], true, 0, true);

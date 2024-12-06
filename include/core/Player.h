@@ -23,6 +23,7 @@ public:
     std::string username = "BOT";
     int id = -1;
     Hand hand;
+    bool isBot = true;
     bool isFolded = false;
     unsigned int chipsBetted = 0;
     unsigned int gamesPlayed = 0;
