@@ -83,6 +83,7 @@ private:
     SDL_Texture* foldButtonTexture = nullptr;
     SDL_Texture* callButtonTexture = nullptr;
     SDL_Texture* drawButtonTexture = nullptr;
+    SDL_Texture* downButtonTexture = nullptr;
     SDL_Texture* raiseButtonTexture = nullptr;
     
     TTF_Font* bigFontVintage;
@@ -126,6 +127,9 @@ public:
 
     void handleNextButtonClickSettings(int mouseX, int mouseY);
     void handleRaiseButtonClickSettings(int mouseX, int mouseY);
+    void handleMusicOnButtonClickSettings(int mouseX, int mouseY);
+    void handleSoundButtonClickSettings(int mouseX, int mouseY);
+    void handleDownButtonClickSettings(int mouseX, int mouseY);
     
     void handleNextButtonClickPvP(int mouseX, int mouseY);
     void handleDrawButtonClickPvP(int mouseX, int mouseY);
@@ -134,6 +138,7 @@ public:
     void handleRaiseButtonClickPvP(int mouseX, int mouseY);
     
     void handleNextButtonClickPvE(int mouseX, int mouseY);
+
 
     // Getter functions
     bool running() { 
@@ -187,6 +192,9 @@ public:
     SDL_Texture* getdrawButtonTexture() const { 
         return drawButtonTexture; 
     }
+    SDL_Texture* getDownButtonTexture() const { 
+        return downButtonTexture; 
+    }
     TTF_Font* getBigFontVintage() { 
         return bigFontVintage; 
     }
@@ -234,6 +242,9 @@ public:
         SHOWDOWN_ROUND
     };
     drawPokerRound currentDrawPokerRound;
+
+    bool isMusicOn = true;
+    bool isSoundEffectsOn = true;
 };
 
 #endif

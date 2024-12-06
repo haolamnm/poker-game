@@ -26,7 +26,7 @@ bool Login::login(const std::string& username, const std::string& password) {
             return false;
         }
     } else {
-        status = "Username does not exist!, Do you want to create a new account? (y/n)";
+        status = "Username does not exist!";
         statusCode = NEW_ACCOUNT;
         return false;
     }

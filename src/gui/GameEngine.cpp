@@ -30,6 +30,8 @@ Lobby lobby;
 // Constructor: Initializes the game objects.
 GameEngine::GameEngine() {
     isRunning = false;
+    isMusicOn = true;
+    isSoundEffectsOn = true;
     bigFontVintage = nullptr;
     mediumFontVintage = nullptr;
     smallFontVintage = nullptr;
@@ -154,6 +156,7 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
     foldButtonTexture = IMG_LoadTexture(renderer, BUTTON_FOLD_PATH);
     callButtonTexture = IMG_LoadTexture(renderer, BUTTON_CALL_PATH);
     drawButtonTexture = IMG_LoadTexture(renderer, BUTTON_RESET_PATH);
+    downButtonTexture = IMG_LoadTexture(renderer, BUTTON_DOWN_PATH);
     raiseButtonTexture = IMG_LoadTexture(renderer, BUTTON_RAISE_PATH);
     
     if (!aboutButtonTexture || 
@@ -170,6 +173,7 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
         !soundOffButtonTexture || 
         !foldButtonTexture     ||
         !callButtonTexture     ||
+        !downButtonTexture     ||
         !raiseButtonTexture    ||
         !drawButtonTexture) {
         std::cerr << RED_TEXT << "Failed to load button images: " << IMG_GetError() << RESET_TEXT << std::endl;
@@ -304,6 +308,9 @@ void GameEngine::handleEvents() {
             } else if (currentGameState == SETTINGS_SCREEN) {
                 handleNextButtonClickSettings(x, y);
                 handleRaiseButtonClickSettings(x, y);
+                handleDownButtonClickSettings(x, y);
+                handleMusicOnButtonClickSettings(x, y);
+                handleSoundButtonClickSettings(x, y);
             }
             break;
         case SDL_MOUSEWHEEL:
@@ -432,6 +439,10 @@ void GameEngine::clean() {
         SDL_DestroyTexture(drawButtonTexture);
         drawButtonTexture = nullptr;
     }
+    if (downButtonTexture) {
+        SDL_DestroyTexture(downButtonTexture);
+        downButtonTexture = nullptr;
+    }
     TTF_Quit();
     SDL_Quit();
     Mix_CloseAudio();
@@ -488,6 +499,35 @@ void GameEngine::renderText(SDL_Renderer* renderer, TTF_Font* font, const char* 
         }
     } else {
         std::cerr << RED_TEXT << "Text surface creation failed: " << RESET_TEXT << TTF_GetError() << std::endl;
+    }
+}
+
+void GameEngine::toggleBackgroundMusic() {
+    if (Mix_PlayingMusic() == 0) {
+        Mix_PlayMusic(backgroundMusic, -1);
+    } else {
+        if (Mix_PausedMusic() == 1) {
+            Mix_ResumeMusic();
+        } else {
+            Mix_PauseMusic();
+        }
+    }
+    isMusicOn = !isMusicOn;
+}
+
+void GameEngine::toggleSoundEffects() {
+    if (isSoundEffectsOn) {
+        Mix_Volume(-1, 0);
+    } else {
+        Mix_Volume(-1, MIX_MAX_VOLUME);
+    }
+    isSoundEffectsOn = !isSoundEffectsOn;
+}
+
+void GameEngine::handleSoundButtonClickSettings(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, WINDOW_WIDTH / 2 + 100, 210, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT)) {
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+        toggleSoundEffects();
     }
 }
 
@@ -639,8 +679,15 @@ void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
 }
 
 void GameEngine::handleNextButtonClickSettings(int mouseX, int mouseY) {
-    if (isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    if (isButtonClicked(mouseX, mouseY, WINDOW_WIDTH / 2 + 100, 270)) {
         currentGameMode = static_cast<GameMode>((currentGameMode + 1) % NUMBER_OF_GAME_MODES);
+        playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+    }
+}
+
+void GameEngine::handleMusicOnButtonClickSettings(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, WINDOW_WIDTH / 2 + 100, 150)) {
+        toggleBackgroundMusic();
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }
@@ -674,11 +721,21 @@ void GameEngine::handleRaiseButtonClickPvP(int mouseX, int mouseY) {
 }
 
 void GameEngine::handleRaiseButtonClickSettings(int mouseX, int mouseY) {
-    if (isButtonClicked(mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y)) {
+    if (isButtonClicked(mouseX, mouseY, WINDOW_WIDTH / 2 + 100, 330)) {
         defaultChipsBetted += 20;     
         playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
     }
 }
+
+void GameEngine::handleDownButtonClickSettings(int mouseX, int mouseY) {
+    if (isButtonClicked(mouseX, mouseY, WINDOW_WIDTH / 2 + 170, 330)) {
+        if (defaultChipsBetted > 20) {
+            defaultChipsBetted -= 20;     
+            playButtonClickSound(BUTTON_CLICK_SOUND_PATH);
+        }
+    }
+}
+
 
 void GameEngine::resetPvPGame() {
     currentPlayer = 0;

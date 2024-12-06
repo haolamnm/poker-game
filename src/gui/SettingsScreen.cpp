@@ -31,7 +31,8 @@ void renderSettingsScreen(GameEngine* game) {
     SDL_Texture* musicOffButtonTexture = game->getMusicOffButtonTexture();
     SDL_Texture* soundOnButtonTexture = game->getSoundOnButtonTexture();
     SDL_Texture* soundOffButtonTexture = game->getSoundOffButtonTexture();
-    SDL_Texture* rasieButtonTexture = game->getRaiseButtonTexture();
+    SDL_Texture* raiseButtonTexture = game->getRaiseButtonTexture();
+    SDL_Texture* downButtonTexture = game->getDownButtonTexture();
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -40,47 +41,43 @@ void renderSettingsScreen(GameEngine* game) {
     SDL_RenderClear(renderer);
 
     SDL_Color textColor = {255, 255, 255, 255};
-    game->renderText(renderer, smallFontVintage, "Settings", WINDOW_WIDTH / 2, 50, textColor, true);
+    game->renderText(renderer, bigFontVintage, "Settings", WINDOW_WIDTH / 2, 50, textColor, true);
 
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, backButtonTexture, NULL, &backButtonRect);
     game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render background music toggle buttons
-    game->renderText(renderer, bigFontVintage, "Background music", WINDOW_WIDTH / 2, 150, textColor, false);
-    SDL_Rect musicOnButtonRect = {WINDOW_WIDTH / 2 + 100, 150, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, musicOnButtonTexture, NULL, &musicOnButtonRect);
-    game->handleButtonHover(musicOnButtonTexture, mouseX, mouseY, musicOnButtonRect.x, musicOnButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-    SDL_Rect musicOffButtonRect = {WINDOW_WIDTH / 2 + 100 + SMALL_BUTTON_WIDTH + 20, 150, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, musicOffButtonTexture, NULL, &musicOffButtonRect);
-    game->handleButtonHover(musicOffButtonTexture, mouseX, mouseY, musicOffButtonRect.x, musicOffButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+    game->renderText(renderer, smallFontVintage, "Background music", WINDOW_WIDTH / 2 - 100, 150, textColor, false, true);
+    SDL_Rect musicButtonRect = {WINDOW_WIDTH / 2 + 100, 150, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_Texture* musicButtonTexture = game->isMusicOn ? musicOnButtonTexture : musicOffButtonTexture;
+    SDL_RenderCopy(renderer, musicButtonTexture, NULL, &musicButtonRect);
+    game->handleButtonHover(musicButtonTexture, mouseX, mouseY, musicButtonRect.x, musicButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render sound effects toggle buttons
-    game->renderText(renderer, bigFontVintage, "Sound effects", WINDOW_WIDTH / 2, 180, textColor, false);
-    SDL_Rect soundOnButtonRect = {WINDOW_WIDTH / 2 + 100, 180, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, soundOnButtonTexture, NULL, &soundOnButtonRect);
-    game->handleButtonHover(soundOnButtonTexture, mouseX, mouseY, soundOnButtonRect.x, soundOnButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-    SDL_Rect soundOffButtonRect = {WINDOW_WIDTH / 2 + 100 + SMALL_BUTTON_WIDTH + 20, 180, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, soundOffButtonTexture, NULL, &soundOffButtonRect);
-    game->handleButtonHover(soundOffButtonTexture, mouseX, mouseY, soundOffButtonRect.x, soundOffButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-
+    game->renderText(renderer, smallFontVintage, "Sound effects", WINDOW_WIDTH / 2 - 100, 210, textColor, false, true);
+    SDL_Rect soundButtonRect = {WINDOW_WIDTH / 2 + 100, 210, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_Texture* soundButtonTexture = game->isSoundEffectsOn ? soundOnButtonTexture : soundOffButtonTexture;
+    SDL_RenderCopy(renderer, soundButtonTexture, NULL, &soundButtonRect);
+    game->handleButtonHover(soundButtonTexture, mouseX, mouseY, soundButtonRect.x, soundButtonRect.y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+    
     // Render current game mode
-    game->renderText(renderer, smallFontVintage, "Current Game Mode:", 400, 300, textColor, false);
-    game->renderText(renderer, smallFontVintage, game->getCurrentGameModeString(), WINDOW_WIDTH / 2 + 150, 210, textColor, false);
+    // std::string currentGameModeText = "Current Game Mode: ";
+    game->renderText(renderer, smallFontVintage, game->getCurrentGameModeString(), WINDOW_WIDTH / 2 - 100, 270, textColor, false, true);
 
-    SDL_Rect nextButtonRect = {NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_Rect nextButtonRect = {WINDOW_WIDTH / 2 + 100, 270, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
     SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
-    game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+    game->handleButtonHover(nextButtonTexture, mouseX, mouseY, WINDOW_WIDTH / 2 + 100, 270, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
-    SDL_Rect rasieButtonRect = {RAISE_BUTTON_X, RAISE_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
-    SDL_RenderCopy(renderer, rasieButtonTexture, NULL, &rasieButtonRect);
-    game->handleButtonHover(rasieButtonTexture, mouseX, mouseY, RAISE_BUTTON_X, RAISE_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+    SDL_Rect raiseButtonRect = {WINDOW_WIDTH / 2 + 100, 330, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_RenderCopy(renderer, raiseButtonTexture, NULL, &raiseButtonRect);
+    game->handleButtonHover(raiseButtonTexture, mouseX, mouseY, WINDOW_WIDTH / 2 + 100, 330, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+
+    SDL_Rect downButtonRect = {WINDOW_WIDTH / 2 + 170, 330, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
+    SDL_RenderCopy(renderer, downButtonTexture, NULL, &downButtonRect);
+    game->handleButtonHover(downButtonTexture, mouseX, mouseY, WINDOW_WIDTH / 2 + 170, 330, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
 
     // Render default chip betted
-    std::string defaultChipsBettedText = "Default chip betted: " + std::to_string(defaultChipsBetted);
-    game->renderText(renderer, smallFontVintage, defaultChipsBettedText.c_str(), WINDOW_WIDTH / 2, 400, textColor, true);
-
-    // TODO:
-    // Implement the functionality to toggle the music and sound effects settings
-    // Implement input for min chip per game, the number of bots, game mode.
+    std::string defaultChipsBettedText = "Default chips betted: " + std::to_string(defaultChipsBetted);
+    game->renderText(renderer, smallFontVintage, defaultChipsBettedText.c_str(), WINDOW_WIDTH / 2 - 100, 330, textColor, false, true);
 }

@@ -112,10 +112,10 @@ all: $(PCH_OUTPUT) $(MAIN_OUTPUT)
 clean:
 	@echo "Cleaning up..."
 ifeq ($(OS),Windows_NT)
-	del /Q $(subst /,\,$(PCH_OUTPUT)) $(subst /,\,$(OBJ_DIR))\*.o $(subst /,\,$(MAIN_OUTPUT)) 2>nul || exit 0
+	del /Q $(subst /,\,$(PCH_OUTPUT)) $(subst /,\,$(OBJ_DIR))\*.o $(subst /,\,$(MAIN_OUTPUT)) $(subst /,\,$(MAIN_OUTPUT)) main main.exe 2>nul || exit 0
 	rmdir /S /Q $(subst /,\,$(OBJ_DIR)) 2>nul || exit 0
 else
-	rm -f $(PCH_OUTPUT) $(OBJ_DIR)/*.o $(MAIN_OUTPUT) 2>/dev/null || true
+	rm -f $(PCH_OUTPUT) $(OBJ_DIR)/*.o $(MAIN_OUTPUT) main main.exe 2>/dev/null || true
 	rm -rf $(OBJ_DIR) 2>/dev/null || true
 endif
 	@echo "Cleaned up!"

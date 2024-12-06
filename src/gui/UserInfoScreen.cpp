@@ -21,9 +21,11 @@ std::string usernameInput = "";
 std::string passwordInput = "";
 bool isUsernameActive = true;
 bool showNewAccountPrompt = false;
+bool showLoginStatus = false;
 SDL_Rect yesButtonRect;
 SDL_Rect noButtonRect;
 constexpr const unsigned short MAX_LOBBY_SIZE = 10;
+std::string loginStatus = " ";
 
 void handleTextInput(SDL_Event& event) {
     if (lobby.getUsernames().size() >= MAX_LOBBY_SIZE) return;
@@ -33,6 +35,8 @@ void handleTextInput(SDL_Event& event) {
         } else {
             passwordInput += event.text.text;
         }
+        showLoginStatus = false;
+        showNewAccountPrompt = false;
     } else if (event.type == SDL_KEYDOWN) {
         // Backspace key to delete character
         if (event.key.keysym.sym == SDLK_BACKSPACE) {
@@ -60,6 +64,8 @@ void handleTextInput(SDL_Event& event) {
             if (login.statusCode != NEW_ACCOUNT) {
                 usernameInput.clear();
                 passwordInput.clear();
+                loginStatus = login.show();
+                showLoginStatus = true;
             }
         }
     } else if (event.type == SDL_MOUSEBUTTONDOWN && showNewAccountPrompt) {
@@ -90,6 +96,8 @@ void renderUserInfoScreen(GameEngine* game) {
     TTF_Font* bigFontVintage = game->getBigFontVintage();
     TTF_Font* mediumFontVintage = game->getMediumFontVintage();
     TTF_Font* smallFontVintage = game->getSmallFontVintage();
+    SDL_Color activeColor = {0, 255, 0, 255};
+    SDL_Color inactiveColor = {255, 255, 255, 255};
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -126,7 +134,7 @@ void renderUserInfoScreen(GameEngine* game) {
             if (usernameInputTexture) {
                 int usernameInputWidth, usernameInputHeight;
                 TTF_SizeText(mediumFontVintage, usernameInput.c_str(), &usernameInputWidth, &usernameInputHeight);
-                SDL_Rect usernameTextRect = {usernameInputRect.x + 5, usernameInputRect.y + (inputFieldHeight - usernameInputHeight) / 2, usernameInputWidth, usernameInputHeight}; // Position and size of the text
+                SDL_Rect usernameTextRect = {usernameInputRect.x + 25, usernameInputRect.y + (inputFieldHeight - usernameInputHeight) / 2, usernameInputWidth, usernameInputHeight}; // Position and size of the text
                 SDL_RenderCopy(renderer, usernameInputTexture, NULL, &usernameTextRect);
                 SDL_DestroyTexture(usernameInputTexture);
             } else {
@@ -140,7 +148,7 @@ void renderUserInfoScreen(GameEngine* game) {
 
     // Draw border around username input field
     SDL_Rect usernameBorderRect = {usernameInputRect.x + 20, usernameInputRect.y - 1, inputFieldWidth + 2, inputFieldHeight + 2};
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, isUsernameActive ? activeColor.r : inactiveColor.r, isUsernameActive ? activeColor.g : inactiveColor.g, isUsernameActive ? activeColor.b : inactiveColor.b, 255);
     SDL_RenderDrawRect(renderer, &usernameBorderRect);
 
     // Render "password: " text
@@ -159,7 +167,7 @@ void renderUserInfoScreen(GameEngine* game) {
             if (passwordInputTexture) {
                 int passwordInputWidth, passwordInputHeight;
                 TTF_SizeText(mediumFontVintage, maskedPassword.c_str(), &passwordInputWidth, &passwordInputHeight);
-                SDL_Rect passwordTextRect = {passwordInputRect.x + 5, passwordInputRect.y + (inputFieldHeight - passwordInputHeight) / 2, passwordInputWidth, passwordInputHeight}; // Position and size of the text
+                SDL_Rect passwordTextRect = {passwordInputRect.x + 25, passwordInputRect.y + (inputFieldHeight - passwordInputHeight) / 2, passwordInputWidth, passwordInputHeight}; // Position and size of the text
                 SDL_RenderCopy(renderer, passwordInputTexture, NULL, &passwordTextRect);
                 SDL_DestroyTexture(passwordInputTexture);
             } else {
@@ -173,7 +181,7 @@ void renderUserInfoScreen(GameEngine* game) {
 
     // Draw border around password input field
     SDL_Rect passwordBorderRect = {passwordInputRect.x + 20, passwordInputRect.y - 1, inputFieldWidth + 2, inputFieldHeight + 2};
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color for the border
+    SDL_SetRenderDrawColor(renderer, isUsernameActive ? inactiveColor.r : activeColor.r, isUsernameActive ? inactiveColor.g : activeColor.g, isUsernameActive ? inactiveColor.b : activeColor.b, 255);
     SDL_RenderDrawRect(renderer, &passwordBorderRect);
 
     // Render the new account prompt and buttons if needed
@@ -196,6 +204,10 @@ void renderUserInfoScreen(GameEngine* game) {
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color for "No" button
         SDL_RenderFillRect(renderer, &noButtonRect);
         game->renderText(renderer, mediumFontVintage, "No", noButtonRect.x + buttonWidth / 2, noButtonRect.y + buttonHeight / 2 - 25, textColor, true);
+    }
+
+    if (showLoginStatus) {
+        game->renderText(renderer, smallFontVintage, loginStatus.c_str(), WINDOW_WIDTH / 2, 550, textColor, true);
     }
 
     if (lobby.getUsernames().size() >= MAX_LOBBY_SIZE) {

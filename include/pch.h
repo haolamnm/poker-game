@@ -162,7 +162,7 @@ settings in the game.
 constexpr int AUDIO_FREQUENCY = 44100;
 constexpr int AUDIO_CHANNELS = 2;
 constexpr int AUDIO_CHUNK_SIZE = 2048;
-constexpr int BACKGROUND_MUSIC_VOLUME = 0; // 0 to 128
+constexpr int BACKGROUND_MUSIC_VOLUME = 16; // 0 to 128
 constexpr const char* BUTTON_CLICK_SOUND_PATH = "assets/audios/button_click.wav";
 constexpr const char* BACKGROUND_MUSIC_PATH = "assets/audios/background_music.mp3";
 
@@ -184,6 +184,7 @@ the buttons in the game.
 constexpr const char* BUTTON_HOME_PATH = "assets/imgs/buttons/home.png";
 constexpr const char* BUTTON_FOLD_PATH = "assets/imgs/buttons/fold.png";
 constexpr const char* BUTTON_CALL_PATH = "assets/imgs/buttons/call.png";
+constexpr const char* BUTTON_DOWN_PATH = "assets/imgs/buttons/down.png";
 constexpr const char* BUTTON_RESET_PATH = "assets/imgs/buttons/draw.png";
 constexpr const char* BUTTON_RAISE_PATH = "assets/imgs/buttons/raise.png";
 constexpr const char* BUTTON_ABOUT_PATH = "assets/imgs/buttons/about_us.png";

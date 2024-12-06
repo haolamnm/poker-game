@@ -1,14 +1,16 @@
-1,window2,3,0.666667,One Pair,320
-2,window3,2,0.5,High Card,240
-3,gaugau,56,0.464286,One Pair,440
-4,lmao,34,0.441176,One Pair,290
-5,test1,285,0.438596,High Card,1250
-6,test2,287,0.432056,One Pair,1590
-7,test3,92,0.336957,High Card,280
+1,window2,4,0.75,Two Pair,660
+2,gaugau,56,0.464286,One Pair,440
+3,lmao,34,0.441176,One Pair,290
+4,test1,285,0.438596,High Card,1250
+5,test2,287,0.432056,One Pair,1590
+6,test3,92,0.336957,High Card,280
+7,window3,3,0.333333,High Card,220
 8,haolam,65,0.292308,One Pair,100
 9,anhtri,74,0.243243,High Card,210
-10,lvminh,1,0,One Pair,190
+10,hminh,1,0,High Card,190
 11,htbtran,1,0,High Card,190
-12,window1,3,0,High Card,120
-13,hminh,1,0,High Card,190
-14,meomeo,0,0,None,200
+12,lvminh,1,0,One Pair,190
+13,meomeo,0,0,None,200
+14,window1,4,0,One Pair,100
+15,window4,0,0,None,200
+16,window6,0,0,None,200
