@@ -69,10 +69,7 @@ void renderPvEScreen(GameEngine* game) {
                 cardSets[i][j] = CARD_FILES[currentCard.rank * 4 + currentCard.suit].c_str();
             }
         }
-        
-        std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
-        game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
-        // Render the 5 cards
+
         if (game->currentPlayer < gameplay.numberOfPlayers) {
             // Render the "username" text
             game->renderText(renderer, bigFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].username.c_str(), WINDOW_WIDTH / 2, 50, textColor, true);
@@ -85,6 +82,14 @@ void renderPvEScreen(GameEngine* game) {
                     break;
                 }
             }
+
+            std::string entryFeeText = "Entry fee: " + std::to_string(gameplay.entryFee);
+            game->renderText(renderer, smallFontVintage, entryFeeText.c_str(), 780, 50, textColor, false, true);
+            std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
+            game->renderText(renderer, smallFontVintage, betText.c_str(), 780, 100, textColor, false, true);
+            std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
+            game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
+
             if (allCardsFaceUp) {
                 std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips -
                                                                   gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);

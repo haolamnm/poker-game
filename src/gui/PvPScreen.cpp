@@ -84,8 +84,6 @@ void renderPvPScreen(GameEngine* game) {
                 }
             }
             
-            std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
-            game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
             // Render the 5 cards
             if (game->currentPlayer < gameplay.numberOfPlayers) {
                 // Render the "username" text
@@ -99,54 +97,62 @@ void renderPvPScreen(GameEngine* game) {
                         break;
                     }
                 }
-            if (allCardsFaceUp) {
-                std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips -
+                std::string entryFeeText = "Entry fee: " + std::to_string(gameplay.entryFee);
+                game->renderText(renderer, smallFontVintage, entryFeeText.c_str(), 780, 50, textColor, false, true);
+                std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
+                game->renderText(renderer, smallFontVintage, betText.c_str(), 780, 100, textColor, false, true);
+                std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
+                game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
+                if (allCardsFaceUp) {
+                    std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips -
                                                                     gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
-                game->renderText(renderer, smallFontVintage, chipText.c_str(), 780, 75, textColor, false, true);
-                gameplay.players[gameplay.players[game->currentPlayer].id].hand.evaluateHand();
-                game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
-            }
-            SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
-            game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-        } else if (game->currentPlayer == static_cast<int>(gameplay.numberOfPlayers)) {
-            // Save player data after dealing cards and determining the winner
-            if (!isSavedPvP) {
-                isSavedPvP = true;
-                gameplay.whoWins();
-                for (Player& player : gameplay.players) {
-                    if (player.isBot == false) gameplay.savePlayerData(player);
+                    game->renderText(renderer, smallFontVintage, chipText.c_str(), 780, 75, textColor, false, true);
+                    gameplay.players[gameplay.players[game->currentPlayer].id].hand.evaluateHand();
+                    game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
                 }
-                gameplay.saveAllPlayerData();
+                SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
+                game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
+            } else if (game->currentPlayer == static_cast<int>(gameplay.numberOfPlayers)) {
+                // Save player data after dealing cards and determining the winner
+                if (!isSavedPvP) {
+                    isSavedPvP = true;
+                    gameplay.whoWins();
+                    for (Player& player : gameplay.players) {
+                        if (player.isBot == false) gameplay.savePlayerData(player);
+                    }
+                    gameplay.saveAllPlayerData();
+                }
+                if (gameplay.winner != -1) {
+                    std::string winner = gameplay.players[gameplay.winner].username;
+                    game->renderText(renderer, bigFontVintage, "Winner:", WINDOW_WIDTH / 2, 50, textColor, true);
+                    game->renderText(renderer, bigFontVintage, winner.c_str(), WINDOW_WIDTH / 2, 125, textColor, true);
+                    game->renderCards(cardSets[gameplay.winner], false, 0, false);
+                    // Winner hand stregth
+                    game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.winner].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
+                } else {
+                    game->renderText(renderer, bigFontVintage, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
+                }
             }
-            if (gameplay.winner != -1) {
-                std::string winner = gameplay.players[gameplay.winner].username;
-                game->renderText(renderer, bigFontVintage, "Winner:", WINDOW_WIDTH / 2, 50, textColor, true);
-                game->renderText(renderer, bigFontVintage, winner.c_str(), WINDOW_WIDTH / 2, 125, textColor, true);
-                game->renderCards(cardSets[gameplay.winner], false, 0, false);
-                // Winner hand stregth
-                game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.winner].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
-            } else {
-                game->renderText(renderer, bigFontVintage, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
+            for (size_t i = 0; i < usernames.size(); ++i) {
+                delete[] cardSets[i];
             }
-        }
-        for (size_t i = 0; i < usernames.size(); ++i) {
-            delete[] cardSets[i];
-        }
-        delete[] cardSets;
+            delete[] cardSets;
         } else if (game->currentGameMode == GameEngine::DRAW_POKER) {
             static Gameplay gameplay;
             int numberOfCards = 5;
             if (!isDealtPvP) {
                 isDealtPvP = true;
+                gameplay.entryFee = defaultChipBetted;
                 gameplay.init(usernames, 0);
                 gameplay.resetDeck(); // Reset the deck for a new game
-                gameplay.dealCards(numberOfCards);
+                gameplay.dealCards(numberOfCards); 
             }
 
             const char*** cardSets = new const char**[gameplay.numberOfPlayers];
-            for (size_t i = 0; i < gameplay.numberOfPlayers; ++i) {
+            for (size_t i = 0; i < gameplay.numberOfPlayers; i++) {
                 cardSets[i] = new const char*[5];
             }
+            
             // Array of card file paths
             for (int i = 0; i < gameplay.numberOfPlayers; i++) {
                 for (int j = 0; j < numberOfCards; j++) {
@@ -154,12 +160,18 @@ void renderPvPScreen(GameEngine* game) {
                     cardSets[i][j] = CARD_FILES[currentCard.rank * 4 + currentCard.suit].c_str();
                 }
             }
-            for (int i = 0; i < gameplay.numberOfPlayers; i++) {
-                if (gameplay.players[i].isFolded == false) gameplay.players[i].hand.evaluateHand();
-            }
             
             if (game->currentPlayer < gameplay.numberOfPlayers) {
                 foldButtonFlag = gameplay.players[gameplay.players[game->currentPlayer].id].isFolded;
+
+                // Render the entry fee, bet, and total bet
+                std::string entryFeeText = "Entry fee: " + std::to_string(gameplay.entryFee);
+                game->renderText(renderer, smallFontVintage, entryFeeText.c_str(), 780, 50, textColor, false, true);
+                std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
+                game->renderText(renderer, smallFontVintage, betText.c_str(), 780, 100, textColor, false, true);
+                std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
+                game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
+
                 if (game->currentDrawPokerRound == GameEngine::DRAW_ROUND) {
                     if (drawButtonFlag == false && isDrawButtonClicked == true) {
                         isDrawButtonClicked = false;
@@ -187,42 +199,38 @@ void renderPvPScreen(GameEngine* game) {
                         }
                     }
                 }
-                if (foldButtonFlag == false && (game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND)) {
-                if (isRaiseButtonClicked == true) {
-                    isRaiseButtonClicked = false;
-                    gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
-                    gameplay.highestBet = std::max(gameplay.highestBet, gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
-                    gameplay.totalChipsBetted += 10;
 
-                    std::cout << "Raise button clicked" << '\n';
-                }
-                if (foldButtonFlag == false && isFoldButtonClicked == true) {
-                    isFoldButtonClicked = false;
-                    foldButtonFlag = true;
-                    gameplay.players[gameplay.players[game->currentPlayer].id].isFolded = true;
-                    std::cout << "Fold button clicked" << '\n';
-                }
+                if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND) && foldButtonFlag == false) {
+                    if (isRaiseButtonClicked == true) {
+                        isRaiseButtonClicked = false;
+                        gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
+                        gameplay.highestBet = std::max(gameplay.highestBet, gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
+                        gameplay.totalChipsBetted += 10;
 
-                if (game->currentPlayer > 0 && callButtonFlag == false && isCallButtonClicked == true) {
-                    isCallButtonClicked = false;
-                    callButtonFlag = true;
-                    if (gameplay.players[gameplay.players[game->currentPlayer].id].chips >= gameplay.highestBet) {
-                        gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted = gameplay.highestBet;
-                        gameplay.totalChipsBetted += gameplay.highestBet;
-                    } else {
-                        // render not enough money to call
-
+                        std::cout << "Raise button clicked" << '\n';
                     }
-                    std::cout << "Call button clicked" << '\n';
+                    if (foldButtonFlag == false && isFoldButtonClicked == true) {
+                        isFoldButtonClicked = false;
+                        foldButtonFlag = true;
+                        gameplay.players[gameplay.players[game->currentPlayer].id].isFolded = true;
+                        std::cout << "Fold button clicked" << '\n';
                     }
-                }
 
-                // Render the 5 cards
-                std::cout << gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted << '\n';
-                std::string betText = "Bet: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
-                game->renderText(renderer, smallFontVintage, betText.c_str(), 780, 100, textColor, false, true);
-                std::string totalBetText = "Total bet: " + std::to_string(gameplay.totalChipsBetted);
-                game->renderText(renderer, smallFontVintage, totalBetText.c_str(), 780, 125, textColor, false, true);
+                    if (callButtonFlag == false && isCallButtonClicked == true) {
+                        isCallButtonClicked = false;
+                        callButtonFlag = true;
+                        if (gameplay.players[gameplay.players[game -> currentPlayer].id].chips >= gameplay.highestBet &&
+                            gameplay.players[gameplay.players[game -> currentPlayer].id].chipsBetted < gameplay.highestBet) {
+                            int cost = gameplay.highestBet - gameplay.players[game -> currentPlayer].chipsBetted;
+                            gameplay.players[gameplay.players[game -> currentPlayer].id].chipsBetted += cost;
+                            gameplay.totalChipsBetted += cost;
+                        } else {
+                            // render not enough money to call
+
+                        }
+                        std::cout << "Call button clicked" << '\n';
+                        }
+                }
 
                 // Render round text                
                 game->renderText(renderer, mediumFontVintage, game->getCurrentRoundString(), WINDOW_WIDTH / 2, 50, textColor, true);
@@ -246,7 +254,10 @@ void renderPvPScreen(GameEngine* game) {
                     std::string chipText = "Chips: " + std::to_string(gameplay.players[gameplay.players[game->currentPlayer].id].chips -
                                                                     gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
                     game->renderText(renderer, smallFontVintage, chipText.c_str(), 780, 75, textColor, false, true);
-                    if (foldButtonFlag == false) game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
+                    if (foldButtonFlag == false) {
+                        gameplay.players[gameplay.players[game->currentPlayer].id].hand.evaluateHand();
+                        game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
+                    }
                 }
                 SDL_RenderCopy(renderer, nextButtonTexture, NULL, &nextButtonRect);
                 game->handleButtonHover(nextButtonTexture, mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);

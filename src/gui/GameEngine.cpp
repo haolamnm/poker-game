@@ -284,12 +284,12 @@ void GameEngine::handleEvents() {
                 handleNextButtonClickPvP(x, y);
                 if (currentGameMode == DRAW_POKER) {
                     if (currentDrawPokerRound == DRAW_ROUND) {
-                        if (drawButtonFlag == false) handleDrawButtonClickPvP(x, y);
+                        if (foldButtonFlag == false && drawButtonFlag == false) handleDrawButtonClickPvP(x, y);
                     }
                     if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
-                        if (callButtonFlag == false) handleCallButtonClickPvP(x, y);
+                        if (foldButtonFlag == false && callButtonFlag == false) handleCallButtonClickPvP(x, y);
                         if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
-                        handleRaiseButtonClickPvP(x, y);
+                        if (foldButtonFlag == false && callButtonFlag == false) handleRaiseButtonClickPvP(x, y);
                     }
                 }
             } else if (currentGameState == PVE_SCREEN) {
@@ -611,6 +611,7 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
         if (currentDrawPokerRound == DRAW_ROUND) {
             drawButtonFlag = false;
         } else if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
+            std::cout << "current call button flag: " << callButtonFlag << '\n';
             callButtonFlag = false;
         }
     } 

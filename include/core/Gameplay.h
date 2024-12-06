@@ -27,6 +27,7 @@ public:
     int numberOfPlayers;
     int winner;
     unsigned int entryFee;
+    unsigned int totalEntryFee;
     unsigned int totalChipsBetted;
     unsigned int highestBet;
     std::vector<Player> players;

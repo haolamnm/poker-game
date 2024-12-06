@@ -21,8 +21,6 @@ void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots)
     for (int i = 0; i < numberOfPlayers; i++) {
         players[i].id = i;
         if (i < static_cast<int>(usernames.size())) {
-            totalChipsBetted += entryFee;
-            players[i].chipsBetted = entryFee;
             players[i].username = usernames[i];
             players[i].isBot = false;
             std::vector<std::string> playerData = storage.getPlayerData(usernames[i]);
@@ -35,6 +33,10 @@ void Gameplay::init(const std::vector<std::string>& usernames, int numberOfBots)
                 for (int j = 0; j < 9; j++) {
                     players[i].winningStrategy[j] = std::stoi(playerData[6 + j]);
                 }
+            }
+            if (players[i].chips - entryFee >= 0) {
+                players[i].chips -= entryFee;
+                totalEntryFee += entryFee;
             }
         } else {
             players[i].username = "BOT " + std::to_string(i - usernames.size() + 1);
@@ -100,9 +102,7 @@ void Gameplay::savePlayerData(Player& player) {
     player.gamesPlayed++;
     if (player.id == players[winner].id) {
         player.winningStrategy[player.hand.handStrength]++;
-        player.chips += totalChipsBetted - player.chipsBetted;
-    } else {
-        player.chips -= player.chipsBetted;
+        player.chips += totalChipsBetted + totalEntryFee;
     }
     int gamesWon = 0;
     for (int i = 0; i < 9; i++) {
