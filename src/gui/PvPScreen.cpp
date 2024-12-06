@@ -281,9 +281,13 @@ void renderPvPScreen(GameEngine* game) {
                 SDL_Rect drawButtonRect = {DRAW_BUTTON_X, DRAW_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 SDL_RenderCopy(renderer, drawButtonTexture, NULL, &drawButtonRect);
                 game->handleButtonHover(drawButtonTexture, mouseX, mouseY, DRAW_BUTTON_X, DRAW_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-            } else if (game->currentPlayer < gameplay.numberOfPlayers && game->currentDrawPokerRound == GameEngine::SHOWDOWN_ROUND) {
-                // Save player data after dealing cards and determining the winner
-                game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], false, 0, false); 
+                
+                if (game->currentDrawPokerRound == GameEngine::SHOWDOWN_ROUND) {
+                    // Reveal all players' cards if not folded
+                    if (foldButtonFlag == false) {
+                        game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], false, 0, false);
+                    }
+                }
             } else if (game->currentPlayer == static_cast<int>(gameplay.numberOfPlayers)) {
                 if (game->currentDrawPokerRound == GameEngine::SHOWDOWN_ROUND) {
                     if (!isSavedPvP) {
