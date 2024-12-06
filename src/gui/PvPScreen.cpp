@@ -22,6 +22,7 @@ bool foldButtonFlag = false;
 bool isCallButtonClicked = false;
 bool callButtonFlag = false;
 bool isRaiseButtonClicked = false;
+bool raiseButtonFlag = false;
 int currentCardIndex = -1;
 
 // Function to render the PvP screen
@@ -133,7 +134,7 @@ void renderPvPScreen(GameEngine* game) {
                     game->renderText(renderer, bigFontVintage, "It's a tie!", WINDOW_WIDTH / 2, 50, textColor, true);
                 }
             }
-            for (size_t i = 0; i < usernames.size(); ++i) {
+            for (size_t i = 0; i < gameplay.numberOfPlayers; i++) {
                 delete[] cardSets[i];
             }
             delete[] cardSets;
@@ -203,6 +204,7 @@ void renderPvPScreen(GameEngine* game) {
                 if ((game->currentDrawPokerRound == GameEngine::FIRST_BETTING_ROUND || game->currentDrawPokerRound == GameEngine::SECOND_BETTING_ROUND) && foldButtonFlag == false) {
                     if (isRaiseButtonClicked == true) {
                         isRaiseButtonClicked = false;
+                        raiseButtonFlag = true;
                         gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted += 10;
                         gameplay.highestBet = std::max(gameplay.highestBet, gameplay.players[gameplay.players[game->currentPlayer].id].chipsBetted);
                         gameplay.totalChipsBetted += 10;
@@ -281,7 +283,7 @@ void renderPvPScreen(GameEngine* game) {
                 SDL_Rect drawButtonRect = {DRAW_BUTTON_X, DRAW_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
                 SDL_RenderCopy(renderer, drawButtonTexture, NULL, &drawButtonRect);
                 game->handleButtonHover(drawButtonTexture, mouseX, mouseY, DRAW_BUTTON_X, DRAW_BUTTON_Y, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
-                
+
                 if (game->currentDrawPokerRound == GameEngine::SHOWDOWN_ROUND) {
                     // Reveal all players' cards if not folded
                     if (foldButtonFlag == false) {
@@ -313,7 +315,7 @@ void renderPvPScreen(GameEngine* game) {
                     game->currentPlayer = 0;
                 }
             }
-            for (size_t i = 0; i < usernames.size(); ++i) {
+            for (size_t i = 0; i < gameplay.numberOfPlayers; i++) {
                 delete[] cardSets[i];
             }
             delete[] cardSets;

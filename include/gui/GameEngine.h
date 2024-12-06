@@ -39,6 +39,7 @@ extern bool foldButtonFlag;
 extern bool isCallButtonClicked;
 extern bool callButtonFlag;
 extern bool isRaiseButtonClicked;
+extern bool raiseButtonFlag;
 
 extern int currentCardIndex;
 

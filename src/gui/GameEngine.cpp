@@ -281,15 +281,17 @@ void GameEngine::handleEvents() {
                 handlePrevButtonClickTutorial(x, y);
             // HANDLE: Buttons clicked in the leaderboard screen.
             } else if (currentGameState == PVP_SCREEN) {
-                handleNextButtonClickPvP(x, y);
-                if (currentGameMode == DRAW_POKER) {
+                if (currentGameMode == BASIC_POKER) {
+                    handleNextButtonClickPvP(x, y);
+                } else if (currentGameMode == DRAW_POKER) {
                     if (currentDrawPokerRound == DRAW_ROUND) {
                         if (foldButtonFlag == false && drawButtonFlag == false) handleDrawButtonClickPvP(x, y);
-                    }
-                    if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
+                        handleNextButtonClickPvP(x, y);
+                    } else if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
                         if (foldButtonFlag == false && callButtonFlag == false) handleCallButtonClickPvP(x, y);
                         if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
                         if (foldButtonFlag == false && callButtonFlag == false) handleRaiseButtonClickPvP(x, y);
+                        if (foldButtonFlag == true || callButtonFlag == true || raiseButtonFlag == true) handleNextButtonClickPvP(x, y);
                     }
                 }
             } else if (currentGameState == PVE_SCREEN) {
@@ -611,8 +613,9 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
         if (currentDrawPokerRound == DRAW_ROUND) {
             drawButtonFlag = false;
         } else if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
-            std::cout << "current call button flag: " << callButtonFlag << '\n';
             callButtonFlag = false;
+            foldButtonFlag = false;
+            raiseButtonFlag = false;
         }
     } 
 }
@@ -678,6 +681,7 @@ void GameEngine::resetPvPGame() {
     isFoldButtonClicked = false;
     foldButtonFlag = false;
     isRaiseButtonClicked = false;
+    raiseButtonFlag = false;
     currentCardIndex = -1;
     currentDrawPokerRound = FIRST_BETTING_ROUND;
     
