@@ -15,16 +15,12 @@ AUTHOR: Lam Chi Hao.
 
 // Function to render the Tutorial screen
 void renderTutorialScreen(GameEngine* game) {
-    TTF_Font* font = game->getFont();
-    SDL_Window* window = game->getWindow();
+    TTF_Font* bigFontVintage = game->getBigFontVintage();
+    TTF_Font* mediumFontVintage = game->getMediumFontVintage();
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
     SDL_Texture* nextButtonTexture = game->getNextButtonTexture();
     SDL_Texture* prevButtonTexture = game->getPrevButtonTexture();
-
-    // Get the window dimensions
-    int windowWidth, windowHeight;
-    SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
     // Get the mouse coordinates
     int mouseX, mouseY;
@@ -36,7 +32,7 @@ void renderTutorialScreen(GameEngine* game) {
 
     // Render the Tutorial screen title
     SDL_Color textColor = {255, 255, 255, 255}; // White color
-    game->renderText(renderer, font, "Tutorial", windowWidth / 2, 50, textColor, true);
+    game->renderText(renderer, bigFontVintage, "Tutorial", WINDOW_WIDTH / 2, 50, textColor, true);
 
     // Handle back button hover
     game->handleButtonHover(backButtonTexture, mouseX, mouseY, START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT);
@@ -89,5 +85,5 @@ void renderTutorialScreen(GameEngine* game) {
 
     // Render the current set of cards
     game->renderCards(cardSets[game->currentCardSet], false, fadeCards[game->currentCardSet], false);
-    game->renderText(renderer, font, cardSetStrength[game->currentCardSet], windowWidth / 2, 450, textColor, true);
+    game->renderText(renderer, mediumFontVintage, cardSetStrength[game->currentCardSet], WINDOW_WIDTH / 2, 450, textColor, true);
 }

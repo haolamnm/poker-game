@@ -1,6 +1,15 @@
+/*
+FILE: src/main.cpp
+
+DESCRIPTION: 
+
+NOTE: 
+
+AUTHOR: Lam Chi Hao.
+*/
+
 #include "gui/GameEngine.h"
 
-// Pointer to the game object.
 GameEngine* game = nullptr;
 
 int main(int argc, char* argv[]) {
@@ -32,9 +41,6 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    // Clean up the game.
-    // Destructor is called automatically when the game object goes out of scope.
     delete game;
-
     return 0;
 }

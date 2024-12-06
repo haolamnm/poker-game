@@ -1,3 +1,15 @@
+/*
+FILE: src/core/Card.cpp
+
+DESCRIPTION: Implementation file for the card class. This file 
+contains the implementation of the member functions of the card
+class.
+
+NOTE: Some functions here are just used for debugging purposes.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #include "core/Card.h"
 
 std::string Card::suitToString() {

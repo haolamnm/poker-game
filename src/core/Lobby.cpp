@@ -1,3 +1,16 @@
+/*
+FILE: src/core/Lobby.cpp
+
+DESCRIPTION: Implementation file for the lobby class. This file
+contains the implementation of the member functions of the lobby
+class. Handle things like assigning and removing username from the
+lobby.
+
+NOTE: The lobby is where the players wait for the game to start.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #include "core/Lobby.h"
 
 void Lobby::assignUsername(const std::string& username) {

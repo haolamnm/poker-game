@@ -87,22 +87,9 @@ void handleTextInput(SDL_Event& event) {
 void renderUserInfoScreen(GameEngine* game) {
     SDL_Renderer* renderer = game->getRenderer();
     SDL_Texture* backButtonTexture = game->getBackButtonTexture();
-    SDL_Window* window = game->getWindow();
-    TTF_Font* font = game->getFont();
-
-    // Load a smaller font for the input fields
-    TTF_Font* inputFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 32);
-    if (!inputFont) {
-        std::cerr << "Failed to load input font: " << TTF_GetError() << std::endl;
-        return;
-    }
-
-    TTF_Font* promptFont = TTF_OpenFont("assets/fonts/SVN-Vintage.otf", 18);
-    if (!promptFont) {
-        std::cerr << "Failed to load prompt font: " << TTF_GetError() << std::endl;
-        TTF_CloseFont(inputFont);
-        return;
-    }
+    TTF_Font* bigFontVintage = game->getBigFontVintage();
+    TTF_Font* mediumFontVintage = game->getMediumFontVintage();
+    TTF_Font* smallFontVintage = game->getSmallFontVintage();
 
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
@@ -113,7 +100,7 @@ void renderUserInfoScreen(GameEngine* game) {
 
     // Render the "Login" text at the top
     SDL_Color textColor = {255, 255, 255, 255};
-    game->renderText(renderer, font, "Login", WINDOW_WIDTH / 2, 50, textColor, true);
+    game->renderText(renderer, bigFontVintage, "Login", WINDOW_WIDTH / 2, 50, textColor, true);
 
     // Render the back button
     SDL_Rect backButtonRect = {START_X, START_X, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT};
@@ -125,20 +112,20 @@ void renderUserInfoScreen(GameEngine* game) {
     const int inputFieldHeight = 40;
 
     // Render "username: " text
-    game->renderText(renderer, inputFont, "username: ", WINDOW_WIDTH / 2 - inputFieldWidth / 2 - 190, 195, textColor, false);
+    game->renderText(renderer, mediumFontVintage, "username: ", WINDOW_WIDTH / 2 - inputFieldWidth / 2 - 190, 195, textColor, false);
 
     // Render username input text
     SDL_Rect usernameInputRect = {WINDOW_WIDTH / 2 - inputFieldWidth / 2, 200, inputFieldWidth, inputFieldHeight};
     SDL_RenderSetClipRect(renderer, &usernameInputRect); // Set clipping rectangle
     if (!usernameInput.empty()) {
-        SDL_Surface* usernameInputSurface = TTF_RenderText_Solid(inputFont, usernameInput.c_str(), textColor);
+        SDL_Surface* usernameInputSurface = TTF_RenderText_Solid(mediumFontVintage, usernameInput.c_str(), textColor);
         if (usernameInputSurface) {
             SDL_Texture* usernameInputTexture = SDL_CreateTextureFromSurface(renderer, usernameInputSurface);
             SDL_FreeSurface(usernameInputSurface);
 
             if (usernameInputTexture) {
                 int usernameInputWidth, usernameInputHeight;
-                TTF_SizeText(inputFont, usernameInput.c_str(), &usernameInputWidth, &usernameInputHeight);
+                TTF_SizeText(mediumFontVintage, usernameInput.c_str(), &usernameInputWidth, &usernameInputHeight);
                 SDL_Rect usernameTextRect = {usernameInputRect.x + 5, usernameInputRect.y + (inputFieldHeight - usernameInputHeight) / 2, usernameInputWidth, usernameInputHeight}; // Position and size of the text
                 SDL_RenderCopy(renderer, usernameInputTexture, NULL, &usernameTextRect);
                 SDL_DestroyTexture(usernameInputTexture);
@@ -152,26 +139,26 @@ void renderUserInfoScreen(GameEngine* game) {
     SDL_RenderSetClipRect(renderer, NULL); // Clear clipping rectangle
 
     // Draw border around username input field
-    SDL_Rect usernameBorderRect = {usernameInputRect.x - 1, usernameInputRect.y - 1, inputFieldWidth + 2, inputFieldHeight + 2};
+    SDL_Rect usernameBorderRect = {usernameInputRect.x + 20, usernameInputRect.y - 1, inputFieldWidth + 2, inputFieldHeight + 2};
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &usernameBorderRect);
 
     // Render "password: " text
-    game->renderText(renderer, inputFont, "password: ", WINDOW_WIDTH / 2 - inputFieldWidth / 2 - 190, 295, textColor, false);
+    game->renderText(renderer, mediumFontVintage, "password: ", WINDOW_WIDTH / 2 - inputFieldWidth / 2 - 190, 295, textColor, false);
 
     // Render password input text (masked with asterisks)
     std::string maskedPassword(passwordInput.length(), '*');
     SDL_Rect passwordInputRect = {WINDOW_WIDTH / 2 - inputFieldWidth / 2, 300, inputFieldWidth, inputFieldHeight};
     SDL_RenderSetClipRect(renderer, &passwordInputRect); // Set clipping rectangle
     if (!maskedPassword.empty()) {
-        SDL_Surface* passwordInputSurface = TTF_RenderText_Solid(inputFont, maskedPassword.c_str(), textColor);
+        SDL_Surface* passwordInputSurface = TTF_RenderText_Solid(mediumFontVintage, maskedPassword.c_str(), textColor);
         if (passwordInputSurface) {
             SDL_Texture* passwordInputTexture = SDL_CreateTextureFromSurface(renderer, passwordInputSurface);
             SDL_FreeSurface(passwordInputSurface);
 
             if (passwordInputTexture) {
                 int passwordInputWidth, passwordInputHeight;
-                TTF_SizeText(inputFont, maskedPassword.c_str(), &passwordInputWidth, &passwordInputHeight);
+                TTF_SizeText(mediumFontVintage, maskedPassword.c_str(), &passwordInputWidth, &passwordInputHeight);
                 SDL_Rect passwordTextRect = {passwordInputRect.x + 5, passwordInputRect.y + (inputFieldHeight - passwordInputHeight) / 2, passwordInputWidth, passwordInputHeight}; // Position and size of the text
                 SDL_RenderCopy(renderer, passwordInputTexture, NULL, &passwordTextRect);
                 SDL_DestroyTexture(passwordInputTexture);
@@ -185,14 +172,14 @@ void renderUserInfoScreen(GameEngine* game) {
     SDL_RenderSetClipRect(renderer, NULL); // Clear clipping rectangle
 
     // Draw border around password input field
-    SDL_Rect passwordBorderRect = {passwordInputRect.x - 1, passwordInputRect.y - 1, inputFieldWidth + 2, inputFieldHeight + 2};
+    SDL_Rect passwordBorderRect = {passwordInputRect.x + 20, passwordInputRect.y - 1, inputFieldWidth + 2, inputFieldHeight + 2};
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // White color for the border
     SDL_RenderDrawRect(renderer, &passwordBorderRect);
 
     // Render the new account prompt and buttons if needed
     if (showNewAccountPrompt) {
-        game->renderText(renderer, promptFont, "The account seems does not exist!", WINDOW_WIDTH / 2, 400, textColor, true);
-        game->renderText(renderer, promptFont, "Do you want to create a new account?", WINDOW_WIDTH / 2, 425, textColor, true);
+        game->renderText(renderer, smallFontVintage, "The account seems does not exist!", WINDOW_WIDTH / 2, 400, textColor, true);
+        game->renderText(renderer, smallFontVintage, "Do you want to create a new account?", WINDOW_WIDTH / 2, 425, textColor, true);
 
         // Define button dimensions
         const int buttonWidth = 80;
@@ -202,18 +189,16 @@ void renderUserInfoScreen(GameEngine* game) {
         yesButtonRect = {WINDOW_WIDTH / 2 - buttonWidth, 450, buttonWidth, buttonHeight};
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Green color for "Yes" button
         SDL_RenderFillRect(renderer, &yesButtonRect);
-        game->renderText(renderer, inputFont, "Yes", yesButtonRect.x + buttonWidth / 2, yesButtonRect.y + buttonHeight / 2 - 25, textColor, true);
+        game->renderText(renderer, mediumFontVintage, "Yes", yesButtonRect.x + buttonWidth / 2, yesButtonRect.y + buttonHeight / 2 - 25, textColor, true);
 
         // Render "No" button
         noButtonRect = {WINDOW_WIDTH / 2, 450, buttonWidth, buttonHeight};
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color for "No" button
         SDL_RenderFillRect(renderer, &noButtonRect);
-        game->renderText(renderer, inputFont, "No", noButtonRect.x + buttonWidth / 2, noButtonRect.y + buttonHeight / 2 - 25, textColor, true);
+        game->renderText(renderer, mediumFontVintage, "No", noButtonRect.x + buttonWidth / 2, noButtonRect.y + buttonHeight / 2 - 25, textColor, true);
     }
 
     if (lobby.getUsernames().size() >= MAX_LOBBY_SIZE) {
-        game->renderText(renderer, promptFont, "The lobby is full!", WINDOW_WIDTH / 2, 500, textColor, true);
+        game->renderText(renderer, mediumFontVintage, "The lobby is full!", WINDOW_WIDTH / 2, 500, textColor, true);
     }
-    // Close the input font
-    TTF_CloseFont(inputFont);
 }

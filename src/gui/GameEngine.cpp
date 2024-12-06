@@ -1,3 +1,4 @@
+
 /*
 FILE: src/GUI/GameEngine.cpp
 
@@ -29,7 +30,9 @@ Lobby lobby;
 // Constructor: Initializes the game objects.
 GameEngine::GameEngine() {
     isRunning = false;
-    font = nullptr;
+    bigFontVintage = nullptr;
+    mediumFontVintage = nullptr;
+    smallFontVintage = nullptr;
     window = nullptr;
     renderer = nullptr;
     backgroundMusic = nullptr;
@@ -90,8 +93,18 @@ bool GameEngine::init(const char* title, int width, int height, bool fullscreen)
     }
 
     // NOTE: Load the font for the game.
-    font = TTF_OpenFont(FONT_PATH, FONT_SIZE);
-    if (!font) {
+    bigFontVintage = TTF_OpenFont(FONT_VINTAGE_PATH, BIG_FONT_SIZE);
+    if (!bigFontVintage) {
+        std::cerr << RED_TEXT << "Failed to load font: " << TTF_GetError() << RESET_TEXT << std::endl;
+        return false;
+    }
+    mediumFontVintage = TTF_OpenFont(FONT_VINTAGE_PATH, MEDIUM_FONT_SIZE);
+    if (!mediumFontVintage) {
+        std::cerr << RED_TEXT << "Failed to load font: " << TTF_GetError() << RESET_TEXT << std::endl;
+        return false;
+    }
+    smallFontVintage = TTF_OpenFont(FONT_VINTAGE_PATH, SMALL_FONT_SIZE);
+    if (!smallFontVintage) {
         std::cerr << RED_TEXT << "Failed to load font: " << TTF_GetError() << RESET_TEXT << std::endl;
         return false;
     }
@@ -236,9 +249,9 @@ void GameEngine::handleEvents() {
                 int startY = WINDOW_HEIGHT - 30 * usernames.size() - 10; // 10 pixels padding from the bottom
                 for (size_t i = 0; i < usernames.size(); ++i) {
                     int textWidth, textHeight;
-                    TTF_SizeText(font, usernames[i].c_str(), &textWidth, &textHeight);
+                    TTF_SizeText(bigFontVintage, usernames[i].c_str(), &textWidth, &textHeight);
                     int deleteButtonWidth, deleteButtonHeight;
-                    TTF_SizeText(font, "x", &deleteButtonWidth, &deleteButtonHeight);
+                    TTF_SizeText(bigFontVintage, "x", &deleteButtonWidth, &deleteButtonHeight);
                     int startX = WINDOW_WIDTH - textWidth - deleteButtonWidth - 30;
                     SDL_Rect deleteButtonRect = {startX + textWidth + 10, startY, deleteButtonWidth, deleteButtonHeight};
                     if (x >= deleteButtonRect.x && x <= deleteButtonRect.x + deleteButtonRect.w &&
@@ -275,10 +288,8 @@ void GameEngine::handleEvents() {
                     }
                     if (currentDrawPokerRound == FIRST_BETTING_ROUND || currentDrawPokerRound == SECOND_BETTING_ROUND) {
                         if (callButtonFlag == false) handleCallButtonClickPvP(x, y);
-                        if (foldButtonFlag == false) {
-                            handleFoldButtonClickPvP(x, y);
-                            handleRaiseButtonClickPvP(x, y);
-                        }
+                        if (foldButtonFlag == false) handleFoldButtonClickPvP(x, y);
+                        handleRaiseButtonClickPvP(x, y);
                     }
                 }
             } else if (currentGameState == PVE_SCREEN) {
@@ -326,9 +337,17 @@ void GameEngine::render() {
 
 void GameEngine::clean() {
     std::cout << YELLOW_TEXT << "Cleaning up GameEngine..." << RESET_TEXT << std::endl;
-    if (font) {
-        TTF_CloseFont(font);
-        font = nullptr;
+    if (bigFontVintage) {
+        TTF_CloseFont(bigFontVintage);
+        bigFontVintage = nullptr;
+    }
+    if (mediumFontVintage) {
+        TTF_CloseFont(mediumFontVintage);
+        mediumFontVintage = nullptr;
+    }
+    if (smallFontVintage) {
+        TTF_CloseFont(smallFontVintage);
+        smallFontVintage = nullptr;
     }
     if (backgroundMusic) {
         Mix_FreeMusic(backgroundMusic);
@@ -587,7 +606,7 @@ void GameEngine::handlePrevButtonClickTutorial(int mouseX, int mouseY) {
 
 void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
     std::vector<std::string> usernames = lobby.getUsernames();
-    if (currentPlayer < usernames.size() && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    if (currentPlayer < static_cast<int>(usernames.size()) && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
         if (currentDrawPokerRound == DRAW_ROUND) {
             drawButtonFlag = false;
@@ -599,7 +618,8 @@ void GameEngine::handleNextButtonClickPvP(int mouseX, int mouseY) {
 
 void GameEngine::handleNextButtonClickPvE(int mouseX, int mouseY) {
     std::vector<std::string> usernames = lobby.getUsernames();
-    if (currentPlayer < usernames.size() + 5 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
+    // TODO: Implement extern variable for number of bots
+    if (currentPlayer < static_cast<int>(usernames.size()) + 5 && isButtonClicked(mouseX, mouseY, NEXT_BUTTON_X, NEXT_BUTTON_Y)) {
         currentPlayer += 1;
     }
 }

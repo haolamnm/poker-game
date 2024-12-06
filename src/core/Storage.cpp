@@ -1,3 +1,26 @@
+/*
+FILE: src/core/Storage.cpp
+
+DESCRIPTION: Implementation file for the storage class. This 
+file contains the implementation of the member functions of the
+storage class. Handle things like storing player data, such as
+username, password, games played, chips, winrate, rank, favorite
+strategy. We also handle the leaderboard of the game based on the
+winrate of the players.
+
+NOTE: There are two classes in this file: Storage and 
+Leaderboard. The Storage class is used to store player data, 
+such as username, password, games played, chips, winrate, rank, 
+favorite strategy. The Leaderboard class is used to store the 
+leaderboard of the game based on the winrate of the players. 
+We decide to put these two classes in the same file because
+they are closely related to each other. We use file handling
+techniques to store, retrieve, update player data and leaderboard
+data.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #include "core/Storage.h"
 
 /* ------------------Storage------------------ */
@@ -190,7 +213,7 @@ void Leaderboard::updateLeaderboard() {
     std::sort(players.begin(), players.end(), [&](Player& a, Player& b) {
         return a.winrate > b.winrate;
     });
-    for (int i = 0; i < players.size(); i++) {
+    for (int i = 0; i < static_cast<int>(players.size()); i++) {
         players[i].rank = i + 1;
     }
     saveLeaderboard();

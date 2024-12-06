@@ -1,6 +1,19 @@
+/*
+FILE: src/core/Login.cpp
+
+DESCRIPTION: Implementation file for the login class. This file
+contains the implementation of the member functions of the login
+class. Handle things like login, create a new player, and show the
+status of the login.
+
+NOTE: This file interacts with the storage class to verify the
+username and password of the player.
+
+AUTHOR: Le Nguyen Anh Tri.
+*/
+
 #include "core/Login.h"
 
-/* ------------------Login------------------ */
 bool Login::login(const std::string& username, const std::string& password) {
     if (storage.usernameExists(username)) {
         if (storage.verify(username, password)) {
@@ -34,4 +47,3 @@ bool Login::createNewPlayer(const std::string& username, const std::string& pass
 const std::string Login::show() {
     return status;
 }
-/* ------------------End of Login------------------ */
