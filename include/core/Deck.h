@@ -25,7 +25,7 @@ private:
     static constexpr unsigned short RANKS_SIZE = 13;
 public:
     Card cards[DECK_SIZE];
-    int remainCards = DECK_SIZE;
+    unsigned int remainCards = DECK_SIZE;
 
     void setup();
     void shuffle();

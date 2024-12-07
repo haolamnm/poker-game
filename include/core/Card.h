@@ -42,7 +42,6 @@ class Card {
 public:
     Suits suit = SUIT_EMPTY;
     Ranks rank = RANK_EMPTY;
-    unsigned short value;
 
     std::string suitToString();
     std::string rankToString();

@@ -295,6 +295,7 @@ void renderPvPScreen(GameEngine* game) {
                     // Reveal all players' cards if not folded
                     if (foldButtonFlag == false) {
                         game->renderCards(cardSets[gameplay.players[game->currentPlayer].id], false, 0, false);
+                        game->renderText(renderer, mediumFontVintage, gameplay.players[gameplay.players[game->currentPlayer].id].hand.handName.c_str(), WINDOW_WIDTH / 2, 450, textColor, true);
                     }
                 }
             } else if (game->currentPlayer == static_cast<int>(gameplay.numberOfPlayers)) {
