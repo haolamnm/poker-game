@@ -27,7 +27,6 @@ private:
     Gameplay game;
     std::vector<std::string> usernames;
 public:
-    // void handleGame();
     void assignUsername(const std::string& username);
     void removeUsername(const std::string& username);
     std::vector<std::string> getUsernames();

@@ -12,9 +12,7 @@ AUTHOR: Le Nguyen Anh Tri.
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Login.h"
 #include "Hand.h"
-#include <iostream>
 
 class Player {
 private:
@@ -40,8 +38,6 @@ public:
             6 - Full house          7 - Four of a kind
             8 - Straight flush
     */
-
-    void show();
 };
 
 #endif

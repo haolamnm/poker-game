@@ -35,167 +35,97 @@
 ```mermaid
 classDiagram
     class GameEngine {
-        +bool init(const char* title, int width, int height, bool fullscreen)
-        +void handleEvents()
-        +void update()
-        +void render()
-        +void clean()
-        +bool loadBackgroundMusic(const char* filePath)
-        +bool playButtonClickSound(const char* filePath)
-        +void renderText(SDL_Renderer* renderer, TTF_Font* font, const char* text, int x, int y, SDL_Color color, bool centered, bool rightAligned)
-        +void renderCards(const char* cardFiles[5], bool allowClick, int fadeCards, bool allFaceDown)
-        +void handleButtonHover(SDL_Texture* buttonTexture, int mouseX, int mouseY, int buttonX, int buttonY, int buttonWidth, int buttonHeight)
-        +SDL_Texture* getBackButtonTexture() const
-        +SDL_Texture* getNextButtonTexture() const
-        +SDL_Texture* getPrevButtonTexture() const
-        +SDL_Texture* getFoldButtonTexture() const
-        +SDL_Texture* getCallButtonTexture() const
-        +SDL_Texture* getRaiseButtonTexture() const
-        +SDL_Texture* getdrawButtonTexture() const
-        +TTF_Font* getBigFontVintage()
-        +TTF_Font* getMediumFontVintage()
-        +TTF_Font* getSmallFontVintage()
-        +SDL_Window* getWindow()
-        +SDL_Renderer* getRenderer()
-        +SDL_Rect* getCardRects()
-        +bool* getCardRevealed()
-        +void handleNextButtonClickPvP(int mouseX, int mouseY)
-        +void handleDrawButtonClickPvP(int mouseX, int mouseY)
-        +void handleFoldButtonClickPvP(int mouseX, int mouseY)
-        +void handleCallButtonClickPvP(int mouseX, int mouseY)
-        +void handleRaiseButtonClickPvP(int mouseX, int mouseY)
-        +void resetPvPGame()
-        +void resetPvEGame()
-        +int currentCardSet
-        +int currentPlayer
-        +string currentGameMode
-        +string currentDrawPokerRound
+        -SDL_Window* window
+        -SDL_Renderer* renderer
+        -GameState currentGameState
+        -GameMode currentGameMode
+        -drawPokerRound currentDrawPokerRound
+        +init()
+        +handleEvents()
+        +update()
+        +render()
+        +clean()
     }
 
     class Gameplay {
-        +void init(const std::vector<std::string>& usernames, int numberOfBots)
-        +void dealCards(int numberOfCards)
-        +void drawPlayerCards(Player& player)
-        +void whoWins()
-        +void savePlayerData(Player& player)
-        +void saveAllPlayerData()
-        +std::vector<std::vector<std::string>> showLeaderboard()
-        +void resetDeck()
-        +int countSelectedCards(int id)
         -Deck deck
         -Storage storage
         -Leaderboard leaderboard
-        -int numberOfPlayers
-        -int winner
-        -unsigned int entryFee
-        -unsigned int totalEntryFee
-        -unsigned int totalChipsBetted
-        -unsigned int highestBet
-        -std::vector<Player> players
+        +init()
+        +dealCards()
+        +whoWins()
+        +savePlayerData()
+        +showLeaderboard()
     }
 
     class Player {
-        +void show()
         -std::string username
-        -int id
         -Hand hand
         -bool isBot
         -bool isFolded
-        -unsigned int chipsBetted
-        -unsigned int gamesPlayed
         -unsigned int chips
         -float winrate
         -unsigned short rank
-        -std::string favoriteStrategy
-        -unsigned int winningStrategy[9]
-    }
-
-    class Lobby {
-        +void assignUsername(const std::string& username)
-        +void removeUsername(const std::string& username)
-        +std::vector<std::string> getUsernames()
-        +std::vector<std::vector<std::string>> handleLeaderboard()
-        -Login login
-        -Gameplay game
-        -std::vector<std::string> usernames
     }
 
     class Hand {
-        +void show()
-        +void sortCards()
-        +void evaluateHand()
-        -int numberOfOnHandCards
+        -Card cards[5]
         -int handStrength
         -std::string handName
-        -Card cards[5]
-        -Card sortedCards[5]
-        -bool removedCards[5]
-        -std::vector<Card> strengthCards
+        +show()
+        +sortCards()
+        +evaluateHand()
     }
 
     class Card {
-        +std::string suitToString()
-        +std::string rankToString()
         -Suits suit
         -Ranks rank
-        -unsigned short value
+        +suitToString()
+        +rankToString()
     }
 
     class Deck {
-        +void setup()
-        +void shuffle()
-        +void reset()
         -Card cards[52]
         -int remainCards
+        +setup()
+        +shuffle()
+        +reset()
     }
 
     class Storage {
-        +bool usernameExists(const std::string& username)
-        +bool verify(const std::string& username, const std::string& password)
-        +void createNewPlayer(const std::string& username, const std::string& password, unsigned int gamesPlayed, unsigned int chips, float winrate, unsigned short rank, const std::string& favoriteStrategy, unsigned int winningStrategy[])
-        +void assignPlayerData(const std::string& username, unsigned int gamesPlayed, unsigned int chips, float winrate, unsigned short rank, const std::string& favoriteStrategy, unsigned int winningStrategy[])
-        +void savePlayerData(const std::string& username)
-        +std::vector<std::string> split(const std::string& str, char delimiter)
         -std::map<std::string, Player> storage
-        -std::string fileName
-    }
-
-    class Leaderboard {
-        +void loadPlayerData()
-        +void updateLeaderboard()
-        +void saveLeaderboard(const std::string& fileName)
-        +void showLeaderboard()
-        -std::vector<Player> players
+        +verify()
+        +createNewPlayer()
+        +savePlayerData()
+        +updatePlayerStorage()
     }
 
     class Login {
-        +bool login(const std::string& username, const std::string& password)
-        +bool createNewPlayer(const std::string& username, const std::string& password)
-        +const std::string show()
         -Storage storage
         -std::string status
-        -StatusCode statusCode
+        +login()
+        +createNewPlayer()
+    }
+
+    class Lobby {
+        -Login login
+        -Gameplay game
+        -std::vector<std::string> usernames
+        +assignUsername()
+        +removeUsername()
+        +handleLeaderboard()
     }
 
     GameEngine --> Gameplay : uses
-    GameEngine --> Player : manages
     GameEngine --> Lobby : uses
-    GameEngine --> Hand : uses
-    GameEngine --> Card : uses
-    GameEngine --> Deck : uses
-    GameEngine --> Storage : uses
-    GameEngine --> Leaderboard : uses
-    GameEngine --> Login : uses
     Gameplay --> Player : manages
     Gameplay --> Deck : uses
     Gameplay --> Storage : uses
-    Gameplay --> Leaderboard : uses
-    Lobby --> Login : uses
-    Lobby --> Gameplay : uses
     Player --> Hand : has
     Hand --> Card : contains
     Deck --> Card : contains
     Storage --> Player : stores
-    Leaderboard --> Player : ranks
     Login --> Storage : uses
+    Lobby --> Login : uses
+    Lobby --> Gameplay : uses
 ```
