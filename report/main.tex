@@ -1,16 +1,13 @@
-% Author: Lam Chi Hao
-% Author: Vo Nhat Tien
-% Author: Le Nguyen Anh Tri
-% Last update: 23/11/2024
-
 \documentclass[12pt]{article}
 \usepackage{tikz}
+\usepackage{pgf-umlcd}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{pdflscape}
 \usepackage{fancyhdr}
 \usepackage{ulem}
 \usepackage{graphicx}
+\usepackage{bold-extra}
 \usepackage[colorlinks = true,
             linkcolor = magenta,
             urlcolor = magenta,
@@ -97,25 +94,23 @@
 \tableofcontents
 \pagebreak
 
-% Information group page
-\input{contents/GroupInformation.tex}
+% Introduction
+\input{contents/Foreword.tex}
 
-% Table of contribution
-\input{contents/TableOfContribution.tex}
+\pagebreak
+\input{contents/Introduction.tex}
+\pagebreak
+\input{contents/Implementation.tex}
+\pagebreak
+\input{contents/Showcase.tex}
 
-% Acknowledgement
-\include{contents/Acknowledgement}
-
-% Report contents
-\include{contents/Introduction}
-\include{contents/ProjectStructure}
-\include{contents/Chart}
-\include{contents/SDL2GameStructure}
-\include{contents/Implementation}
-\include{contents/Conclusion}
-\include{contents/FutureWork}
+% Conclusion
+\input{contents/Conclusion.tex}
 
 % References
-\include{contents/References}
+\pagebreak
+\input{contents/References.tex}
+\pagebreak
+\input{contents/Bugs.tex}
 
 \end{document}

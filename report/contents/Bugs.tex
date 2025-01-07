@@ -1,0 +1,57 @@
+\section{List of Bugs}
+\label{sec:bugs-list}
+
+\hspace{1cm} This section lists out the bugs that were encountered during the development of the project. The bugs are categorized based on the severity of the issue and the impact it had on the project. The bugs are listed in the order of their discovery, with the most critical bugs listed first. Each bug is described in detail, including the steps to reproduce the bug, the impact it had on the project, and the solution that was implemented to fix the bug.
+
+\begin{enumerate}
+    \item \textbf{Bug: Game screen rapidly ticks} 
+    \\ \textbf{Severity: Critical}, \textbf{Impact: High}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused the game screen to rapidly tick, making it difficult to play the game. The bug was caused by lack of handle for the game loop, which caused the game to run at an extremely high frame rate. This resulted in the game screen rapidly ticking. \href{https://youtu.be/yJd1IkAmf3o}{Link to the video}.
+    \\ \textbf{Solution}: The bug was fixed by adding a handle for the game loop, which limited the frame rate to a reasonable value such as \texttt{60} frames per second. This fixed the issue and made the game screen tick at a normal rate.
+    
+    \item \textbf{Bug: Leaderboard screen cannot handle large number of entries}
+    \\ \textbf{Severity: Major}, \textbf{Impact: Medium}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug not crash the game, but it caused the leaderboard screen to display incorrectly when there were a large number of entries from the csv file. The leaderboard screen can only display a limited number of entries.
+    \\ \textbf{Solution}: The bug was fixed by handling mouse scroll events in the leaderboard screen. This allowed the user to scroll through the leaderboard entries using the mouse wheel. This fixed the issue and allowed the user to view all the entries in the leaderboard.
+    
+    \item \textbf{Bug: Betting amount not updated correctly}
+    \\ \textbf{Severity: Minor}, \textbf{Impact: Low}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused the betting amount to not be updated correctly when the player call or raise the bet. The betting amount was not updated correctly in the game screen, which caused confusion for the player.
+    \\ \textbf{Solution}: The bug was fixed by changing some of the logic in the gameplay code.
+    
+    \item \textbf{Bug: Makefile not working on MacOS}
+    \\ \textbf{Severity: Minor}, \textbf{Impact: Low}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused the Makefile to not work on MacOS. The Makefile was not able to compile the project on MacOS due to the difference in the command line.
+    \\ \textbf{Solution}: The bug was fixed by adding a conditional statement in the Makefile to check the operating system and run the appropriate command. This fixed the issue and allowed the Makefile to compile the project on MacOS.
+    \item \textbf{Bug: Incorrect card images displayed}
+    \\ \textbf{Severity: Minor}, \textbf{Impact: Low}, \textbf{Status: Fixed}
+    
+    \item \textbf{Bug: Memory leak due to too many conditional statements}
+    \\ \textbf{Severity: Crucial}, \textbf{Impact: High}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused a memory leak in the game due to too many conditional statements in the code, especially in the PvP screen, where we need to handle both Basic and Draw Poker mode in the same screen.
+    \\ \textbf{Solution}: The bug was fixed by refactoring the code, removing unnecessary conditional statements, rename some variables, and split the code into separate functions. This fixed the issue and removed the memory leak.
+    
+    \item \textbf{Bug: Different password hashing on different OS}
+    \\ \textbf{Severity: Major}, \textbf{Impact: High}, \textbf{Status: Not Fixed}
+    \\ \textbf{Description}: This bug caused the password hashing to be different on different operating systems. The password hashing algorithm used in the project was not consistent across different operating systems, which caused the password to be hashed differently on different systems.
+    \\ \textbf{Solution}: For now, the bug is not fixed. The password hashing algorithm needs to be updated to use a consistent hashing algorithm that works across different operating systems.
+    
+    \item \textbf{Bug: Turn off the background music does not work}
+    \\ \textbf{Severity: Minor}, \textbf{Impact: Low}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused the background music to not turn off when the user clicked the button to turn off the music. 
+    \\ \textbf{Solution}: There is a misspelled function in the code, which caused the bug. The bug was fixed by correcting the misspell in the code.
+
+    \item \textbf{Bug: Incorrect winner}
+    \\ \textbf{Severity: Major}, \textbf{Impact: High}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused the game to find the incorrect winner when the game ended. The bug was caused by incorrect logic at the early stage of the game.
+    \\ \textbf{Solution}: The bug was fixed by changing the logic, adding the sorting algorithm to sort the player's hand, and finding the winner based on the sorted hand. Also archive the cards that form the rank of the player's hand for futher development.
+
+    \item \textbf{Bug: Incorrect player id after shuffle their position}
+    \\ \textbf{Severity: Major}, \textbf{Impact: High}, \textbf{Status: Fixed}
+    \\ \textbf{Description}: This bug caused the player id to be incorrect after we shuffle their position. We think that shuffle the player's position will make the game more interesting and balance. However, the player id was not updated correctly after shuffling their position.
+    \\ \textbf{Solution}: The bug was fixed by refactoring the code, adding one more variable which is the player's position, then use that to update the player id after shuffling their position.
+\end{enumerate}
+
+\hspace{1cm} The bugs listed above were encountered during the development of the project. Notice that, all the bugs listed above are not the only bugs that were encountered during the development process. However, these are the most time-consuming bugs that had a significant impact on the project. Finally, we manage to fix the majority of those bugs and the project is now in a stable state.
+
+% ------------------- THE END ------------------- %

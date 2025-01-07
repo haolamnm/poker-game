@@ -1,20 +1,257 @@
-\section{Implementation}
-\label{sec:implementation}
+\section{Implementation of the Poker Game}
+\label{sec:implementation-of-the-poker-game}
 
-\hspace{1cm} The implementation of the project is divided into two main parts: core mechanics and graphical user interface. The core mechanics of the game are implemented using classes and structures. The graphical user interface is implemented using the SDL2 library. The project is developed using C++ programming language.
+\subsection{Included Library}
+\label{subsec:included-library}
 
-\subsection{Core Mechanics}
-\label{subsec:core-mechanics}
+\hspace{1cm} For this project to work, we need to include some libraries, and step on that to build the project. These libraries are from the standard library of C++ and we use them to implement the project. The libraries that we include in this project are:
+\begin{enumerate}
+    \item \textbf{\texttt{<iostream>}}: In this project, we used to handle most of our debug statements on the console while running and developing the project. This library is used to handle the input and output stream.
+    \item \textbf{\texttt{<string>}}: This library is used to handle string data types. We use this library to handle the name of the player, the password of the player, the name of the game, and so on. The string is also used to handle the input and output login, register, and render text process.
+    \item \textbf{\texttt{<vector>}}: This library is used to handle the dynamic array. Some of the data that we need to handle in the dynamic array are the \texttt{strengthCards} since those cards that form the hand of the player are dynamic, (we don't know how many cards the player will have to form a hand at compile time).
+    \item \textbf{\texttt{<map>}}: This library is used to handle the key-value pair. Especially in the \texttt{Storage} class, we use this library to handle the key-value pair of the player's data and their username as a key.
+    \item \textbf{\texttt{<random>}}: In this project, we use \texttt{random} to generate random numbers. We use this library as a helper to shuffle the deck of cards.
+    \item \textbf{\texttt{<algorithm>}}: This library is used to handle the algorithm. We use this library to handle the sorting of the cards in the player's hand. We configured the basic sorting algorithm to sort the cards in the player's hand by their rank.
+    \item \textbf{\texttt{<ctime>}}: This library is used to handle the time. We use this library to handle the seed of the random number generator. We use the current time as the seed of the random number generator.
+    \item \textbf{\texttt{<funtional>}}: This library is used to handle the function object. We use this library to handle the comparison of the cards in the player's hand. We configured the basic comparison function object to compare the cards in the player's hand by their rank. This provides us will the ability to create a lambda function for a custom comparison function.
+    \item \textbf{\texttt{<fstream>}}: This library is used to handle the file stream. Especially in the \texttt{Storage} class, we use this library to handle the file stream of the player data and the leaderboard data. We use this library for reading, writing, and appending the data to the file.
+    \item \textbf{\texttt{<sstream>}}: This library is used to handle the string stream. Especially in the \texttt{Storage} class, we use this library to handle the parsing of the player's data and the leaderboard data.
+\end{enumerate}
 
-\hspace{1cm} The core mechanics of the game are implemented using classes and structures. The core classes of the project are \texttt{Game}, \texttt{Player}, \texttt{Card}, and \texttt{Deck}. The \texttt{Game} class manages the game state and loop. The \texttt{Player} class manages player data and actions. The \texttt{Card} class represents individual playing cards. The \texttt{Deck} class handles the deck of cards and dealing.
+\hspace{1cm} Beside the standard library of C++11, we also include the SDL2 library to handle the graphical user interface of the project. The libraries that we include in this project are:
+\begin{enumerate}
+    \item \textbf{\texttt{<SDL2/SDL.h>}}: This library is used to handle the basic SDL2 library. We use this library to handle the basic initialization of the SDL2 library.
+    \item \textbf{\texttt{<SDL2/SDL\_image.h>}}: This library is used to handle the image library of the SDL2. We use this library to handle the image loading and rendering process.
+    \item \textbf{\texttt{<SDL2/SDL\_ttf.h>}}: This library is used to handle the True Type Font library of the SDL2. We use this library to handle the text rendering process.
+    \item \textbf{\texttt{<SDL2/SDL\_mixer.h>}}: This library is used to handle the audio library of the SDL2. We use this library to handle the audio loading and playing process.
+\end{enumerate}
+
+\hspace{1cm} Notice that we don't include the \texttt{<SDL2/SDL\_net.h>} library in this project. This is because we do not use the network library of SDL2 in this project. We only use the basic SDL2 library, image library, True Type Font library, and audio library.
+
+\subsection{Precompiled Header}
+\label{subsec:precompiled-header}
+
+\hspace{1cm} In order to speed up the compilation process, we decided to use the precompiled header in our project. The precompiled header is a header file that is compiled into a binary file that can be used by the compiler to speed up the compilation process. The precompiled header is used to store the header files that are frequently used in the project. By using the precompiled header, the compiler doesn't need to recompile the header files that are stored in the precompiled header. This will speed up the compilation process since the compiler doesn't need to recompile the header files that are stored in the precompiled header.
 
 \vspace{0.5cm}
 
-\begin{itemize}
-    \item \textbf{Game}: Main class managing the game state and loop
-    \item \textbf{Player}: Manages player data and actions
-    \item \textbf{Card}: Represents individual playing cards
-    \item \textbf{Deck}: Handles the deck of cards and dealing
-\end{itemize}
+\hspace{1cm} To implement that, we create a header file called \texttt{pch.h} and include all the necessary header files, especially frequent and heavy-weighted header files such as SDL2 libraries. We include the \texttt{pch.h} in every source file for the graphical user interface. Then we compile the \texttt{pch.h} into a binary file called \texttt{pch.pch}. This will speed up the compilation process since the compiler doesn't need to recompile the header files. Otherwise, the compiler will need to compile every time for every source file that includes the SDL2 libraries. \href{https://github.com/anhtri2407/Poker/blob/main/include/pch.h}{Precompiled header source code}.
 
 \vspace{0.5cm}
+
+\hspace{1cm} Also in that precompiled header file, we define lots of our (constexpr) constants that are used to determine the path of our game assets such as images, fonts, and audio at compile time. This will make the code more readable and maintainable since we don't need to hardcode the path of the game assets in every source file. We only need to include the precompiled header file and use the constants that are defined in the precompiled header file.
+
+\subsection{Makefile}
+\label{subsec:makefile}
+
+\hspace{1cm} In this project, we use a Makefile to manage the build process. A \texttt{Makefile} is a simple way to define a set of tasks to be executed. It is commonly used to compile and build programs. The Makefile contains rules that specify how to compile and link the program. Each rule consists of a target, dependencies, and commands. The Makefile is processed by the make utility, which executes the commands to build the target.
+
+\vspace{0.5cm}
+
+\hspace{1cm} Since this project is relatively small and simple, we decided to use a Makefile to manage the build process. The Makefile is straightforward and easy to understand, making it suitable for this project. 
+\vspace{0.5cm}
+
+\hspace{1cm} To implement that we create a file called \texttt{Makefile}, which is a simple text file that contains a list of commands to be executed by the make command. These commands are used to compile the project, link the libraries, and generate the executable file. \href{https://github.com/anhtri2407/Poker/blob/main/Makefile}{Makefile source code}.
+
+\vspace{0.5cm}
+
+\hspace{1cm} Notice that we've just implemented the \texttt{Makefile} for just Windows and MacOS, some of the Unix-based operating systems. We haven't implemented the \texttt{Makefile} for Linux yet. Since we don't have a Linux operating system computer to test the \texttt{Makefile} implementation. So, we can't guarantee that the \texttt{Makefile} implementation will work on Linux.
+
+\vspace{0.5cm}
+
+\hspace{1cm} To run the \texttt{Makefile}, we need to open the terminal and navigate to the root directory of the project. Then we run the following steps: (Note: you can read more about these steps in our \href{https://github.com/anhtri2407/Poker/blob/main/README.md}{README.md} file.
+\begin{enumerate}
+    \item \textbf{\texttt{make clean}}: This command is used to clean the project. It will remove all the object files and the executable file.
+    \item \textbf{\texttt{make all}}: This command is used to compile the project. It will compile the source files, link the libraries, and generate the executable file.
+    \item \textbf{\texttt{make run}}: This command is used to run the project. It will run the executable file.
+\end{enumerate}
+
+\hspace{1cm} On Windows operating system, we need to install the \texttt{mingw-w64} compiler to run the \texttt{Makefile}. We also need to add the \texttt{mingw-w64} compiler to the system environment variable. This will allow us to run the \texttt{Makefile} on the Windows operating system by the following steps:
+\begin{enumerate}
+    \item \textbf{\texttt{mingw32-make -f Makefile clean}}: This command is used to clean the project. It will remove all the object files and the executable file.
+    \item \textbf{\texttt{mingw32-make -f Makefile all}}: This command is used to compile the project. It will compile the source files, link the libraries, and generate the executable file.
+    \item \textbf{\texttt{mingw32-make -f Makefile run}}: This command is used to run the project. It will run the executable file.
+\end{enumerate}
+
+\subsection{Game Core}
+\label{subsec:game-core}
+\begin{enumerate}
+    \item \textbf{Card}: This class is used to represent a single card in a standard 52-card deck. This class is used to define the suit and rank of a card. The suit and rank are represented by two enumerations, \texttt{Suits} and \texttt{Ranks}, respectively. The enumerate variable is initialized with the values of \texttt{-1} to \texttt{12} for the ranks and \texttt{-1} to \texttt{3} for the suits. The class also contains a method for printing the card to the console at the early state of the project. \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Card.cpp}{Card Implementation}.
+    \begin{itemize}
+        \item \texttt{\textbf{suitToString()}}: string \\ This method converts the suit of the card to a string representation via a switch statement.
+        \item \texttt{\textbf{rankToString()}}: string \\ This method converts the rank of the card to a string representation via a switch statement.
+    \end{itemize}
+
+    \item \textbf{Deck}: This class is used to represent a Standard 52-card deck. This class is built up using the \texttt{Card} class. The main idea is having an array of 52 objects of the type \texttt{Card} (Card cards[52]). In this file, we develop the methods for shuffling the deck, dealing with a card, and resetting the deck. \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Deck.cpp}{Deck Implementation}.
+    \begin{itemize}
+        \item \texttt{\textbf{setup()}}: void \\ This method initializes the deck with 52 cards, one of each rank and suit.
+        \item \texttt{\textbf{shuffle()}}: void \\ This method uses the \texttt{std::shuffle} function with a Mersenne Twister random number generator (\texttt{std::mt19937}) seeded with the current time (\texttt{std::time(0)}) to ensure a unique shuffle each time.
+        \item \texttt{\textbf{reset()}}: void \\ This method simply calls the \texttt{setup()} method and then the \texttt{shuffle()} method to reset the deck. Also, set the remaining card back to 52.
+    \end{itemize}
+
+    \item \textbf{Strength}: This class is for represents the strength of a hand in Poker. This class contains methods for calculating the strength of a hand, and checking the rank of the hand as we've mentioned above \hyperref[subsubsec:poker-hand-rankings]{Poker Hand Rankings}.
+    \begin{itemize}
+        \item \texttt{\textbf{isStraightFlush(Hand)}}: bool \\ The idea is to loop through the first four cards in the sorted hand and check if each card has the same suit as the next card. If not, it will return \texttt{false}. If one pair of card's ranks are not consecutive, it will return \texttt{false}. If all the cards are consecutive and have the same suit, it will return \texttt{true}. Then assign these cards to \texttt{vector strengthCards}.
+        \item \texttt{\textbf{isFourOfAKind(Hand)}}: bool \\ The idea is to check if the first four cards in the sorted hand have the same rank or if the last four cards in the sorted hand have the same rank. If so, it will return \texttt{true} and assign these four cards to \texttt{vector strengthCards}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{isFullHouse(Hand)}}: bool \\ The idea is to check if the first three cards and the last two cards in the \texttt{sortedCards[5]} have the same rank or the first two cards and the last three cards in the \texttt{sortedCards[5]} have the same rank. If so, it will return \texttt{true} and assign these five cards to \texttt{vector strengthCards}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{isFlush(Hand)}}: bool \\ The idea is to check if all five cards in the \texttt{sortedCards[5]} have the same suit by comparing the suit of each card to the next one. If all cards have the same suit, then it will return \texttt{true} and assign these five cards to \texttt{vector strengthCards}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{isStraight(Hand)}}: bool \\ The idea is using a loop to check if the first four cards in the \texttt{sortedCards[5]} have exactly one rank difference between the next card in the array. If all cards match that pattern, it will return \texttt{true} and assign these five cards to \texttt{vector strengthCards}. Otherwise, it will just return \texttt{false}.
+        \item \texttt{\textbf{isThreeOfAKind(Hand)}}: bool \\ The idea is to check if all three possible consecutive combinations of three cards in the \texttt{sortedCards[5]} have the same rank. If any of these combinations match the pattern, then it will return \texttt{true} and assign these three cards to \texttt{vector strengthCards}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{isTwoPair(Hand)}}: bool \\ Since we have the sorted hand, the idea is to check if the first two cards and the next two cards in the \texttt{sortedCards[5]} have the same rank. Or the first two cards and the last two cards in the \texttt{sortedCards[5]} have the same rank. Or the second and the third cards and the last two cards in the \texttt{sortedCards[5]} have the same rank. If any of these conditions are met, it will return \texttt{true} and assign these four cards to \texttt{vector strengthCards}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{isOnePair(Hand)}}: bool \\ The idea is to check each consecutive pair of the cards in the \texttt{sortedCards[5]} from the first to the fourth card if they have the same rank or not. If any of these pairs have the same rank, it will return \texttt{true} and assign these two cards to \texttt{vector strengthCards}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{evaluateHand(Hand)}}: int \\ The idea behind this method is that it will call all the above methods to check the rank of the player's hand. If the player's hand is a Straight Flush, it will return 8, going down to 1 for a High Card. Then the function will return the \texttt{int handStrength} indicates the rank of the player hand.
+        \item \texttt{\textbf{compareHands(Hand, Hand)}}: int \\ This function is used to compare the strength of two hands just like its name. By convention, we will return \texttt{1} if the first hand is stronger, \texttt{-1} if the second hand is stronger, and \texttt{0} if both hands are equal. the main idea is using the \texttt{int handStrength} to compare the strength of two hands. If the strength of the first hand is greater than the second hand, it will return \texttt{1}. Otherwise, if the strength of the second hand is greater than the first hand, it will return \texttt{-1}. If both hands have the same strength, then we will iterate through the \texttt{strengthCards} vector from the last card to the first card to compare the rank of the cards. If the corresponding card of the first hand is greater than the second hand, it will return \texttt{1}. Otherwise, if the corresponding card of the second hand is greater than the first hand, it will return \texttt{-1}. If all the cards are exactly equal in rank, it will then return \texttt{0} indicating that both hands are equal.
+    \end{itemize}
+
+    \item \textbf{Hand}: This class is used to represent a hand of the card in the game. This class is built up using the \texttt{Card} class. The main idea is having an array of 5 objects of the type \texttt{Card} (\texttt{Card cards[5]}). In this file we develop the methods for sorting the hand, checking the rank of the hand, and evaluating the hand. \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Hand.cpp}{Hand Implementation}.
+    \begin{itemize}
+        \item \texttt{\textbf{show()}}: void \\ A simple for loop that prints out the cards in the hand.
+        \item \texttt{\textbf{sortCards()}}: void \\  For this to work, we configure the standard sort function to sort the cards in hand by rank using a lambda function. Then assign those cards into a \texttt{Card sortedCards[5]} array.
+        \item \texttt{\textbf{evaluateHand()}}: void \\ This method calls the \texttt{sortCards()} method and the \texttt{Strength} class to use its methods to evaluate the hand. After that, it will assign the value returned by the \texttt{evaluateHand(Hand)} method from the \texttt{Strength} class to the \texttt{int handStrength} variable in the \texttt{Hand} class.
+    \end{itemize}
+    \item \textbf{Storage}: This is a helper class to store the player's information. In this class, we have to create a pseudo-struct for the attributes of a player. This is not built up from any other class. \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Storage.cpp}{Storage Implementation}.
+    \begin{itemize}
+        \item \textbf{\texttt{struct Player}}: This is a pseudo-struct that is used to define the attributes or the data structure of a player, such as the player \texttt{string username}, \texttt{string hashedPassword}, \texttt{string favoriteStrategy}, \texttt{float winrate}, \texttt{unsigned int chips}, etc. Having this struct allows us to easily manage related data throughout the project as the first state when the \texttt{Player} class was not implemented yet.
+        \item \texttt{\textbf{split(string, delimiter)}}: string vector \\ This is a helper function that is used to split a string into a vector of substrings based on the delimiter character. Since we decided to work with the CSV file format to store the player's information, this function helps us a lot in parsing the data from the file. The idea is simple, we create a \texttt{stringstream} object from the input string and then use the \texttt{getline} function to split the string into substrings based on the delimiter character.
+        \item \textbf{\texttt{Storage(Handles file I/O for data storage)}}: This is the class constructor that we are just used to initialize the \texttt{fstream} object to read and write the player's information to the file. If the file is successfully opened, then it will read the player's information line by line, each line will be split into a vector of substrings using \texttt{split(string, char)} function. After that, it checks if the split line contains exactly 16 substrings, if yes, then it will create a \texttt{Player} object and assign the corresponding attributes to the object. Then, it will push the \texttt{Player} object to a \texttt{map<string, Player> storage} with username as a key. Finally, it will close the file. Otherwise, it simply does nothing and closes the file.
+        \item \texttt{\textbf{usernameExists(}username\textbf{)}}: bool \\ Since we have the \texttt{map<string, Player> storage}, this method is used to check if the username already exists in the \texttt{storage} map or not via the \texttt{count} method of the \texttt{map} class. If the username already exists, it will return \texttt{true}. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{verify(}username, password\textbf{)}}: bool \\ The idea of this function is to check if the given username and password combination is correct or not. To do that, it will hash the concatenated string of username and password, then compare it with the hashed password of the corresponding username in the \texttt{storage} map. If they match, the functions will return \texttt{true} indicating that the username and password combination is correct. Otherwise, it will return \texttt{false}.
+        \item \texttt{\textbf{createNewPlayer(}default player's information\textbf{)}}: void \\ Those extra arguments are the attributes of the \texttt{struct Player}. This function is used to assign those arguments to the corresponding attributes of the \texttt{Player} object, then push it to the \texttt{storage} map with the username as a key. After that, it will append the player's information to the file in the CSV format via the flag \texttt{std::ios::app}.
+        \item \texttt{\textbf{assignPlayerData(}updated player's information\textbf{)}}: void \\ This function is necessary for updating the data of an existing player. The idea is to check if the username already exists in the \texttt{storage} map or not, then assign the new data to the corresponding attributes of the \texttt{Player} object. This ensures that the statistical data of that player is always up-to-date.
+        \item \texttt{\textbf{savePlayerData(}to save player's information\textbf{)}}: void \\ This function is used to save the data from the \texttt{storage} map to the \texttt{storage.csv} file. The idea is to open the file with the \texttt{std::ios::out} and \texttt{std::ios::trunc} flags to overwrite the old data with the new data. Then, it will iterate through all the entries in the \texttt{storage} map and assign new data. Each player's information will be written on a new line in the CSV format. Finally, it will close the file. Make sure that the player data will be saved after closing the game. 
+        \item \texttt{\textbf{getPlayerData(}string\textbf{})}: string vector \\ This function retrieves player data from the \texttt{storage} map based on the username and returns it as a vector of strings. As usual, it will check if the username already exists in the \texttt{storage} map or not. If the username already exists, it will return the player's information as a vector of strings. Otherwise, it will return an empty vector.
+        \item \texttt{\textbf{getAllUsernames()}}: string vector \\ This function returns a \texttt{string} vector of usernames for many further purposes. In our case, we used this to construct our leaderboard.
+        \item \texttt{\textbf{hashPassword(}password\textbf{)}}: string \\ This function returns the hash of the password given used to protect our players' data and restrict bad behavior on our data.
+        \item \texttt{\textbf{updatePlayerStorage()}}: void \\ This function is used to update our players' data in the storage after a match is done.
+    \end{itemize}
+    \item \textbf{Player}: This class contains all the needed player information used in our game. \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Player.cpp}{Player Implementation}.
+    \begin{itemize}
+        \item \texttt{username}: string
+        \item \texttt{id}: find
+        \item \texttt{hand}: Hand
+        \item \texttt{isBot}: bool
+        \item \texttt{isFolded}: bool
+        \item \texttt{chipsBetted}: unsigned int
+        \item \texttt{gamesPlayed}: unsigned int
+        \item \texttt{chips}: unsigned int
+        \item \texttt{winrate}: float
+        \item \texttt{favoriteStrategy}: string
+        \item \texttt{winningStrategy}: unsigned int[9]
+    \end{itemize}
+
+    \item \textbf{Login}: \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Login.cpp}{Login Implementation}.
+    \begin{itemize}
+        \item \texttt{\textbf{login(}username, password\textbf{)}}: bool \\
+        This function attempts to log in a user with the provided username and password. It checks the Storage to verify the username and password. If the credentials are correct, it returns true; otherwise, it returns false.
+        \item \texttt{\textbf{createNewPlayer(}username, password\textbf{)}}: bool \\
+        This function creates a new player account with the provided username and password. It first checks if the username already exists in the Storage. If the username does not exist, it creates a new player and returns true. If the username already exists, it returns false.
+        \item \texttt{\textbf{show()}}: string \\
+        This function returns the current status of the login process as a string. It can be used to display messages to the user, such as "Login successful" or "Incorrect password".
+    \end{itemize}
+    
+    \item \textbf{Lobby}: \href{https://github.com/anhtri2407/Poker/blob/main/src/core/Lobby.cpp}{Lobby Implementation}.
+    \begin{itemize}
+        \item \texttt{\textbf{assignUsername(}username\textbf{})}: void \\
+        This function assigns a username to the lobby. It first checks if the username already exists in the usernames vector. If the username does not exist, it adds the username to the vector. This ensures that each username in the lobby is unique.
+        \item \texttt{\textbf{removeUsername(}username\textbf{)}}: void \\
+        This function removes a username from the lobby. It searches for the username in the usernames vector and removes it if found. This is useful for managing the list of players in the lobby.
+        \item \texttt{\textbf{getUsernames()}}: string vector \\
+        This function returns a vector of strings containing all usernames currently in the lobby. This can be used for various purposes, such as displaying the list of players or managing game sessions.
+        \item \texttt{\textbf{handleLeaderboard()}}: vector of string vector \\
+         This function retrieves the leaderboard data by calling the showLeaderboard function from the Gameplay class. It returns a vector of vectors of strings, where each inner vector represents a player's data on the leaderboard. This is used to display the leaderboard in the game.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Game Engine}
+\label{subsec:game-engine}
+
+\subsubsection{About the SDL2}
+\label{subsubsec:about-the-sdl2}
+\hspace{1cm} SDL2 is a cross-platform development library designed to provide low-level access to audio, keyboard, mouse, joystick, and graphics hardware via OpenGL and Direct3D. SDL2 stands for Simple DirectMedia Layer 2. It is widely used for game development and multimedia applications. SDL2 is written in C, but it has bindings for many other languages, including C++11 (the language we mainly use in our project). SDL2 is open-source and free to use. SDL2 is a powerful library that provides a simple interface to handle the graphical user interface such as buttons, cursor, text, images, background music, and audio. We've tried our best to use the SDL2 library to handle the GUI of our project, as we mentioned in \hyperref[subsec:included-library]{Included Library}.
+\vspace{0.5cm}
+
+\hspace{1cm} The download process appears to be simple, we can download the SDL2 library from the official website of the SDL2 library. The download link is given in the \hyperref[sec:references-list]{References List}. After downloading the SDL2 library, we need to extract the downloaded file to a directory, which we've explicitly done in our codespace directory already. Make sure that we need to put the SDL2 library in the same directory as the project \texttt{include/libs/}, while for MacOS we need to install it via \texttt{brew install}. We also need to copy the files that end with \texttt{.dll} extension to the directory where the executable file is located, in our case it is the \texttt{bin/} directory. This will allow the executable file to find the SDL2 library when it is run. Once again, we don't have the Linux environment to test the SDL2 library yet so we can't say exactly how to install the SDL2 library on Linux, but we believe that you can run the command \texttt{sudo apt-get install} to install the SDL2 library on Linux as well. 
+
+\subsubsection{Basic Game Loop}
+\label{subsubsec:basic-game-loop}
+
+\hspace{1cm} The game loop is the main structure of a game. It is a loop that runs continuously during gameplay and consists of two main parts which are render and handle events. The rendering part is used to draw the game objects to the screen, while the handle events part is used to handle the user input such as mouse click, mouse scroll, tab, keyboard input, etc. The game loop is used to update the game state and render the game objects to the screen. We implement that via a class called \texttt{GameEngine} in our project.
+\vspace{0.5cm}
+
+\hspace{1cm} First of all we will look at the implementation of \texttt{GameEngine} class, then we will explain how the game loop works, what is the purpose of those variables and functions we created, and why we need them.
+\begin{enumerate}
+    \item \textbf{\texttt{isRunning}}: bool 
+    \\ This variable is used to determine whether the game is running or not. Its value is set to \texttt{true} after lots of initialization processes in the constructor of the \texttt{GameEngine} class to make sure that the game initialization is successful after all. The game loop will run as long as this variable is \texttt{true}. If there is any error during the initialization process, this variable will be set to \texttt{false}.
+    \item \textbf{\texttt{window}}: SDL\_Window*
+    \\ This variable is used to store the \texttt{window} object of the SDL2 library. The \texttt{window} object is used to create a window for the game. We set the window title, width, and height in the constructor of the \texttt{GameEngine} class.
+    \item \textbf{\texttt{renderer}}: SDL\_Renderer* \\ This variable is used to store the \texttt{renderer} object of the SDL2 library. The \texttt{renderer} object is used to render the game objects to the screen.
+    \item \textbf{\texttt{GameState}}: enum
+    \\ This enumeration is used to represent the state of the game, which indicates which screen the user is currently looking at. The game has \texttt{8} states in total, you can see the list of the states in the source code.
+    \item \textbf{\texttt{GameMode}}: enum
+    \\ This enumeration is used to represent the mode of the game, which indicates which mode the user is currently playing. The game has \texttt{2} modes in total, you can see the list of the modes in the source code.
+    \item \textbf{\texttt{drawPokerRound}}: enum
+    \\ This enumeration is used to represent the round of the Draw Poker game mode round. The game has \texttt{6} rounds in total, you can see the list of the rounds in the source code.
+    \item \textbf{\texttt{buttonTexture}}: SDL\_Texture*
+    \\ Actually we have different names for different button textures, but we just call it \texttt{buttonTexture} for simplicity. This variable is used to store the button texture of the SDL2 library. The button texture is used to render the button to the screen.
+    \item \textbf{\texttt{font}}: SDL\_Font*
+    \\ Actually we have a different name for this variable to describe its font type and size, but we just call it \texttt{font} for simplicity. This variable is used to store the \texttt{font} object of the SDL2 library. The \texttt{font} object is used to render the text to the screen.  
+    \item \textbf{\texttt{backgroundMusic}}: Mix\_Music*
+    \\ This variable is used to store the background music of the game. The background music is played when the \texttt{isRunning} is set to true. We set the volume of the background music to \texttt{32} in the constructor of the \texttt{GameEngine} class.
+    \item \textbf{\texttt{currentCardSet}}: int
+    \\ This variable is used to keep track of the current card set that is being used by a player in the game.
+    \item \textbf{\texttt{currentPlayer}}: int
+    \\ This variable is used to keep track of the current player that is playing the game, since we have different game screens and the order of the players is shuffled each new game.
+\end{enumerate}
+
+\hspace{1cm} After knowing the purpose of those variables, we will explain each of those functions associated with this class.
+
+\begin{enumerate}
+    \item \textbf{\texttt{GameEngine()}}: This is the constructor of the \texttt{GameEngine} class. This constructor is used to initialize some SDL2-related variables like the \texttt{window}, \texttt{renderer}, \texttt{font}, \texttt{buttonTexture}, and \texttt{backgroundMusic}. Also, it is used to set \texttt{isRunning} to \texttt{false}, and all the enumeration variables to their initial values. The constructor is also used to set all the cards facing down.
+    \item \textbf{\texttt{\~{}GameEngine()}}: This is the destructor of the \texttt{GameEngine} class. This destructor simply calls the \texttt{void clean()} method to clean up the SDL2-related variables.
+    \item \textbf{\texttt{init(title, width, height, fullscreen)}}: bool
+    \\ This method is used to initialize the SDL2 library. During the initialization process, if there is any error, it will print out the error message to the console in red color, then return \texttt{false}. Otherwise, it will return \texttt{true} and print out a success message to the console in green color. 
+    \item \textbf{\texttt{handleEvents()}}: void
+    \\ This method is used to handle user input such as mouse click, mouse scroll, tab, keyboard input, etc. This method is called in the game loop to handle the user input. As usual, we should use \textbf{\texttt{void update()}} method to update the game state based on the user input, but for simplicity, we just handle that in this method right away.
+    \item \textbf{\texttt{render()}}: void
+    \\ This method is used to render the game objects to the screen. This method is called in the game loop to render the game objects to the screen.
+    \item \textbf{\texttt{clean()}}: void
+    \\ This method is used to clean up the SDL2-related variables. This method is called in the destructor of the \texttt{GameEngine} class.
+    \item \textbf{\texttt{loadBackgroundMusic(filepath)}}: bool
+    \\ This method is used to load the background music of the game. This method is called in the \texttt{init()} method to load the background music of the game. If there is any error during the loading process, it will print out the error message to the console in red color, then return \texttt{false}. 
+    \item \textbf{\texttt{ playButtonClickSound(filepath)}}: bool
+    \\ This method takes the path of the sound file as an argument and plays the sound when the button is clicked.
+    \item \textbf{\texttt{toggleBackgroundMusic()}}: void 
+    \\ This method is used to toggle the background music of the game. If the background music is playing, it will pause the music. If the background music is paused, it will resume the music.
+    \item \textbf{\texttt{toggleSoundEffect()}}: void
+    \\ This method is used to toggle the sound effects of the game. If the sound effect is playing, it will pause the sound effect. If the sound effect is paused, it will resume the sound effect.
+    \item \textbf{\texttt{isMouseHovering(mouseX, mouseY, buttonX, buttonY)}}: bool
+    \\ This method is used to check if the mouse is hovering over the button or not. Return \texttt{true} if the mouse is hovering over the button, otherwise return \texttt{false}.
+    \item \textbf{\texttt{handleButtonHover(Texture, mouseX, mouseY, buttonX, buttonY)}}: void
+    \\ This method will call the \texttt{isMouseHovering()} method to check if the mouse is hovering over the button or not. If the mouse is hovering over the button, it will reduce the opacity of the button via the \texttt{SDL\_SetTextureColorMod()} function to make the button interactive.
+    \item \textbf{\texttt{renderText(renderer, font, text, x, y, color, isCenter, isRight)}}: void
+    \\ A method to avoid creating the duplication of the code when rendering the text to the screen. The text is rendered at the position \texttt{(x, y)} with the specified color. If the \texttt{isCenter} is set to \texttt{true}, the text will be rendered at the center of the screen. If the \texttt{isRight} is set to \texttt{true}, the text will be rendered at the right of the screen. We also handle error messages when the text is not rendered successfully.
+    \item \textbf{\texttt{renderCards(cards[5], allowClick, fadeCard, allFaceDown)}}: void
+    \\ We used this to render 5 cards to the screen. The cards are rendered at the fixed position. If the \texttt{allowClick} is set to \texttt{true}, the cards will be interactive, on click the card will be flipped. If the \texttt{fadeCard} is set to a number between \texttt{0} and \texttt{5} (inclusive), the cards will be faded from the right to the left. If the \texttt{isAllFaceDown} is set to \texttt{true}, all the cards will be faced down when rendered at the first time.
+    \item \textbf{\texttt{handleButtonClick(mouseX, mouseY)}}: void
+    \\ Actually we have a different name for this method to describe what button is clicked and which screen that button is clicked, but we just call it \texttt{handleButtonClick} for simplicity. This method is used to handle the specific button click event. Since we have many buttons in the game, each serves for different purposes, we need to handle the click event of each button separately, but we already have all of the former functions that we need to handle the click event, so we just call them, the rest is all about implementing the logic when the button is clicked.
+    \item \textbf{\texttt{resetGame()}}: void 
+    \\ This method is used to reset the game state to the initial state. This method is called when the player goes back to the start screen (main menu) or when the player starts a new game. Actually we have a version for PvP mode and a version for PvC mode, but we just call it \texttt{resetGame()} for simplicity.
+\end{enumerate}
+
+\hspace{1cm} After knowing the purpose of those functions, we will explain how the game loop works. We need to look at the \texttt{main.cpp} file to see how the basic game loop is implemented. Here is the pseudo-code of the game loop:
+
+\begin{lstlisting}[language=C++, caption=Game Loop Pseudo Code]
+    CREATE GameEngine
+    INIT GameEngine
+    IF GameEngine INIT is successful
+        WHILE GameEngine is running
+            HANDLE game events
+            RENDER game objects
+        END WHILE
+    DELETE GameEngine
+    RETURN 0
+\end{lstlisting}
+
+\hspace{1cm} It turned out that the game loop is not just that simple, we also need to handle the FPS (Frame Per Second) of the game. The FPS is the number of frames that are rendered per second. The higher the FPS, the smoother the game will look. We need to limit the FPS to a certain value to prevent the game from running too fast. We can limit the FPS by using the \texttt{SDL\_GetTicks()} function to get the current time in milliseconds, then calculate the time taken to render the frame. If the time taken to render the frame is less than the target time per frame, we will delay the rendering process to achieve the target FPS. We have set the target FPS to \texttt{60} in our project. We also need to handle the delta time to make the game run at the same speed on different devices. The delta time is the time taken to render the frame in seconds. We can calculate the delta time by dividing the time taken to render the frame by \texttt{1000} to convert it to seconds. We can then use the delta time to update the game state and render the game objects at the same speed on different devices. The idea behind this actually comes from the actual bug that we've faced when we run the game on different operating systems and different devices. You can see the bug in the \hyperref[sec:bugs-list]{List of Bugs} section.
+
+% ------------------- THE END ------------------- %
